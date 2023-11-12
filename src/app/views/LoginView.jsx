@@ -6,11 +6,6 @@ import { URL_HOME } from '../constants/urls/urlFrontEnd';
 import Login from './../components/account/Login';
 import { selectIsLogged } from './../redux-store/authenticationSlice';
 
-/**
- * View/Page Login
- *
- * @author Peter Mollet
- */
 const LoginView = () => {
     const navigate = useNavigate();
     const isAuthenticated = useSelector(selectIsLogged);
@@ -20,7 +15,7 @@ const LoginView = () => {
     }, []);
 
     return (
-        <div className="flex h-full items-center justify-center">
+        <div className="mx-auto max-w-screen-xl w-full bg-white sm:px-7">
             <Login className="" />
         </div>
     );
