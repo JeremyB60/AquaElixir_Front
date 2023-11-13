@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import Navbar from "./components/layouts/Navbar";
-import { selectIsLogged, signIn } from "./redux-store/authenticationSlice";
+import Footer from "./components/layouts/Footer";
+import { signIn } from "./redux-store/authenticationSlice";
 import Routes from "./routes/Routes";
 import { getToken } from "./services/tokenServices";
 
@@ -37,9 +38,9 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <div className="relative flex h-full cursor-default flex-col bg-gray-100">
+      <div className="relative flex h-full cursor-default flex-col font-satoshiVariable">
         <Navbar />
-        <main className="mt-24 grow">
+        <main className="grow">
           <Routes />
         </main>
         <ToastContainer
@@ -51,6 +52,7 @@ const App = () => {
           position="bottom-left"
           autoClose={3000}
         />
+        <Footer />
       </div>
     </BrowserRouter>
   );

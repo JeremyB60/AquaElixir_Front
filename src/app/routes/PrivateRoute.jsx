@@ -13,7 +13,6 @@ import { selectHasRole, selectIsLogged } from '../redux-store/authenticationSlic
  * @example
  *          <PrivateRoute path={URL_HOME} element={HomeView} />
  *          <PrivateRoute path={URL_ADMIN_HOME} element={AdminHomeView} roles={[ROLE_ADMIN]} />
- * @author Peter Mollet
  */
 export const PrivateRoute = ({ children, roles }) => {
     const location = useLocation();
