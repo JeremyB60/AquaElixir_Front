@@ -31,7 +31,7 @@ const Register = () => {
     setErrorMessage(null);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/register", {
+      const response = await fetch("https://127.0.0.1:8000/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,14 +46,12 @@ const Register = () => {
       // Vérifie la réponse du serveur
       if (response.ok) {
         // Définissez le message de succès dans l'état local
-        setSuccessMessage(
-          "Inscription réussie ! Vous pouvez maintenant vous connecter."
-        );
+        setSuccessMessage(result.message); // Utilisez la propriété 'message' du résultat
       } else {
         // Afficher un message d'erreur à l'utilisateur
-        console.error(result.error || result.errors);
+        console.error(result.message);
         // Définissez le message d'erreur dans l'état local
-        setErrorMessage(result.error || result.errors);
+        setErrorMessage(result.message);
       }
     } catch (error) {
       // Gère les erreurs liées à la requête
@@ -132,10 +130,7 @@ const Register = () => {
                   )}
                 </div>
                 <div>
-                  <button
-                    type="submit"
-                    className="btn btn-black mt-5"
-                  >
+                  <button type="submit" className="btn btn-black mt-5">
                     S'inscrire →
                   </button>
                 </div>
@@ -156,9 +151,7 @@ const Register = () => {
             Déjà inscrit ?
           </h2>
           <Link to="/login">
-            <button className="btn btn-transparentDark">
-              Se connecter →
-            </button>
+            <button className="btn btn-transparentDark">Se connecter →</button>
           </Link>
         </div>
       </div>

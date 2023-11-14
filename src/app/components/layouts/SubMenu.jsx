@@ -34,7 +34,7 @@ const SubMenu = ({
         className="hover:text-customBlue"
       >
         {menuItems.label}
-        {isVisible ? "⏷" : "⏵"}
+        {isVisible ? "⏶" : "⏷"}
       </button>
       {isVisible && (
         <ul

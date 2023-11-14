@@ -27,17 +27,18 @@ const Login = () => {
       .required("Le mot de passe est requis"),
   });
 
-  const handleLogin = (values) => {
-    authenticate(values)
-      .then((res) => {
-        if (res.status === 200 && res.data.token) {
-          dispatch(signIn(res.data.token));
-          navigate(URL_HOME);
-        }
-      })
-      .catch((error) => {
+  const handleLogin = async (values) => {
+    try {
+      const res = await authenticate(values);
+      if (res.status === 200 && res.data.token) {
+        dispatch(signIn(res.data.token));
+        navigate(URL_HOME);
+      } else {
         setErrorLog(true);
-      });
+      }
+    } catch (error) {
+      setErrorLog(true);
+    }
   };
 
   return (
@@ -90,10 +91,7 @@ const Login = () => {
                   </div>
                 </div>
                 <div>
-                  <button
-                    type="submit"
-                    className="btn btn-black group mt-5"
-                  >
+                  <button type="submit" className="btn btn-black group mt-5">
                     Se connecter →
                   </button>
                 </div>
@@ -113,9 +111,7 @@ const Login = () => {
             Nouveau client ?
           </h2>
           <Link to="/register">
-            <button className="btn btn-transparent">
-              Créer un compte →
-            </button>
+            <button className="btn btn-transparent">Créer un compte →</button>
           </Link>
         </div>
       </div>

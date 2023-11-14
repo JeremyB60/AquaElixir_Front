@@ -8,19 +8,6 @@ const PasswordInput = () => {
     setShowPassword(!showPassword);
   };
 
-  // const handleKeyPress = (event) => {
-  //   if (event.key === "Space") {
-  //     togglePasswordVisibility();
-  //   }
-  // };
-  // const handleMouseDown = () => {
-  //   setShowPassword(true);
-  // };
-
-  // const handleMouseUp = () => {
-  //   setShowPassword(false);
-  // };
-
   return (
     <div className="relative mt-5">
       <label htmlFor="password">Mot de passe</label>
@@ -40,9 +27,6 @@ const PasswordInput = () => {
         xmlns="http://www.w3.org/2000/svg"
         className="passwordIcon absolute"
         onClick={togglePasswordVisibility}
-        // onMouseDown={handleMouseDown}
-        // onMouseUp={handleMouseUp}
-        // onMouseLeave={handleMouseUp}
       >
         <g clipPath="url(#clip0_73_524)">
           <path
