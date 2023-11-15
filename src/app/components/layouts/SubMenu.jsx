@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
@@ -6,8 +6,10 @@ const SubMenu = ({
   menuItems,
   styles,
   toggleSubMenu,
+  closeMenu,
   closeSubMenu,
   isVisible,
+  topLevelMenu,
 }) => {
   const subMenuRef = useRef();
 
@@ -15,7 +17,13 @@ const SubMenu = ({
     if (e.target.id === `afficherSousMenuButton${menuItems.id}`) return;
 
     if (subMenuRef.current && !subMenuRef.current.contains(e.target)) {
+      // Clic à l'extérieur du sous-menu, fermer le sous-menu
       closeSubMenu(menuItems.id);
+
+      // Appeler la fonction pour fermer le menu principal si nécessaire
+      if (closeMenu) {
+        closeMenu();
+      }
     }
   };
 
@@ -26,21 +34,56 @@ const SubMenu = ({
     };
   }, [handleOutsideClick]);
 
+  const handleBackButtonClick = () => {
+    if (topLevelMenu) {
+      closeSubMenu(menuItems.id);
+    } else {
+      closeSubMenu(menuItems.parentId);
+    }
+  };
+
+  const [isResponsive, setIsResponsive] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsResponsive(window.innerWidth >= 768);
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <>
       <button
         id={`afficherSousMenuButton${menuItems.id}`}
-        onClick={() => toggleSubMenu(menuItems.id)}
-        className="hover:text-customBlue"
+        onClick={(e) => {
+          e.stopPropagation(); // Ajoutez cette ligne
+          toggleSubMenu(menuItems.id);
+        }}
+        className="hover:text-customBlue flex justify-between items-center w-full"
       >
         {menuItems.label}
-        {isVisible ? "⏶" : "⏷"}
+        {!isResponsive && (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="15"
+            viewBox="0 -960 960 960"
+            width="15"
+          >
+            <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z" />
+          </svg>
+        )}
       </button>
       {isVisible && (
         <ul
-          className={`absolute bg-white border w-full flex flex-wrap justify-evenly p-8`}
+          className={`absolute bg-white md:border w-full flex flex-wrap flex-col md:flex-row justify-evenly px-4 py-8 md:top-20`}
           style={{
-            top: "70px",
             left: "0",
             margin: "0",
             ...styles,
@@ -48,20 +91,31 @@ const SubMenu = ({
           id={`sousMenu${menuItems.id}`}
           ref={subMenuRef}
         >
+          <li
+            key="back"
+            className="justify-center max-w-full md:hidden focus:outline-none absolute top-0 left-0 ml-4"
+          >
+            <button
+              onClick={handleBackButtonClick}
+              className="link inline-block font-extrabold mb-3"
+            >
+              Retour
+            </button>
+          </li>
           {menuItems.items.map((subItem) => (
             <li key={subItem.id} className="justify-center max-w-full">
-              <div className="sm:col-span-1 flex flex-col">
+              <div className="sm:col-span-1 flex flex-col pb-5 md:pb-0">
                 <Link
                   to={subItem.url}
                   onClick={() => {
                     closeSubMenu(menuItems.id);
                   }}
-                  className="link inline-block font-extrabold mb-3"
+                  className="link inline-block md:font-extrabold mb-3"
                 >
                   {subItem.label}
                 </Link>
                 {subItem.subItems && subItem.subItems.length > 0 && (
-                  <ul key={subItem.id}>
+                  <ul key={subItem.id} className="pl-5 md:p-0">
                     {subItem.subItems.map((nestedItem) => (
                       <li key={nestedItem.id}>
                         <Link
@@ -102,11 +156,14 @@ SubMenu.propTypes = {
         ),
       })
     ),
+    parentId: PropTypes.number, // Ajoutez cette ligne
   }).isRequired,
   isVisible: PropTypes.bool.isRequired,
   toggleSubMenu: PropTypes.func.isRequired,
   closeSubMenu: PropTypes.func.isRequired,
+  closeMenu: PropTypes.func,
   styles: PropTypes.object,
+  topLevelMenu: PropTypes.bool,
 };
 
 export default SubMenu;

@@ -42,7 +42,7 @@ const Login = () => {
   };
 
   return (
-    <div className="mx-auto max-w-screen-xl w-full bg-white">
+    <div className="mx-auto max-w-screen-xl w-full bg-white md:px-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="md:order-2 h-[425px] md:my-16 my-5 md:h-[646px] p-4 xl:pl-20 xl:pr-0 flex flex-col justify-center">
           <div>
@@ -68,7 +68,7 @@ const Login = () => {
                       type="text"
                       id="username"
                       name="username"
-                      placeholder="Email"
+                      placeholder="Adresse e-mail"
                       autoComplete="email"
                       className="input mt-2"
                     />

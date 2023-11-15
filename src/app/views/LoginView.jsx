@@ -15,8 +15,8 @@ const LoginView = () => {
     }, []);
 
     return (
-        <div className="mx-auto max-w-screen-xl w-full bg-white sm:px-7">
-            <Login className="" />
+        <div className="mx-auto max-w-screen-xl w-full bg-white">
+            <Login />
         </div>
     );
 };
