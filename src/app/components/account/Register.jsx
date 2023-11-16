@@ -116,7 +116,7 @@ const Register = () => {
                       type="text"
                       id="email"
                       name="email"
-                      placeholder="Email"
+                      placeholder="Adresse e-mail"
                       autoComplete="email"
                       className="input mt-2"
                     />
