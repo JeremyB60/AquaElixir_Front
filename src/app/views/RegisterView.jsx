@@ -15,8 +15,8 @@ const RegisterView = () => {
     }, []);
 
     return (
-        <div className="mx-auto max-w-screen-xl w-full bg-white sm:px-7">
-            <Register className="" />
+        <div className="mx-auto max-w-screen-xl w-full bg-white">
+            <Register />
         </div>
     );
 };
