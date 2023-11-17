@@ -158,8 +158,8 @@ const Navbar = () => {
   }, [closeMobileMenu]);
 
   return (
-    <nav className="top-0 w-max-[1280px] z-50 sticky font-satoshiMedium px-4">
-      <div className="mx-auto max-w-screen-xl w-full bg-white">
+    <nav className="top-0 w-max-[1280px] z-50 sticky font-satoshiMedium">
+      <div className="mx-auto max-w-screen-xl w-full bg-white px-4">
         <div className="flex items-center justify-between">
           {/* Mobile Menu Icon */}
           <div

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import PasswordInput from "./PasswordInput";
-import { URL_HOME } from "../../constants/urls/urlFrontEnd";
+import { URL_FORGOT_PASSWORD, URL_HOME, URL_REGISTER } from "../../constants/urls/urlFrontEnd";
 import { signIn } from "../../redux-store/authenticationSlice";
 import { authenticate } from "./../../api/backend/account";
 
@@ -83,7 +83,7 @@ const Login = () => {
                 </div>
                 <div className="mt-3 flex items-center justify-between">
                   <div className="text-sm">
-                    <Link to="/forgot-password">
+                    <Link to={URL_FORGOT_PASSWORD}>
                       <span className="cursor-pointer font-medium text-customBlue hover:text-customBlue hover:underline text-size16">
                         Mot de passe oublié ?
                       </span>
@@ -110,7 +110,7 @@ const Login = () => {
           <h2 className="text-3xl text-white font-bold tracking-[-0.5px] text-size32">
             Nouveau client ?
           </h2>
-          <Link to="/register">
+          <Link to={URL_REGISTER}>
             <button className="btn btn-transparent">Créer un compte →</button>
           </Link>
         </div>
