@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import PasswordInput from "./PasswordInput";
+import { URL_LOGIN } from "../../constants/urls/urlFrontEnd";
 
 /**
  * Component Register
@@ -62,7 +63,7 @@ const Register = () => {
   };
 
   return (
-    <div className="mx-auto max-w-screen-xl w-full bg-white">
+    <div className="mx-auto max-w-screen-xl w-full bg-white md:px-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="h-[546px] md:my-16 my-5 md:h-[646px] p-4 xl:pl-0 xl:pr-20 flex flex-col justify-center">
           <div>
@@ -150,7 +151,7 @@ const Register = () => {
           <h2 className="text-3xl text-black font-bold tracking-[-0.5px] text-size32">
             Déjà inscrit ?
           </h2>
-          <Link to="/login">
+          <Link to={URL_LOGIN}>
             <button className="btn btn-transparentDark">Se connecter →</button>
           </Link>
         </div>

@@ -123,7 +123,7 @@ const SubMenu = ({
                           onClick={() => {
                             closeSubMenu(menuItems.id);
                           }}
-                          className="link inline-block"
+                          className="link inline-block mb-3 md:mb-1"
                         >
                           {nestedItem.label}
                         </Link>
