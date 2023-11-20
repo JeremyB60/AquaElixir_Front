@@ -2,13 +2,50 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectIsLogged, signOut } from "../../redux-store/authenticationSlice";
-import { URL_HOME, URL_LOGIN } from "../../constants/urls/urlFrontEnd";
+import * as URL from "../../constants/urls/urlFrontEnd";
 import Logo from "./../../assets/images/logo.svg";
 import SubMenu from "./SubMenu";
 
 const Navbar = () => {
   const menuButtonRef = useRef(null);
   const menuRef = useRef(null);
+  const loginMenuRef = useRef(null);
+
+  const [isLoginMenuOpen, setIsLoginMenuOpen] = useState(false);
+
+  const toggleLoginMenu = (event) => {
+    event.stopPropagation();
+    setIsLoginMenuOpen(!isLoginMenuOpen);
+  };
+
+  const handleLoginMenuItemClick = () => {
+    setIsLoginMenuOpen(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        loginMenuRef.current &&
+        !loginMenuRef.current.contains(event.target)
+      ) {
+        setIsLoginMenuOpen(false);
+      }
+    };
+
+    // Ajoute un écouteur d'événements pour détecter les clics à l'extérieur du menu
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      // Retire l'écouteur d'événements lors du démontage du composant
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  const handleSignOut = () => {
+    handleLoginMenuItemClick();
+    dispatch(signOut());
+    navigate(URL.URL_AUTHFORM);
+  };
 
   const toggleSubMenu = (menuId) => {
     if (visibleMenus[menuId]) {
@@ -34,39 +71,34 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSignOut = () => {
-    dispatch(signOut());
-    navigate(URL_LOGIN);
-  };
-
   const menuItems1 = {
     id: 1,
     label: "Soin",
     items: [
       {
         label: "Soin du visage",
-        url: URL_HOME,
+        url: URL.URL_HOME,
         subItems: [
-          { label: "Anti-âge", url: URL_HOME },
-          { label: "Peau sensible", url: URL_HOME },
+          { label: "Anti-âge", url: URL.URL_HOME },
+          { label: "Peau sensible", url: URL.URL_HOME },
         ],
       },
       {
         label: "Soin corporel",
-        url: URL_HOME,
+        url: URL.URL_HOME,
         subItems: [
-          { label: "Nettoyant", url: URL_HOME },
-          { label: "Bain", url: URL_HOME },
-          { label: "Coffret cadeau", url: URL_HOME },
+          { label: "Nettoyant", url: URL.URL_HOME },
+          { label: "Bain", url: URL.URL_HOME },
+          { label: "Coffret cadeau", url: URL.URL_HOME },
         ],
       },
       {
         label: "Soin capillaire",
-        url: URL_HOME,
+        url: URL.URL_HOME,
         subItems: [
-          { label: "Shampoing et après-shampoing", url: URL_HOME },
-          { label: "Cuir chevelu sensible", url: URL_HOME },
-          { label: "Masque et coiffant", url: URL_HOME },
+          { label: "Shampoing et après-shampoing", url: URL.URL_HOME },
+          { label: "Cuir chevelu sensible", url: URL.URL_HOME },
+          { label: "Masque et coiffant", url: URL.URL_HOME },
         ],
       },
     ],
@@ -78,20 +110,20 @@ const Navbar = () => {
     items: [
       {
         label: "Compléments alimentaires",
-        url: URL_HOME,
+        url: URL.URL_HOME,
         subItems: [
-          { label: "Peau, cheveux et ongles", url: URL_HOME },
-          { label: "Tisane, thé et infusion", url: URL_HOME },
-          { label: "Digestion et transit", url: URL_HOME },
+          { label: "Peau, cheveux et ongles", url: URL.URL_HOME },
+          { label: "Tisane, thé et infusion", url: URL.URL_HOME },
+          { label: "Digestion et transit", url: URL.URL_HOME },
         ],
       },
       {
         label: "Santé & bien-être",
-        url: URL_HOME,
+        url: URL.URL_HOME,
         subItems: [
-          { label: "Peau et cheveux", url: URL_HOME },
-          { label: "Immunité", url: URL_HOME },
-          { label: "Protection solaire", url: URL_HOME },
+          { label: "Peau et cheveux", url: URL.URL_HOME },
+          { label: "Immunité", url: URL.URL_HOME },
+          { label: "Protection solaire", url: URL.URL_HOME },
         ],
       },
     ],
@@ -158,9 +190,13 @@ const Navbar = () => {
   }, [closeMobileMenu]);
 
   return (
-    <nav className="top-0 w-max-[1280px] z-50 sticky font-satoshiMedium px-4">
-      <div className="mx-auto max-w-screen-xl w-full bg-white">
-        <div className="flex items-center justify-between">
+    <nav className="top-0 w-max-[1280px] sticky font-satoshiMedium z-50">
+      <div className="mx-auto max-w-screen-xl w-full bg-white px-4">
+        <div
+          className={`flex items-center justify-between  ${
+            isMobileMenuOpen ? "show-menu" : null
+          } `}
+        >
           {/* Mobile Menu Icon */}
           <div
             id="mobileMenuButton"
@@ -224,53 +260,51 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Menu */}
-          {isMobileMenuOpen && (
-            <div
-              id="mobileMenu"
-              ref={menuRef}
-              className="md:hidden fixed top-[70px] border left-0 h-full w-full max-w-[400px] bg-white z-999 overflow-hidden"
-            >
-              <div className="flex flex-col items-start space-y-4 p-4">
-                <Link
-                  to={URL_HOME}
-                  onClick={closeMobileMenu}
-                  className="mt-8 md:mt-0 w-full hover:text-customBlue"
-                >
-                  Nouveautés
-                </Link>
-                <SubMenu
-                  isVisible={visibleMenus[menuItems1.id]}
-                  toggleSubMenu={toggleSubMenu}
-                  closeSubMenu={closeSubMenu}
-                  menuItems={menuItems1}
-                  closeMenu={closeMobileMenu}
-                />
-                <SubMenu
-                  isVisible={visibleMenus[menuItems2.id]}
-                  toggleSubMenu={toggleSubMenu}
-                  closeSubMenu={closeSubMenu}
-                  menuItems={menuItems2}
-                  closeMenu={closeMobileMenu}
-                />
-                <Link
-                  to={URL_HOME}
-                  onClick={closeMobileMenu}
-                  className="w-full hover:text-customBlue"
-                >
-                  À propos
-                </Link>
-                <Link
-                  to={URL_HOME}
-                  onClick={closeMobileMenu}
-                  className="w-full hover:text-customBlue"
-                >
-                  Contact
-                </Link>
-              </div>
+          <div
+            id="mobileMenu"
+            ref={menuRef}
+            className="md:hidden fixed top-[70px] border h-full w-full max-w-[400px] bg-white z-999 overflow-auto"
+          >
+            <div className="flex flex-col items-start space-y-4 p-4">
+              <Link
+                to={URL.URL_HOME}
+                onClick={closeMobileMenu}
+                className="mt-8 md:mt-0 w-full hover:text-customBlue"
+              >
+                Nouveautés
+              </Link>
+              <SubMenu
+                isVisible={visibleMenus[menuItems1.id]}
+                toggleSubMenu={toggleSubMenu}
+                closeSubMenu={closeSubMenu}
+                menuItems={menuItems1}
+                closeMenu={closeMobileMenu}
+              />
+              <SubMenu
+                isVisible={visibleMenus[menuItems2.id]}
+                toggleSubMenu={toggleSubMenu}
+                closeSubMenu={closeSubMenu}
+                menuItems={menuItems2}
+                closeMenu={closeMobileMenu}
+              />
+              <Link
+                to={URL.URL_HOME}
+                onClick={closeMobileMenu}
+                className="w-full hover:text-customBlue"
+              >
+                À propos
+              </Link>
+              <Link
+                to={URL.URL_HOME}
+                onClick={closeMobileMenu}
+                className="w-full hover:text-customBlue"
+              >
+                Contact
+              </Link>
             </div>
-          )}
+          </div>
           <div className="w-full md:w-fit flex justify-center md:block">
-            <Link to={URL_HOME} className="inline-block">
+            <Link to={URL.URL_HOME} className="inline-block">
               <img
                 className="cursor-pointer"
                 src={Logo}
@@ -285,7 +319,7 @@ const Navbar = () => {
 
           <div className="flex items-center space-x-4">
             <div className="hidden md:flex space-x-2 lg:space-x-10 justify-center">
-              <Link to={URL_HOME} className="link inline-block">
+              <Link to={URL.URL_HOME} className="link inline-block">
                 Nouveautés
               </Link>
               <SubMenu
@@ -300,17 +334,17 @@ const Navbar = () => {
                 closeSubMenu={closeSubMenu}
                 menuItems={menuItems2}
               />
-              <Link to={URL_HOME}>
+              <Link to={URL.URL_HOME}>
                 <div className="link">À&nbsp;propos</div>
               </Link>
-              <Link to={URL_HOME}>
+              <Link to={URL.URL_HOME}>
                 <div className="link">Contact</div>
               </Link>
             </div>
           </div>
           <div>
             <div className="flex space-x-4">
-              <Link to={URL_LOGIN}>
+              <Link to={URL.URL_AUTHFORM}>
                 <svg
                   width="24"
                   height="24"
@@ -341,45 +375,139 @@ const Navbar = () => {
                   </defs>
                 </svg>
               </Link>
-              <Link to={URL_LOGIN}>
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g clipPath="url(#clip0_823_9638)">
-                    <path
-                      d="M3 12C3 13.1819 3.23279 14.3522 3.68508 15.4442C4.13738 16.5361 4.80031 17.5282 5.63604 18.364C6.47177 19.1997 7.46392 19.8626 8.55585 20.3149C9.64778 20.7672 10.8181 21 12 21C13.1819 21 14.3522 20.7672 15.4442 20.3149C16.5361 19.8626 17.5282 19.1997 18.364 18.364C19.1997 17.5282 19.8626 16.5361 20.3149 15.4442C20.7672 14.3522 21 13.1819 21 12C21 10.8181 20.7672 9.64778 20.3149 8.55585C19.8626 7.46392 19.1997 6.47177 18.364 5.63604C17.5282 4.80031 16.5361 4.13738 15.4442 3.68508C14.3522 3.23279 13.1819 3 12 3C10.8181 3 9.64778 3.23279 8.55585 3.68508C7.46392 4.13738 6.47177 4.80031 5.63604 5.63604C4.80031 6.47177 4.13738 7.46392 3.68508 8.55585C3.23279 9.64778 3 10.8181 3 12Z"
-                      stroke="black"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M9 10C9 10.7956 9.31607 11.5587 9.87868 12.1213C10.4413 12.6839 11.2044 13 12 13C12.7956 13 13.5587 12.6839 14.1213 12.1213C14.6839 11.5587 15 10.7956 15 10C15 9.20435 14.6839 8.44129 14.1213 7.87868C13.5587 7.31607 12.7956 7 12 7C11.2044 7 10.4413 7.31607 9.87868 7.87868C9.31607 8.44129 9 9.20435 9 10Z"
-                      stroke="black"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M6.16797 18.849C6.41548 18.0252 6.92194 17.3032 7.61222 16.79C8.30249 16.2768 9.13982 15.9997 9.99997 16H14C14.8612 15.9997 15.6996 16.2774 16.3904 16.7918C17.0811 17.3062 17.5874 18.0298 17.834 18.855"
-                      stroke="black"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_823_9638">
-                      <rect width="24" height="24" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
-              </Link>
-              <Link to={URL_LOGIN}>
+
+              {/* SOUS-MENU LOGIN */}
+              <div
+                className={`relative ${
+                  isLoginMenuOpen ? "show-loginMenu" : null
+                } `}
+              >
+                {!isLoggued ? (
+                  <Link to={URL.URL_AUTHFORM}>
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g clipPath="url(#clip0_823_9638)">
+                        <path
+                          d="M3 12C3 13.1819 3.23279 14.3522 3.68508 15.4442C4.13738 16.5361 4.80031 17.5282 5.63604 18.364C6.47177 19.1997 7.46392 19.8626 8.55585 20.3149C9.64778 20.7672 10.8181 21 12 21C13.1819 21 14.3522 20.7672 15.4442 20.3149C16.5361 19.8626 17.5282 19.1997 18.364 18.364C19.1997 17.5282 19.8626 16.5361 20.3149 15.4442C20.7672 14.3522 21 13.1819 21 12C21 10.8181 20.7672 9.64778 20.3149 8.55585C19.8626 7.46392 19.1997 6.47177 18.364 5.63604C17.5282 4.80031 16.5361 4.13738 15.4442 3.68508C14.3522 3.23279 13.1819 3 12 3C10.8181 3 9.64778 3.23279 8.55585 3.68508C7.46392 4.13738 6.47177 4.80031 5.63604 5.63604C4.80031 6.47177 4.13738 7.46392 3.68508 8.55585C3.23279 9.64778 3 10.8181 3 12Z"
+                          stroke="black"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M9 10C9 10.7956 9.31607 11.5587 9.87868 12.1213C10.4413 12.6839 11.2044 13 12 13C12.7956 13 13.5587 12.6839 14.1213 12.1213C14.6839 11.5587 15 10.7956 15 10C15 9.20435 14.6839 8.44129 14.1213 7.87868C13.5587 7.31607 12.7956 7 12 7C11.2044 7 10.4413 7.31607 9.87868 7.87868C9.31607 8.44129 9 9.20435 9 10Z"
+                          stroke="black"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M6.16797 18.849C6.41548 18.0252 6.92194 17.3032 7.61222 16.79C8.30249 16.2768 9.13982 15.9997 9.99997 16H14C14.8612 15.9997 15.6996 16.2774 16.3904 16.7918C17.0811 17.3062 17.5874 18.0298 17.834 18.855"
+                          stroke="black"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_823_9638">
+                          <rect width="24" height="24" fill="white" />
+                        </clipPath>
+                      </defs>
+                    </svg>
+                  </Link>
+                ) : (
+                  <div>
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      onClick={toggleLoginMenu}
+                      style={{ cursor: "pointer" }}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g clipPath="url(#clip0_823_9638)">
+                        <path
+                          d="M3 12C3 13.1819 3.23279 14.3522 3.68508 15.4442C4.13738 16.5361 4.80031 17.5282 5.63604 18.364C6.47177 19.1997 7.46392 19.8626 8.55585 20.3149C9.64778 20.7672 10.8181 21 12 21C13.1819 21 14.3522 20.7672 15.4442 20.3149C16.5361 19.8626 17.5282 19.1997 18.364 18.364C19.1997 17.5282 19.8626 16.5361 20.3149 15.4442C20.7672 14.3522 21 13.1819 21 12C21 10.8181 20.7672 9.64778 20.3149 8.55585C19.8626 7.46392 19.1997 6.47177 18.364 5.63604C17.5282 4.80031 16.5361 4.13738 15.4442 3.68508C14.3522 3.23279 13.1819 3 12 3C10.8181 3 9.64778 3.23279 8.55585 3.68508C7.46392 4.13738 6.47177 4.80031 5.63604 5.63604C4.80031 6.47177 4.13738 7.46392 3.68508 8.55585C3.23279 9.64778 3 10.8181 3 12Z"
+                          stroke="black"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M9 10C9 10.7956 9.31607 11.5587 9.87868 12.1213C10.4413 12.6839 11.2044 13 12 13C12.7956 13 13.5587 12.6839 14.1213 12.1213C14.6839 11.5587 15 10.7956 15 10C15 9.20435 14.6839 8.44129 14.1213 7.87868C13.5587 7.31607 12.7956 7 12 7C11.2044 7 10.4413 7.31607 9.87868 7.87868C9.31607 8.44129 9 9.20435 9 10Z"
+                          stroke="black"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M6.16797 18.849C6.41548 18.0252 6.92194 17.3032 7.61222 16.79C8.30249 16.2768 9.13982 15.9997 9.99997 16H14C14.8612 15.9997 15.6996 16.2774 16.3904 16.7918C17.0811 17.3062 17.5874 18.0298 17.834 18.855"
+                          stroke="black"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_823_9638">
+                          <rect width="24" height="24" fill="white" />
+                        </clipPath>
+                      </defs>
+                    </svg>
+                    {/* Sous-menu du bouton de connexion à afficher lors du clic sur le bouton */}
+                    <div
+                      id="loginMenu"
+                      ref={loginMenuRef}
+                      className="absolute border rounded-[15px] -right-[50px] top-8 p-5 w-[180px] bg-white"
+                    >
+                      {/* Contenu de votre sous-menu du bouton de connexion */}
+                      <ul className="space-y-2">
+                        <li>
+                          <Link
+                            to={URL.URL_MY_ORDERS}
+                            className="hover:text-customBlue"
+                            onClick={handleLoginMenuItemClick}
+                          >
+                            Mes commandes
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to={URL.URL_MY_ACCOUNT}
+                            className="hover:text-customBlue"
+                            onClick={handleLoginMenuItemClick}
+                          >
+                            Mon compte
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to={URL.URL_RETURN_ITEM}
+                            className="hover:text-customBlue"
+                            onClick={handleLoginMenuItemClick}
+                          >
+                            Retour d'article
+                          </Link>
+                        </li>
+                        <li
+                          onClick={handleSignOut}
+                          className="hover:text-customBlue cursor-pointer"
+                        >
+                          Déconnexion
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <Link to={URL.URL_AUTHFORM}>
                 <svg
                   width="24"
                   height="24"
@@ -410,11 +538,6 @@ const Navbar = () => {
                   </defs>
                 </svg>
               </Link>
-              {isLoggued && (
-                <button className="btn btn-dark" onClick={handleSignOut}>
-                  Déconnexion
-                </button>
-              )}
             </div>
           </div>
         </div>

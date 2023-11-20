@@ -2,23 +2,23 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { URL_HOME } from '../constants/urls/urlFrontEnd';
-import Login from './../components/account/Login';
+import { URL_AUTHFORM } from '../constants/urls/urlFrontEnd';
 import { selectIsLogged } from './../redux-store/authenticationSlice';
+import MyAccount from './../components/account/MyAccount';
 
-const LoginView = () => {
+const MyAccountView = () => {
     const navigate = useNavigate();
     const isAuthenticated = useSelector(selectIsLogged);
 
     useEffect(() => {
-        if (isAuthenticated) navigate(URL_HOME);
+        if (!isAuthenticated) navigate(URL_AUTHFORM);
     }, []);
 
     return (
         <div className="mx-auto max-w-screen-xl w-full bg-white">
-            <Login />
+            <MyAccount />
         </div>
     );
 };
 
-export default LoginView;
+export default MyAccountView;

@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 
-import { URL_HOME, URL_LOGIN } from '../constants/urls/urlFrontEnd';
+import { URL_HOME, URL_AUTHFORM } from '../constants/urls/urlFrontEnd';
 import { selectHasRole, selectIsLogged } from '../redux-store/authenticationSlice';
 
 /**
@@ -19,7 +19,7 @@ export const PrivateRoute = ({ children, roles }) => {
     const isAuthenticated = useSelector(selectIsLogged);
     const hasRole = useSelector((state) => selectHasRole(state, roles));
     if (!isAuthenticated)
-        return <Navigate replace to={URL_LOGIN} state={{ from: location }} />;
+        return <Navigate replace to={URL_AUTHFORM} state={{ from: location }} />;
 
     if (roles && !hasRole) return <Navigate replace to={{ pathname: URL_HOME }} />;
 
