@@ -4,15 +4,19 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import PasswordInput from "./PasswordInput";
-import { URL_FORGOT_PASSWORD, URL_HOME, URL_REGISTER } from "../../constants/urls/urlFrontEnd";
+import {
+  URL_FORGOT_PASSWORD,
+  URL_MY_ACCOUNT,
+} from "../../constants/urls/urlFrontEnd";
 import { signIn } from "../../redux-store/authenticationSlice";
 import { authenticate } from "./../../api/backend/account";
+import PropTypes from "prop-types";
 
 /**
  * Component Login
  */
 
-const Login = () => {
+const Login = ({ toggle }) => {
   const [errorLog, setErrorLog] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,7 +36,7 @@ const Login = () => {
       const res = await authenticate(values);
       if (res.status === 200 && res.data.token) {
         dispatch(signIn(res.data.token));
-        navigate(URL_HOME);
+        navigate(URL_MY_ACCOUNT);
       } else {
         setErrorLog(true);
       }
@@ -44,7 +48,7 @@ const Login = () => {
   return (
     <div className="mx-auto max-w-screen-xl w-full bg-white md:px-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="md:order-2 h-[425px] md:my-16 my-5 md:h-[646px] p-4 xl:pl-20 xl:pr-0 flex flex-col justify-center">
+        <div className="md:order-2 md:my-16 my-5 p-4 xl:pl-20 xl:pr-0 flex flex-col justify-center">
           <div>
             <h1 className="mt-6 text-3xl font-extrabold tracking-[-0.5px] text-size32">
               S'identifier
@@ -76,7 +80,7 @@ const Login = () => {
                       <div className="text-red-500">{errors.email}</div>
                     )}
                   </div>
-                  <PasswordInput />
+                  <PasswordInput name="password" label="Mot de passe" />
                   {errors.password && touched.password && (
                     <div className="text-red-500">{errors.password}</div>
                   )}
@@ -106,17 +110,20 @@ const Login = () => {
             )}
           </Formik>
         </div>
-        <div className="sm:col-span-1 h-[425px] sm:h-[646px] sm:my-16 mb-5 flex flex-col items-center justify-center gap-7 backgroundCreateAccount">
+        <div className="sm:col-span-1 min-h-[385px] md:min-h-[685px] sm:my-16 mb-5 flex flex-col items-center justify-center gap-7 backgroundCreateAccount">
           <h2 className="text-3xl text-white font-bold tracking-[-0.5px] text-size32">
             Nouveau client ?
           </h2>
-          <Link to={URL_REGISTER}>
-            <button className="btn btn-transparent">Créer un compte →</button>
-          </Link>
+          <button onClick={toggle} className="btn btn-transparent">
+            Créer un compte →
+          </button>
         </div>
       </div>
     </div>
   );
+};
+Login.propTypes = {
+  toggle: PropTypes.func.isRequired,
 };
 
 export default Login;
