@@ -2,7 +2,7 @@ import React from "react";
 import { Link, Navigate } from "react-router-dom";
 import {
   URL_HOME,
-  URL_LOGIN,
+  URL_AUTHFORM,
   URL_FORGOT_PASSWORD,
 } from "../constants/urls/urlFrontEnd";
 import { useFormValidation } from "../components/account/FormValidationContext";
@@ -19,7 +19,7 @@ const ForgotPasswordEmailSentView = () => {
       <div className="flex items-center justify-center h-[70vh] md:h-[60vh] relative">
         <div className="absolute top-5 left-0 pl-4 text-sm font-medium">
           <Link to={URL_HOME}>Accueil</Link> |{" "}
-          <Link to={URL_LOGIN}>S'identifier</Link> |{" "}
+          <Link to={URL_AUTHFORM}>S'identifier</Link> |{" "}
           <Link to={URL_FORGOT_PASSWORD}>Mot de passe oublié</Link>
         </div>
         <div className="w-full max-w-[650px] bg-white px-4">

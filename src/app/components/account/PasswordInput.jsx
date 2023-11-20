@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Field } from "formik";
 
-const PasswordInput = () => {
+const PasswordInput = ({ name, label }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -10,11 +10,11 @@ const PasswordInput = () => {
 
   return (
     <div className="relative mt-5">
-      <label htmlFor="password">Mot de passe</label>
+      <label htmlFor="password">{label}</label>
       <Field
         type={showPassword ? "text" : "password"}
-        id="password"
-        name="password"
+        id={name}
+        name={name}
         placeholder="Mot de passe"
         autoComplete="current-password"
         className="input mt-2"
