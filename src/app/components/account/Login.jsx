@@ -33,17 +33,25 @@ const Login = ({ toggle }) => {
 
   const handleLogin = async (values) => {
     try {
+      console.log("handleLogin - values:", values); // Affiche les valeurs reçues
+      
       const res = await authenticate(values);
+      console.log("handleLogin - response:", res); // Affiche la réponse de authenticate
+  
       if (res.status === 200 && res.data.token) {
+        console.log("handleLogin - Success, token received"); // Succès, token reçu
         dispatch(signIn(res.data.token));
         navigate(URL_MY_ACCOUNT);
       } else {
+        console.log("handleLogin - Failed, setting error log (no token or status != 200)"); // Échec, pas de token ou status différent de 200
         setErrorLog(true);
       }
     } catch (error) {
+      console.log("handleLogin - Error caught:", error); // Affiche l'erreur attrapée
       setErrorLog(true);
     }
   };
+  
 
   return (
     <div className="mx-auto max-w-screen-xl w-full bg-white md:px-4">

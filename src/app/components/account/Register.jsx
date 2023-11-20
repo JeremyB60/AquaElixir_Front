@@ -51,7 +51,7 @@ const Register = ({ toggle }) => {
     setErrorMessage(null);
 
     try {
-      const response = await fetch("https://127.0.0.1:8000/api/register", {
+      const response = await fetch("http://localhost:8002/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
