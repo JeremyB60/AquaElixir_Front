@@ -9,6 +9,7 @@ import {
   URL_FORGOT_PASSWORD_EMAIL_SENT,
 } from "../../constants/urls/urlFrontEnd";
 import { useFormValidation } from "./FormValidationContext";
+import { forgotPassword } from "./../../api/backend/account";
 
 /**
  * Component ForgotPassword
@@ -27,31 +28,33 @@ const ForgotPassword = () => {
 
   const handleForgotPassword = async (values) => {
     setErrorMessage(null);
-
+  
     try {
-      const response = await fetch(
-        "https://127.0.0.1:8000/api/reset-password",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(values),
-        }
-      );
-
-      const result = await response.json();
-
-      if (response.ok) {
+      const response = await forgotPassword(values);
+    
+      // Log de la réponse du serveur
+      console.log('Réponse du serveur:', response);
+  
+      // Récupère la réponse du serveur
+      const result = response.data;
+      console.log('Données de la réponse:', result);
+  
+      if (response.status === 200) {
         setIsFormValidated(true);
+        console.log('Form validé, navigation vers', URL_FORGOT_PASSWORD_EMAIL_SENT);
         navigate(URL_FORGOT_PASSWORD_EMAIL_SENT);
       } else {
-        setErrorMessage(result.message);
+        console.log('Erreur de requête:', result.message);
+        const error = "Email introuvable."
+        setErrorMessage(error);
       }
     } catch (error) {
-      setErrorMessage("Erreur de requête: " + error.message);
+      console.error('Erreur de requête:', error);
+      const errorMessage = "Email introuvable."
+      setErrorMessage(errorMessage);
     }
   };
+  
 
   return (
     <div className="flex items-center justify-center h-[85vh] md:h-[60vh] relative">

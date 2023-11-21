@@ -6,7 +6,7 @@ import { ROLE_ADMIN, ROLE_USER } from "../constants/rolesConstant";
 import * as URL from "../constants/urls/urlFrontEnd";
 
 // Views
-import AdminHomeView from "../views/AdminHomeView";
+import AdminView from "../views/AdminView";
 import HomeView from "../views/HomeView";
 import AuthFormView from "../views/AuthFormView";
 import ForgotPasswordView from "../views/ForgotPasswordView";
@@ -18,7 +18,6 @@ import MyOrdersView from "../views/MyOrdersView";
 // Components
 import { FormValidationProvider } from "../components/account/FormValidationContext";
 import { PrivateRoute } from "./PrivateRoute";
-
 
 /**
  * Routes of the application
@@ -32,30 +31,51 @@ const Routes = () => {
         {/* Public Routes */}
         <Route path={URL.URL_HOME} element={<HomeView />} />
         <Route path={URL.URL_AUTHFORM} element={<AuthFormView />} />
-        <Route path={URL.URL_FORGOT_PASSWORD} element={<ForgotPasswordView />} />
-        <Route path={URL.URL_FORGOT_PASSWORD_EMAIL_SENT} element={<ForgotPasswordEmailSentView />} />
+        <Route
+          path={URL.URL_FORGOT_PASSWORD}
+          element={<ForgotPasswordView />}
+        />
+        <Route
+          path={URL.URL_FORGOT_PASSWORD_EMAIL_SENT}
+          element={<ForgotPasswordEmailSentView />}
+        />
 
         {/* Private Routes */}
         <Route
-          path={URL.URL_ADMIN_HOME}
-          element={<PrivateRoute roles={[ROLE_ADMIN]}><AdminHomeView /></PrivateRoute>}
+          path={URL.URL_ADMIN}
+          element={
+            <PrivateRoute roles={[ROLE_ADMIN]}>
+              <AdminView />
+            </PrivateRoute>
+          }
         />
         <Route
           path={URL.URL_MY_ACCOUNT}
-          element={<PrivateRoute roles={[ROLE_USER]}><MyAccountView /></PrivateRoute>}
+          element={
+            <PrivateRoute>
+              <MyAccountView />
+            </PrivateRoute>
+          }
         />
         <Route
           path={URL.URL_MY_ORDERS}
-          element={<PrivateRoute roles={[ROLE_USER]}><MyOrdersView /></PrivateRoute>}
+          element={
+            <PrivateRoute>
+              <MyOrdersView />
+            </PrivateRoute>
+          }
         />
         <Route
           path={URL.URL_RETURN_ITEM}
-          element={<PrivateRoute roles={[ROLE_USER]}><ReturnItemView /></PrivateRoute>}
+          element={
+            <PrivateRoute>
+              <ReturnItemView />
+            </PrivateRoute>
+          }
         />
       </RoutesContainer>
     </FormValidationProvider>
   );
 };
-
 
 export default Routes;

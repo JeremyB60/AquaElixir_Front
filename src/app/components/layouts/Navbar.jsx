@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { selectIsLogged, signOut } from "../../redux-store/authenticationSlice";
+import {
+  selectIsLogged,
+  selectUser,
+  signOut,
+} from "../../redux-store/authenticationSlice";
 import * as URL from "../../constants/urls/urlFrontEnd";
 import Logo from "./../../assets/images/logo.svg";
 import SubMenu from "./SubMenu";
@@ -10,6 +14,7 @@ const Navbar = () => {
   const menuButtonRef = useRef(null);
   const menuRef = useRef(null);
   const loginMenuRef = useRef(null);
+  const user = useSelector(selectUser);
 
   const [isLoginMenuOpen, setIsLoginMenuOpen] = useState(false);
 
@@ -190,8 +195,8 @@ const Navbar = () => {
   }, [closeMobileMenu]);
 
   return (
-    <nav className="top-0 w-max-[1280px] sticky font-satoshiMedium z-50">
-      <div className="mx-auto max-w-screen-xl w-full bg-white px-4">
+    <nav className="top-0 bg-white sticky font-satoshiMedium z-50">
+      <div className="mx-auto max-w-screen-xl px-4">
         <div
           className={`flex items-center justify-between  ${
             isMobileMenuOpen ? "show-menu" : null
@@ -287,20 +292,32 @@ const Navbar = () => {
                 menuItems={menuItems2}
                 closeMenu={closeMobileMenu}
               />
-              <Link
-                to={URL.URL_HOME}
-                onClick={closeMobileMenu}
-                className="w-full hover:text-customBlue"
-              >
-                À propos
-              </Link>
-              <Link
-                to={URL.URL_HOME}
-                onClick={closeMobileMenu}
-                className="w-full hover:text-customBlue"
-              >
-                Contact
-              </Link>
+              {/* Condition pour afficher le bouton supplémentaire pour ROLE_ADMIN */}
+              {user?.roles.includes("ROLE_ADMIN") ? (
+                <Link
+                  to={URL.URL_ADMIN}
+                  className="w-full hover:text-customBlue"
+                >
+                  Tableau de bord admin
+                </Link>
+              ) : (
+                <>
+                  <Link
+                    to={URL.URL_HOME}
+                    onClick={closeMobileMenu}
+                    className="w-full hover:text-customBlue"
+                  >
+                    À propos
+                  </Link>
+                  <Link
+                    to={URL.URL_HOME}
+                    onClick={closeMobileMenu}
+                    className="w-full hover:text-customBlue"
+                  >
+                    Contact
+                  </Link>
+                </>
+              )}
             </div>
           </div>
           <div className="w-full md:w-fit flex justify-center md:block">
@@ -318,7 +335,7 @@ const Navbar = () => {
           {/* Desktop Menu */}
 
           <div className="flex items-center space-x-4">
-            <div className="hidden md:flex space-x-2 lg:space-x-10 justify-center">
+            <div className="hidden md:flex space-x-5 lg:space-x-10 justify-center">
               <Link to={URL.URL_HOME} className="link inline-block">
                 Nouveautés
               </Link>
@@ -334,12 +351,29 @@ const Navbar = () => {
                 closeSubMenu={closeSubMenu}
                 menuItems={menuItems2}
               />
-              <Link to={URL.URL_HOME}>
-                <div className="link">À&nbsp;propos</div>
-              </Link>
-              <Link to={URL.URL_HOME}>
-                <div className="link">Contact</div>
-              </Link>
+              {/* Condition pour afficher le bouton supplémentaire pour ROLE_ADMIN */}
+              {user?.roles.includes("ROLE_ADMIN") ? (
+                <Link to={URL.URL_ADMIN} className="font-bold text-customBlue">
+                  AdminBoard
+                </Link>
+              ) : (
+                <>
+                  <Link
+                    to={URL.URL_HOME}
+                    onClick={closeMobileMenu}
+                    className="hover:text-customBlue"
+                  >
+                    À propos
+                  </Link>
+                  <Link
+                    to={URL.URL_HOME}
+                    onClick={closeMobileMenu}
+                    className="hover:text-customBlue"
+                  >
+                    Contact
+                  </Link>
+                </>
+              )}
             </div>
           </div>
           <div>
@@ -377,11 +411,7 @@ const Navbar = () => {
               </Link>
 
               {/* SOUS-MENU LOGIN */}
-              <div
-                className={`relative ${
-                  isLoginMenuOpen ? "show-loginMenu" : null
-                } `}
-              >
+              <div className="relative">
                 {!isLoggued ? (
                   <Link to={URL.URL_AUTHFORM}>
                     <svg
@@ -462,48 +492,50 @@ const Navbar = () => {
                       </defs>
                     </svg>
                     {/* Sous-menu du bouton de connexion à afficher lors du clic sur le bouton */}
-                    <div
-                      id="loginMenu"
-                      ref={loginMenuRef}
-                      className="absolute border rounded-[15px] -right-[50px] top-8 p-5 w-[180px] bg-white"
-                    >
-                      {/* Contenu de votre sous-menu du bouton de connexion */}
-                      <ul className="space-y-2">
-                        <li>
-                          <Link
-                            to={URL.URL_MY_ORDERS}
-                            className="hover:text-customBlue"
-                            onClick={handleLoginMenuItemClick}
+                    {isLoginMenuOpen && (
+                      <div
+                        id="loginMenu"
+                        ref={loginMenuRef}
+                        className="absolute border rounded-[15px] -right-[50px] top-8 p-5 w-[165px] bg-white"
+                      >
+                        {/* Contenu de votre sous-menu du bouton de connexion */}
+                        <ul className="space-y-2">
+                          <li>
+                            <Link
+                              to={URL.URL_MY_ORDERS}
+                              className="hover:text-customBlue"
+                              onClick={handleLoginMenuItemClick}
+                            >
+                              Mes commandes
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              to={URL.URL_MY_ACCOUNT}
+                              className="hover:text-customBlue"
+                              onClick={handleLoginMenuItemClick}
+                            >
+                              Mon compte
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              to={URL.URL_RETURN_ITEM}
+                              className="hover:text-customBlue"
+                              onClick={handleLoginMenuItemClick}
+                            >
+                              Retour d'article
+                            </Link>
+                          </li>
+                          <li
+                            onClick={handleSignOut}
+                            className="hover:text-customBlue cursor-pointer"
                           >
-                            Mes commandes
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            to={URL.URL_MY_ACCOUNT}
-                            className="hover:text-customBlue"
-                            onClick={handleLoginMenuItemClick}
-                          >
-                            Mon compte
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            to={URL.URL_RETURN_ITEM}
-                            className="hover:text-customBlue"
-                            onClick={handleLoginMenuItemClick}
-                          >
-                            Retour d'article
-                          </Link>
-                        </li>
-                        <li
-                          onClick={handleSignOut}
-                          className="hover:text-customBlue cursor-pointer"
-                        >
-                          Déconnexion
-                        </li>
-                      </ul>
-                    </div>
+                            Déconnexion
+                          </li>
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

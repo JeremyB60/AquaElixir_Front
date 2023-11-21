@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import * as Yup from "yup";
 import PasswordInput from "./PasswordInput";
 import PropTypes from "prop-types";
+import { registration } from "./../../api/backend/account";
 
 /**
  * Component Register
@@ -49,20 +50,14 @@ const Register = ({ toggle }) => {
     // Efface le message s'il y a
     setSuccessMessage(null);
     setErrorMessage(null);
-
+  
     try {
-      const response = await fetch("http://localhost:8002/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
-
+      const response = await registration(values);
+ 
       // Récupère la réponse du serveur
-      const result = await response.json();
+      const result = response.data;
       console.log(result);
-
+  
       // Vérifie la réponse du serveur
       if (response.ok) {
         // Définissez le message de succès dans l'état local
@@ -80,6 +75,7 @@ const Register = ({ toggle }) => {
       setErrorMessage("Erreur de requête: " + error.message);
     }
   };
+  
 
   return (
     <div className="mx-auto max-w-screen-xl w-full bg-white md:px-4">

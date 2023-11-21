@@ -66,10 +66,10 @@ const SubMenu = ({
           e.stopPropagation(); // Ajoutez cette ligne
           toggleSubMenu(menuItems.id);
         }}
-        className="hover:text-customBlue flex justify-between items-center w-full"
+        className="hover:text-customBlue flex justify-between items-center w-full md:w-auto relative"
       >
         {menuItems.label}
-        {!isResponsive && (
+        {!isResponsive ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="15"
@@ -78,11 +78,35 @@ const SubMenu = ({
           >
             <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z" />
           </svg>
+        ) : (
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="absolute left-[100%] top-[30%] lg:ml-1"
+          >
+            <g clipPath="url(#clip0_1795_585)">
+              <path
+                d="M4 6L8 10L12 6"
+                stroke="black"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_1795_585">
+                <rect width="16" height="16" fill="white" />
+              </clipPath>
+            </defs>
+          </svg>
         )}
       </button>
       {isVisible && (
         <ul
-          className={`absolute bg-white md:border w-full flex flex-wrap flex-col md:flex-row justify-evenly px-4 py-8 md:top-20`}
+          className={`absolute bg-white md:border w-full flex flex-wrap flex-col md:flex-row justify-evenly px-4 py-8 md:top-20 z-40`}
           style={{
             left: "0",
             margin: "0",
