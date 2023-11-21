@@ -53,7 +53,7 @@ const Register = ({ toggle }) => {
   
     try {
       const response = await registration(values);
-  
+ 
       // Récupère la réponse du serveur
       const result = response.data;
       console.log(result);

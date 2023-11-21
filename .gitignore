@@ -16,6 +16,8 @@
 /build
 
 # misc
+.yarn-lock
+.package-lockjson.json
 .DS_Store
 .env.local
 .env.development.local
