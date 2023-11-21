@@ -4,7 +4,7 @@ import { URL_HOME } from "../constants/urls/urlFrontEnd";
 import { useSelector } from "react-redux";
 import { selectToken, selectUser } from "../redux-store/authenticationSlice";
 
-const AdminHomeView = () => {
+const AdminView = () => {
   const user = useSelector(selectUser);
   const token = useSelector(selectToken);
   const navigate = useNavigate();
@@ -22,4 +22,4 @@ const AdminHomeView = () => {
   );
 };
 
-export default AdminHomeView;
+export default AdminView;
