@@ -195,8 +195,8 @@ const Navbar = () => {
   }, [closeMobileMenu]);
 
   return (
-    <nav className="top-0 bg-white sticky font-satoshiMedium z-50">
-      <div className="mx-auto max-w-screen-xl px-4">
+    <nav className="top-0 bg-white sticky font-satoshiMedium z-50 h-[80px]">
+      <div className="mx-auto max-w-screen-xl px-4 h-[80px]">
         <div
           className={`flex items-center justify-between  ${
             isMobileMenuOpen ? "show-menu" : null
@@ -310,7 +310,7 @@ const Navbar = () => {
                     À propos
                   </Link>
                   <Link
-                    to={URL.URL_HOME}
+                    to={URL.URL_CONTACT}
                     onClick={closeMobileMenu}
                     className="w-full hover:text-customBlue"
                   >
@@ -366,7 +366,7 @@ const Navbar = () => {
                     À propos
                   </Link>
                   <Link
-                    to={URL.URL_HOME}
+                    to={URL.URL_CONTACT}
                     onClick={closeMobileMenu}
                     className="hover:text-customBlue"
                   >

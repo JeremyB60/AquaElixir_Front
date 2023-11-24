@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Routes as RoutesContainer } from "react-router-dom";
 
 // Constants
-import { ROLE_ADMIN, ROLE_USER } from "../constants/rolesConstant";
+import { ROLE_ADMIN } from "../constants/rolesConstant";
 import * as URL from "../constants/urls/urlFrontEnd";
 
 // Views
@@ -14,6 +14,7 @@ import ForgotPasswordEmailSentView from "../views/ForgotPasswordEmailSentView";
 import MyAccountView from "../views/MyAccountView";
 import ReturnItemView from "../views/ReturnItemView";
 import MyOrdersView from "../views/MyOrdersView";
+import ContactView from "../views/ContactView";
 
 // Components
 import { FormValidationProvider } from "../components/account/FormValidationContext";
@@ -30,6 +31,7 @@ const Routes = () => {
       <RoutesContainer>
         {/* Public Routes */}
         <Route path={URL.URL_HOME} element={<HomeView />} />
+        <Route path={URL.URL_CONTACT} element={<ContactView />} />
         <Route path={URL.URL_AUTHFORM} element={<AuthFormView />} />
         <Route
           path={URL.URL_FORGOT_PASSWORD}
