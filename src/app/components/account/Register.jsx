@@ -13,37 +13,42 @@ const Register = ({ toggle }) => {
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  // Le schéma de validation Yup
-  const validationSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(2, "Trop court !")
-      .max(50, "Trop long !")
-      .matches(
-        /^[a-zA-ZÀ-ÿ\s'-]+$/,
-        "Le mot de passe doit contenir uniquement des lettres, des espaces, des tirets et des apostrophes"
-      )
-      .required("Le prénom est requis."),
-    lastName: Yup.string()
-      .min(2, "Trop court !")
-      .max(50, "Trop long !")
-      .matches(
-        /^[a-zA-ZÀ-ÿ\s'-]+$/,
-        "Le mot de passe doit contenir uniquement des lettres, des espaces, des tirets et des apostrophes"
-      )
-      .required("Le nom est requis."),
-    email: Yup.string()
-      .email("Adresse e-mail invalide")
-      .required("L'adresse e-mail est requise"),
-    password: Yup.string()
-      .min(8, "Le mot de passe doit comporter au moins 8 caractères")
-      .required("Le mot de passe est requis"),
-    // confirmPassword: Yup.string()
-    //   .oneOf(
-    //     [Yup.ref("password"), null],
-    //     "Les mots de passe ne correspondent pas"
-    //   )
-    //   .required("Confirmez le mot de passe"),
-  });
+const validationSchema = Yup.object().shape({
+  firstName: Yup.string()
+    .min(2, "Trop court !")
+    .max(50, "Trop long !")
+    .matches(
+      /^[a-zA-ZÀ-ÿ\s'-]+$/,
+      "Le prénom doit contenir uniquement des lettres, des espaces, des tirets et des apostrophes"
+    )
+    .required("Le prénom est requis."),
+  lastName: Yup.string()
+    .min(2, "Trop court !")
+    .max(50, "Trop long !")
+    .matches(
+      /^[a-zA-ZÀ-ÿ\s'-]+$/,
+      "Le nom doit contenir uniquement des lettres, des espaces, des tirets et des apostrophes"
+    )
+    .required("Le nom est requis."),
+  email: Yup.string()
+    .email("Adresse e-mail invalide")
+    .required("L'adresse e-mail est requise"),
+  password: Yup.string()
+    .min(8, "Le mot de passe doit comporter au moins 8 caractères")
+    .matches(
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$/,
+      "Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre"
+    )
+    .required("Le mot de passe est requis"),
+  confirmPassword: Yup.string()
+    .oneOf(
+      [Yup.ref("password"), null],
+      "Les mots de passe ne correspondent pas"
+    )
+    .required("Confirmez le mot de passe"),
+});
+
+
 
   // Fonction pour envoyer l'inscription au serveur
   const handleRegister = async (values) => {
@@ -93,7 +98,7 @@ const Register = ({ toggle }) => {
               lastName: "",
               email: "",
               password: "",
-              // confirmPassword: "",
+              confirmPassword: "",
             }}
             onSubmit={handleRegister}
             validationSchema={validationSchema}
@@ -145,13 +150,13 @@ const Register = ({ toggle }) => {
                   {errors.password && touched.password && (
                     <div className="text-red-500">{errors.password}</div>
                   )}
-                  {/* <PasswordInput
+                  <PasswordInput
                     name="confirmPassword"
                     label="Confirmer le mot de passe"
                   />
                   {errors.confirmPassword && touched.confirmPassword && (
                     <div className="text-red-500">{errors.confirmPassword}</div>
-                  )} */}
+                  )}
                 </div>
                 <div>
                   <button
