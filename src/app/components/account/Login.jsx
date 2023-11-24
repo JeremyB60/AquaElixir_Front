@@ -21,15 +21,20 @@ const Login = ({ toggle }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Le schéma de validation Yup
+
   const validationSchema = Yup.object().shape({
     username: Yup.string()
       .email("Adresse e-mail invalide")
       .required("L'adresse e-mail est requise"),
     password: Yup.string()
       .min(8, "Le mot de passe doit comporter au moins 8 caractères")
+      .matches(
+        /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$/,
+        "Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre"
+      )
       .required("Le mot de passe est requis"),
   });
+
 
   const handleLogin = async (values) => {
     try {
@@ -44,11 +49,15 @@ const Login = ({ toggle }) => {
         navigate(URL_MY_ACCOUNT);
       } else {
         console.log("handleLogin - Failed, setting error log (no token or status != 200)"); // Échec, pas de token ou status différent de 200
-        setErrorLog(true);
+        setErrorLog('Échec de la connexion.');
       }
     } catch (error) {
       console.log("handleLogin - Error caught:", error); // Affiche l'erreur attrapée
-      setErrorLog(true);
+      if (error.response && error.response.data && error.response.data.message) {
+        setErrorLog(error.response.data.message); // Définir le message d'erreur spécifique
+      } else {
+        setErrorLog('Une erreur est survenue lors de la connexion.');
+      }
     }
   };
   
@@ -110,7 +119,7 @@ const Login = ({ toggle }) => {
                 {errorLog && (
                   <div className="flex justify-center">
                     <small className="text-sm italic text-red-500">
-                      Identifiant(s) incorrect(s)
+                    {errorLog} {'test'}
                     </small>
                   </div>
                 )}

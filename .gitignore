@@ -33,3 +33,4 @@ yarn-error.log*
 # ajout perso
 package-lock.json
 yarn.lock
+/src/app/api/backend/api.Backend.js
