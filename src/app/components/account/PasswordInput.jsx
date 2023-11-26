@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Field } from "formik";
+import PropTypes from "prop-types";
 
 const PasswordInput = ({ name, label }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -107,6 +108,11 @@ const PasswordInput = ({ name, label }) => {
       )}
     </div>
   );
+};
+
+PasswordInput.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
 };
 
 export default PasswordInput;

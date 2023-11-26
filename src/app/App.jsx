@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import Navbar from "./components/layouts/Navbar";
 import Footer from "./components/layouts/Footer";
-import { signIn } from "./redux-store/authenticationSlice";
+import { signIn, selectHasRole } from "./redux-store/authenticationSlice";
 import Routes from "./routes/Routes";
 import { getToken } from "./services/tokenServices";
+import { ROLE_ADMIN } from "./constants/rolesConstant";
 
 const contextClass = {
   success: "bg-green-600",
@@ -25,6 +26,7 @@ const contextClass = {
  * @author Peter Mollet
  */
 const App = () => {
+  const isAdmin = useSelector((state) => selectHasRole(state, ROLE_ADMIN));
   const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState(true);
 
@@ -39,7 +41,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <div className="relative flex h-full cursor-default flex-col font-satoshiVariable">
-        <Navbar />
+        {!isAdmin && <Navbar />}
         <main className="grow">
           <Routes />
         </main>
@@ -52,7 +54,7 @@ const App = () => {
           position="bottom-left"
           autoClose={3000}
         />
-        <Footer />
+        {!isAdmin && <Footer />}
       </div>
     </BrowserRouter>
   );

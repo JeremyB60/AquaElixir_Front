@@ -21,46 +21,46 @@ const Login = ({ toggle }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
   const validationSchema = Yup.object().shape({
-    username: Yup.string()
+    email: Yup.string()
       .email("Adresse e-mail invalide")
       .required("L'adresse e-mail est requise"),
     password: Yup.string()
       .min(8, "Le mot de passe doit comporter au moins 8 caractères")
-      .matches(
-        /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$/,
-        "Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre"
-      )
+      // .matches(
+      //   /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$/,
+      //   "Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre"
+      // )
       .required("Le mot de passe est requis"),
   });
 
-
   const handleLogin = async (values) => {
+    setErrorLog(null);
+
     try {
-      console.log("handleLogin - values:", values); // Affiche les valeurs reçues
-      
-      const res = await authenticate(values);
-      console.log("handleLogin - response:", res); // Affiche la réponse de authenticate
-  
+      const res = await authenticate({
+        username: values.email,
+        password: values.password,
+      });
+
       if (res.status === 200 && res.data.token) {
-        console.log("handleLogin - Success, token received"); // Succès, token reçu
         dispatch(signIn(res.data.token));
         navigate(URL_MY_ACCOUNT);
       } else {
-        console.log("handleLogin - Failed, setting error log (no token or status != 200)"); // Échec, pas de token ou status différent de 200
-        setErrorLog('Échec de la connexion.');
+        setErrorLog("Échec de la connexion.");
       }
     } catch (error) {
-      console.log("handleLogin - Error caught:", error); // Affiche l'erreur attrapée
-      if (error.response && error.response.data && error.response.data.message) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         setErrorLog(error.response.data.message); // Définir le message d'erreur spécifique
       } else {
-        setErrorLog('Une erreur est survenue lors de la connexion.');
+        setErrorLog("Une erreur est survenue lors de la connexion.");
       }
     }
   };
-  
 
   return (
     <div className="mx-auto max-w-screen-xl w-full bg-white md:px-4">
@@ -74,6 +74,7 @@ const Login = ({ toggle }) => {
 
           <Formik
             initialValues={{
+              email: "",
               username: "",
               password: "",
             }}
@@ -84,20 +85,24 @@ const Login = ({ toggle }) => {
               <Form className="relative mt-8 space-y-6 p-2 sm:p-0">
                 <div className="flex flex-col gap-1.5">
                   <div className="relative mt-5">
-                    <label htmlFor="username">Email</label>
+                    <label htmlFor="email">Email</label>
                     <Field
                       type="text"
-                      id="username"
-                      name="username"
+                      id="email"
+                      name="email"
                       placeholder="Adresse e-mail"
                       autoComplete="email"
                       className="input mt-2"
+                      onFocus={() => setErrorLog(null)}
                     />
                     {errors.email && touched.email && (
                       <div className="text-red-500">{errors.email}</div>
                     )}
                   </div>
-                  <PasswordInput name="password" label="Mot de passe" />
+                  <PasswordInput
+                    name="password"
+                    label="Mot de passe"
+                    />
                   {errors.password && touched.password && (
                     <div className="text-red-500">{errors.password}</div>
                   )}
@@ -119,7 +124,7 @@ const Login = ({ toggle }) => {
                 {errorLog && (
                   <div className="flex justify-center">
                     <small className="text-sm italic text-red-500">
-                    {errorLog} {'test'}
+                      {errorLog}
                     </small>
                   </div>
                 )}

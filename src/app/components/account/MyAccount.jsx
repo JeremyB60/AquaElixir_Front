@@ -137,7 +137,7 @@ const MyAccount = () => {
               </div>
               <div>
                 <button type="submit" className="btn btn-black mt-5">
-                  S'inscrire →
+                  Enregistrer mes modifications →
                 </button>
               </div>
               {/* Afficher le message de succès si présent */}

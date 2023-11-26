@@ -35,10 +35,10 @@ const validationSchema = Yup.object().shape({
     .required("L'adresse e-mail est requise"),
   password: Yup.string()
     .min(8, "Le mot de passe doit comporter au moins 8 caractères")
-    .matches(
-      /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$/,
-      "Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre"
-    )
+    // .matches(
+    //   /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$/,
+    //   "Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre"
+    // )
     .required("Le mot de passe est requis"),
   confirmPassword: Yup.string()
     .oneOf(
@@ -77,7 +77,7 @@ const validationSchema = Yup.object().shape({
       // Gère les erreurs liées à la requête
       console.error("Erreur de requête:", error.message);
       // Définissez le message d'erreur dans l'état local
-      setErrorMessage("Erreur de requête: " + error.message);
+      setErrorMessage(error.message);
     }
   };
   

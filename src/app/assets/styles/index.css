@@ -185,11 +185,10 @@
 /* FAQ PAGE CONTACT */
 .faq-item {
   cursor: pointer;
-  /* transition: all 0.5s ease; Ajoutez une transition de 0.5 secondes avec un effet de glissement */
 }
 
 .faq-item.active {
-  margin-bottom: 20px; /* Réglez la marge inférieure lorsque la question est active */
+  margin-bottom: 20px;
 }
 
 .faq-question {
@@ -201,11 +200,10 @@
 .faq-answer {
   overflow: hidden;
   max-height: 0;
-  /* transition: max-height 0.5s ease; Ajoutez une transition pour la hauteur maximale */
 }
 
 .faq-item.active .faq-answer {
-  max-height: 200px; /* Réglez la hauteur maximale lorsque la question est active */
+  max-height: 200px;
 }
 
 .faq-border {

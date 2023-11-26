@@ -30,13 +30,13 @@ const ForgotPasswordEmailSentView = () => {
               </h1>
               <p>
                 Vous allez recevoir un message à l’adresse indiquée contenant un
-                lien qui vous permettra de vous reconnecter. Si le message
+                lien qui vous permettra de réinitialiser votre mot de passe. Si le message
                 n’apparaît pas dans votre boîte de réception, veuillez vérifier
                 que celui-ci n’est pas dans vos messages indésirables.
               </p>
-              <Link to={URL_HOME}>
+              <Link to={URL_AUTHFORM}>
                 <button className="btn btn-black mt-10">
-                  Retour à la page d'accueil →
+                  Retour →
                 </button>
               </Link>
             </div>

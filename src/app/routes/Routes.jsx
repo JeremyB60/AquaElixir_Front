@@ -19,6 +19,8 @@ import ContactView from "../views/ContactView";
 // Components
 import { FormValidationProvider } from "../components/account/FormValidationContext";
 import { PrivateRoute } from "./PrivateRoute";
+import UsersList from "../components/account/Admin/UsersList";
+import Profile from "../components/account/Admin/Profile";
 
 /**
  * Routes of the application
@@ -41,8 +43,8 @@ const Routes = () => {
           path={URL.URL_FORGOT_PASSWORD_EMAIL_SENT}
           element={<ForgotPasswordEmailSentView />}
         />
-
         {/* Private Routes */}
+        {/* ADMIN*/}
         <Route
           path={URL.URL_ADMIN}
           element={
@@ -50,7 +52,25 @@ const Routes = () => {
               <AdminView />
             </PrivateRoute>
           }
-        />
+        >
+          <Route
+            path={URL.URL_USERSLIST}
+            element={
+              <PrivateRoute roles={[ROLE_ADMIN]}>
+                <UsersList />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={URL.URL_ADMIN_DASHBOARD}
+            element={
+              <PrivateRoute roles={[ROLE_ADMIN]}>
+                <Profile />
+              </PrivateRoute>
+            }
+          />
+        </Route>
+        {/* UTILISATEURS*/}
         <Route
           path={URL.URL_MY_ACCOUNT}
           element={

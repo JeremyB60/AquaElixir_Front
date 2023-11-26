@@ -351,29 +351,20 @@ const Navbar = () => {
                 closeSubMenu={closeSubMenu}
                 menuItems={menuItems2}
               />
-              {/* Condition pour afficher le bouton supplémentaire pour ROLE_ADMIN */}
-              {user?.roles.includes("ROLE_ADMIN") ? (
-                <Link to={URL.URL_ADMIN} className="font-bold text-customBlue">
-                  AdminBoard
-                </Link>
-              ) : (
-                <>
-                  <Link
-                    to={URL.URL_HOME}
-                    onClick={closeMobileMenu}
-                    className="hover:text-customBlue"
-                  >
-                    À propos
-                  </Link>
-                  <Link
-                    to={URL.URL_CONTACT}
-                    onClick={closeMobileMenu}
-                    className="hover:text-customBlue"
-                  >
-                    Contact
-                  </Link>
-                </>
-              )}
+              <Link
+                to={URL.URL_HOME}
+                onClick={closeMobileMenu}
+                className="hover:text-customBlue"
+              >
+                À propos
+              </Link>
+              <Link
+                to={URL.URL_CONTACT}
+                onClick={closeMobileMenu}
+                className="hover:text-customBlue"
+              >
+                Contact
+              </Link>
             </div>
           </div>
           <div>
