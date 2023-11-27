@@ -13,6 +13,6 @@ export function forgotPassword(values) {
   return apiBackEnd.post(URL.URL_BACK_FORGOT_PASSWORD, values);
 }
 
-export function updateAccount(values) {
-  return apiBackEnd.post(URL.URL_BACK_FORGOT_PASSWORD, values);
+export function modifyAccount(values) {
+  return apiBackEnd.put(URL.URL_BACK_MODIFY_ACCOUNT, values);
 }

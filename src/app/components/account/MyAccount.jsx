@@ -8,6 +8,9 @@ import {
   URL_AUTHFORM,
   URL_MY_ACCOUNT,
 } from "../../constants/urls/urlFrontEnd";
+import { modifyAccount } from "../../api/backend/account";
+import { selectToken } from "../../redux-store/authenticationSlice";
+import { useSelector } from "react-redux";
 
 /**
  * Component MyAccount
@@ -16,6 +19,7 @@ import {
 const MyAccount = () => {
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+  const token = useSelector(selectToken);
 
   // Le schéma de validation Yup
   const validationSchema = Yup.object().shape({
@@ -23,8 +27,7 @@ const MyAccount = () => {
       .matches(
         /^[a-zA-ZÀ-ÿ\s'-]+$/,
         "Le prénom doit contenir uniquement des lettres, des espaces, des tirets et des apostrophes"
-      )
-      .required("Le prénom est requis."),
+      ),
     lastName: Yup.string().matches(
       /^[a-zA-ZÀ-ÿ\s'-]+$/,
       "Le nom doit contenir uniquement des lettres, des espaces, des tirets et des apostrophes"
@@ -32,43 +35,39 @@ const MyAccount = () => {
   });
 
   // Fonction pour mettre à jour les informations
-  // const handleUpdate = async (values) => {
-  //   // Efface le message s'il y a
-  //   setSuccessMessage(null);
-  //   setErrorMessage(null);
+  const handleUpdate = async (values) => {
+    // Efface le message s'il y a
+    setSuccessMessage(null);
+    setErrorMessage(null);
 
-  //   try {
-  //     const response = await axios.post(
-  //       "https://127.0.0.1:8000/api/modify-account",
-  //       values,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
+    try {
+      const response = await modifyAccount(values, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-  //     // Récupère la réponse du serveur
-  //     const result = await response.json();
-  //     console.log(result);
+      // Récupère la réponse du serveur
+      const result = await response.json();
+      console.log(result);
 
-  //     // Vérifie la réponse du serveur
-  //     if (response.ok) {
-  //       // Définissez le message de succès dans l'état local
-  //       setSuccessMessage(result.message); // Utilisez la propriété 'message' du résultat
-  //     } else {
-  //       // Afficher un message d'erreur à l'utilisateur
-  //       console.error(result.message);
-  //       // Définissez le message d'erreur dans l'état local
-  //       setErrorMessage(result.message);
-  //     }
-  //   } catch (error) {
-  //     // Gère les erreurs liées à la requête
-  //     console.error("Erreur de requête:", error.message);
-  //     // Définissez le message d'erreur dans l'état local
-  //     setErrorMessage("Erreur de requête: " + error.message);
-  //   }
-  // };
+      // Vérifie la réponse du serveur
+      if (response.ok) {
+        // Définissez le message de succès dans l'état local
+        setSuccessMessage(result.message); // Utilisez la propriété 'message' du résultat
+      } else {
+        // Afficher un message d'erreur à l'utilisateur
+        console.error(result.message);
+        // Définissez le message d'erreur dans l'état local
+        setErrorMessage(result.message);
+      }
+    } catch (error) {
+      // Gère les erreurs liées à la requête
+      console.error("Erreur de requête:", error.message);
+      // Définissez le message d'erreur dans l'état local
+      setErrorMessage("Erreur de requête: " + error.message);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center relative py-20">
@@ -91,7 +90,7 @@ const MyAccount = () => {
             password: "",
             confirmPassword: "",
           }}
-          // onSubmit={handleUpdate}
+          onSubmit={handleUpdate}
           validationSchema={validationSchema}
         >
           {({ errors, touched }) => (

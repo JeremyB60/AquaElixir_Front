@@ -1,7 +1,10 @@
 import { Field, Form, Formik } from "formik";
 import React, { useState } from "react";
 import * as Yup from "yup";
-import PasswordInput from "../../account/PasswordInput";
+import PasswordInput from "../../PasswordInput";
+import { selectToken } from "../../../../redux-store/authenticationSlice";
+import { useSelector } from "react-redux";
+import { modifyAccount } from "../../../../api/backend/account";
 
 /**
  * Component Profile
@@ -10,6 +13,7 @@ import PasswordInput from "../../account/PasswordInput";
 const Profile = () => {
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+  const token = useSelector(selectToken);
 
   // Le schéma de validation Yup
   const validationSchema = Yup.object().shape({
@@ -24,45 +28,40 @@ const Profile = () => {
       "Le nom doit contenir uniquement des lettres, des espaces, des tirets et des apostrophes"
     ),
   });
-
   // Fonction pour mettre à jour les informations
-  // const handleUpdate = async (values) => {
-  //   // Efface le message s'il y a
-  //   setSuccessMessage(null);
-  //   setErrorMessage(null);
+  const handleUpdate = async (values) => {
+    // Efface le message s'il y a
+    setSuccessMessage(null);
+    setErrorMessage(null);
 
-  //   try {
-  //     const response = await axios.post(
-  //       "https://127.0.0.1:8000/api/modify-account",
-  //       values,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
+    try {
+      const response = await modifyAccount(values, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-  //     // Récupère la réponse du serveur
-  //     const result = await response.json();
-  //     console.log(result);
+      // Récupère la réponse du serveur
+      const result = await response.json();
+      console.log(result);
 
-  //     // Vérifie la réponse du serveur
-  //     if (response.ok) {
-  //       // Définissez le message de succès dans l'état local
-  //       setSuccessMessage(result.message); // Utilisez la propriété 'message' du résultat
-  //     } else {
-  //       // Afficher un message d'erreur à l'utilisateur
-  //       console.error(result.message);
-  //       // Définissez le message d'erreur dans l'état local
-  //       setErrorMessage(result.message);
-  //     }
-  //   } catch (error) {
-  //     // Gère les erreurs liées à la requête
-  //     console.error("Erreur de requête:", error.message);
-  //     // Définissez le message d'erreur dans l'état local
-  //     setErrorMessage("Erreur de requête: " + error.message);
-  //   }
-  // };
+      // Vérifie la réponse du serveur
+      if (response.ok) {
+        // Définissez le message de succès dans l'état local
+        setSuccessMessage(result.message); // Utilisez la propriété 'message' du résultat
+      } else {
+        // Afficher un message d'erreur à l'utilisateur
+        console.error(result.message);
+        // Définissez le message d'erreur dans l'état local
+        setErrorMessage(result.message);
+      }
+    } catch (error) {
+      // Gère les erreurs liées à la requête
+      console.error("Erreur de requête:", error.message);
+      // Définissez le message d'erreur dans l'état local
+      setErrorMessage("Erreur de requête: " + error.message);
+    }
+  };
 
   return (
     <div className="md:col-span-3 p-4">
@@ -79,7 +78,7 @@ const Profile = () => {
           password: "",
           confirmPassword: "",
         }}
-        // onSubmit={handleUpdate}
+        onSubmit={handleUpdate}
         validationSchema={validationSchema}
       >
         {({ errors, touched }) => (

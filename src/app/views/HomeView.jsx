@@ -18,7 +18,9 @@ const HomeView = () => {
 
   return (
     <div className="mx-auto max-w-screen-xl w-full bg-white">
-      <p>ACCUEIL</p>
+      <div>
+        
+      </div>
     </div>
   );
 };

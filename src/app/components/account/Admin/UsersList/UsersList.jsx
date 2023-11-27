@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import UserBanButton from "./UserBanButton";
 import UserDeleteButton from "./UserDeleteButton";
-import { selectToken } from "../../../redux-store/authenticationSlice";
+import { selectToken } from "../../../../redux-store/authenticationSlice";
 import { useSelector } from "react-redux";
 
 const UsersList = () => {

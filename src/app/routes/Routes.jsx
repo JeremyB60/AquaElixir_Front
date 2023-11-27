@@ -19,8 +19,8 @@ import ContactView from "../views/ContactView";
 // Components
 import { FormValidationProvider } from "../components/account/FormValidationContext";
 import { PrivateRoute } from "./PrivateRoute";
-import UsersList from "../components/account/Admin/UsersList";
-import Profile from "../components/account/Admin/Profile";
+import UsersList from "../components/account/Admin/UsersList/UsersList";
+import Profile from "../components/account/Admin/Profile/Profile";
 
 /**
  * Routes of the application
