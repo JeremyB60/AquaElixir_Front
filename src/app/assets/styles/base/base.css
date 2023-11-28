@@ -17,9 +17,9 @@
     h2{
         @apply text-5xl
     }
-    h3{
+    /* h3{
         @apply text-4xl
-    }
+    } */
     h4{
         @apply text-3xl
     }

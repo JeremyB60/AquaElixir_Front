@@ -21,8 +21,7 @@ const Profile = () => {
       .matches(
         /^[a-zA-ZÀ-ÿ\s'-]+$/,
         "Le prénom doit contenir uniquement des lettres, des espaces, des tirets et des apostrophes"
-      )
-      .required("Le prénom est requis."),
+      ),
     lastName: Yup.string().matches(
       /^[a-zA-ZÀ-ÿ\s'-]+$/,
       "Le nom doit contenir uniquement des lettres, des espaces, des tirets et des apostrophes"
