@@ -12,12 +12,12 @@ const MenuAdmin = () => {
   };
 
   return (
-    <div className="md:col-span-1 p-8 bg-customLightGrey border space-y-1">
+    <div className="md:col-span-1 p-8 bg-customLightGrey border space-y-3 relative">
       {/* Partie gauche */}
       <p className="font-bold mb-5 text-center">Bonjour Admin,</p>
       <Link
         to={URL.URL_ADMIN_DASHBOARD}
-        className="text-size16 pb-5 flex items-center gap-3"
+        className="text-size16 pb-1 flex items-center gap-3"
       >
         <svg
           width="24"
@@ -281,9 +281,11 @@ const MenuAdmin = () => {
         Gestion des avis signalés
       </h3>
       {/* DECONNEXION */}
-      <button onClick={handleSignOut} className="btn btn-black relative">
-        Déconnexion
-      </button>
+      <div className="absolute bottom-10">
+        <button onClick={handleSignOut} className="btn btn-black relative">
+          Déconnexion
+        </button>
+      </div>
     </div>
   );
 };

@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import UserBanButton from "./UserBanButton";
 import UserDeleteButton from "./UserDeleteButton";
-import { selectToken } from "../../../../redux-store/authenticationSlice";
+import {
+  selectToken,
+  selectUser,
+} from "../../../../redux-store/authenticationSlice";
 import { useSelector } from "react-redux";
 
 const UsersList = () => {
@@ -25,6 +28,7 @@ const UsersList = () => {
     );
   };
 
+  const currentUser = useSelector(selectUser);
   const token = useSelector(selectToken);
   const [users, setUsers] = useState([]);
 
@@ -50,8 +54,31 @@ const UsersList = () => {
     fetchData();
   }, [token]);
 
+  const handleChangeRole = async (userId, newRole) => {
+    try {
+      // Effectue une requête pour mettre à jour le rôle de l'utilisateur
+      await axios.put(
+        `https://localhost:8000/api/users/${userId}/change-role`,
+        { newRole },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // Met à jour l'état des utilisateurs avec le nouveau rôle
+      setUsers((users) =>
+        users.map((user) =>
+          user.id === userId ? { ...user, roles: newRole } : user
+        )
+      );
+    } catch (error) {
+      console.error("Error updating user role:", error);
+    }
+  };
+
   return (
-    <div className="md:col-span-3 p-4">
+    <div className="md:col-span-3 p-4 overflow-scroll max-h-[100vh]">
       <h1 className="text-2xl mb-10 font-bold">
         Administration - Liste des comptes utilisateurs
       </h1>
@@ -61,6 +88,7 @@ const UsersList = () => {
             <th className="min-w-1/12 p-2 text-left">ID</th>
             <th className="min-w-1/3 p-2 text-left">Nom</th>
             <th className="min-w-1/3 p-2 text-left">Prénom</th>
+            <th className="min-w-1/2 p-2 text-left">Roles</th>
             <th className="min-w-1/2 p-2 text-left">Email</th>
             <th className="min-w-1/2 p-2 text-left">Créé le</th>
             <th className="min-w-1/2 p-2 text-left">Statut</th>
@@ -69,24 +97,48 @@ const UsersList = () => {
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user.id} className="border-b">
+            <tr
+              key={user.id}
+              className={`border-b ${
+                user.email == currentUser.username ? "text-red-500" : ""
+              }`}
+            >
               <td className="p-2">{user.id}</td>
               <td className="p-2">{user.lastName}</td>
               <td className="p-2">{user.firstName}</td>
+              <td className="p-2">
+                {user.email == currentUser.username ? (
+                  user.roles
+                ) : (
+                  <select
+                    value={user.roles} // La valeur actuelle du rôle de l'utilisateur
+                    onChange={(e) => handleChangeRole(user.id, e.target.value)}
+                    className="rounded py-1"
+                  >
+                    <option value="ROLE_USER">Utilisateur</option>
+                    <option value="ROLE_ADMIN">Administrateur</option>
+                  </select>
+                )}
+              </td>
               <td className="p-2">{user.email}</td>
               <td className="p-2">{user.createdAt}</td>
               <td className="p-2">{user.accountStatus}</td>
               <td className="p-2 md:flex gap-1">
-                <UserBanButton
-                  userId={user.id}
-                  onUserBanned={handleUserBanned}
-                  accountStatus={user.accountStatus}
-                />
-                <UserDeleteButton
-                  key={user.id}
-                  userId={user.id}
-                  onUserDeleted={handleUserDeleted}
-                />
+                {user.email == currentUser.username ||
+                user.email == "admin@admin.fr" ? null : (
+                  <>
+                    <UserBanButton
+                      userId={user.id}
+                      onUserBanned={handleUserBanned}
+                      accountStatus={user.accountStatus}
+                    />
+                    <UserDeleteButton
+                      key={user.id}
+                      userId={user.id}
+                      onUserDeleted={handleUserDeleted}
+                    />
+                  </>
+                )}
               </td>
             </tr>
           ))}
