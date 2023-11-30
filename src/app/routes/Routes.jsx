@@ -15,6 +15,7 @@ import MyAccountView from "../views/MyAccountView";
 import ReturnItemView from "../views/ReturnItemView";
 import MyOrdersView from "../views/MyOrdersView";
 import ContactView from "../views/ContactView";
+import ProductView from "../views/ProductView";
 
 // Components
 import { FormValidationProvider } from "../components/account/FormValidationContext";
@@ -43,6 +44,8 @@ const Routes = () => {
           path={URL.URL_FORGOT_PASSWORD_EMAIL_SENT}
           element={<ForgotPasswordEmailSentView />}
         />
+        <Route path={URL.URL_PRODUCTS} element={<ProductView />} />
+
         {/* Private Routes */}
         {/* ADMIN*/}
         <Route
