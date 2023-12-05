@@ -1,21 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  selectIsLogged,
-  selectUser,
-  signOut,
-} from "../../redux-store/authenticationSlice";
+import { selectIsLogged, signOut } from "../../redux-store/authenticationSlice";
 import * as URL from "../../constants/urls/urlFrontEnd";
 import Logo from "./../../assets/images/logo.svg";
 import SubMenu from "./SubMenu";
+import { connect } from "react-redux";
+import { clearCart } from "../../actions/cartActions";
 
-const Navbar = () => {
+const Navbar = ({ itemCount }) => {
   const menuButtonRef = useRef(null);
   const menuRef = useRef(null);
   const loginMenuRef = useRef(null);
-  const user = useSelector(selectUser);
-
   const [isLoginMenuOpen, setIsLoginMenuOpen] = useState(false);
 
   const toggleLoginMenu = (event) => {
@@ -48,6 +44,7 @@ const Navbar = () => {
 
   const handleSignOut = () => {
     handleLoginMenuItemClick();
+    dispatch(clearCart()); // Action qui réinitialise le panier
     dispatch(signOut());
     navigate(URL.URL_AUTHFORM);
   };
@@ -82,28 +79,32 @@ const Navbar = () => {
     items: [
       {
         label: "Soin du visage",
-        url: URL.URL_HOME,
+        url: "soin-du-visage",
         subItems: [
-          { label: "Anti-âge", url: URL.URL_HOME },
-          { label: "Peau sensible", url: URL.URL_HOME },
+          { label: "Anti-âge", url: "anti-age" },
+          { label: "Peau sensible", url: "peau-sensible" },
+          { label: "Soins quotidiens", url: "soins-quotidiens" },
         ],
       },
       {
         label: "Soin corporel",
-        url: URL.URL_HOME,
+        url: "soin-corporel",
         subItems: [
-          { label: "Nettoyant", url: URL.URL_HOME },
-          { label: "Bain", url: URL.URL_HOME },
-          { label: "Coffret cadeau", url: URL.URL_HOME },
+          { label: "Nettoyant", url: "nettoyant" },
+          { label: "Bain", url: "bain" },
+          { label: "Coffret cadeau", url: "coffret-cadeau" },
         ],
       },
       {
         label: "Soin capillaire",
-        url: URL.URL_HOME,
+        url: "soin-capillaire",
         subItems: [
-          { label: "Shampoing et après-shampoing", url: URL.URL_HOME },
-          { label: "Cuir chevelu sensible", url: URL.URL_HOME },
-          { label: "Masque et coiffant", url: URL.URL_HOME },
+          {
+            label: "Shampoing et après-shampoing",
+            url: "shampoing-et-apres-shampoing",
+          },
+          { label: "Cuir chevelu sensible", url: "cuir-chevelu-sensible" },
+          { label: "Masque et coiffant", url: "masque-et-coiffant" },
         ],
       },
     ],
@@ -115,20 +116,20 @@ const Navbar = () => {
     items: [
       {
         label: "Compléments alimentaires",
-        url: URL.URL_HOME,
+        url: "complements-alimentaires",
         subItems: [
-          { label: "Peau, cheveux et ongles", url: URL.URL_HOME },
-          { label: "Tisane, thé et infusion", url: URL.URL_HOME },
-          { label: "Digestion et transit", url: URL.URL_HOME },
+          { label: "Peau, cheveux et ongles", url: "peau-cheveux-et-ongles" },
+          { label: "Tisane, thé et infusion", url: "tisane-the-et-infusion" },
+          { label: "Digestion et transit", url: "digestion-et-transit" },
         ],
       },
       {
         label: "Santé & bien-être",
-        url: URL.URL_HOME,
+        url: "sante-bien-etre",
         subItems: [
-          { label: "Peau et cheveux", url: URL.URL_HOME },
-          { label: "Immunité", url: URL.URL_HOME },
-          { label: "Protection solaire", url: URL.URL_HOME },
+          { label: "Peau et cheveux", url: "peau-et-cheveux" },
+          { label: "Immunité", url: "immunite" },
+          { label: "Protection solaire", url: "protection-solaire" },
         ],
       },
     ],
@@ -292,32 +293,20 @@ const Navbar = () => {
                 menuItems={menuItems2}
                 closeMenu={closeMobileMenu}
               />
-              {/* Condition pour afficher le bouton supplémentaire pour ROLE_ADMIN */}
-              {user?.roles.includes("ROLE_ADMIN") ? (
-                <Link
-                  to={URL.URL_ADMIN}
-                  className="w-full hover:text-customBlue"
-                >
-                  Tableau de bord admin
-                </Link>
-              ) : (
-                <>
-                  <Link
-                    to={URL.URL_HOME}
-                    onClick={closeMobileMenu}
-                    className="w-full hover:text-customBlue"
-                  >
-                    À propos
-                  </Link>
-                  <Link
-                    to={URL.URL_CONTACT}
-                    onClick={closeMobileMenu}
-                    className="w-full hover:text-customBlue"
-                  >
-                    Contact
-                  </Link>
-                </>
-              )}
+              <Link
+                to={URL.URL_HOME}
+                onClick={closeMobileMenu}
+                className="w-full hover:text-customBlue"
+              >
+                À propos
+              </Link>
+              <Link
+                to={URL.URL_CONTACT}
+                onClick={closeMobileMenu}
+                className="w-full hover:text-customBlue"
+              >
+                Contact
+              </Link>
             </div>
           </div>
           <div className="w-full md:w-fit flex justify-center md:block">
@@ -530,7 +519,7 @@ const Navbar = () => {
                   </div>
                 )}
               </div>
-              <Link to={URL.URL_AUTHFORM}>
+              <Link to={URL.URL_CART} className="relative">
                 <svg
                   width="24"
                   height="24"
@@ -560,6 +549,11 @@ const Navbar = () => {
                     </clipPath>
                   </defs>
                 </svg>
+                {itemCount > 0 && (
+                  <span className="absolute border-black -right-2 top-3 text-xs bg-white font-bold rounded-full text-customBlue min-w-[20px] text-center">
+                    {itemCount}
+                  </span>
+                )}
               </Link>
             </div>
           </div>
@@ -568,5 +562,12 @@ const Navbar = () => {
     </nav>
   );
 };
+const mapStateToProps = (state) => {
+  // Calculer le nombre total d'articles en additionnant les quantités de chaque produit
+  const itemCount = state.cart.items.reduce((total, item) => total + item.quantity, 0);
 
-export default Navbar;
+  return {
+    itemCount: itemCount,
+  };
+};
+export default connect(mapStateToProps)(Navbar);

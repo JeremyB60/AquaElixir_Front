@@ -110,7 +110,7 @@ const MenuAdmin = () => {
         Gestion de produits
       </h3>
       <ul>
-        <li>Liste des produits</li>
+        <Link to={URL.URL_PRODUCTSLIST}>Liste des produits</Link>
         <li>Type de produit</li>
       </ul>
       <h3 className="text-size16 flex items-center gap-3">

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { ROLE_ADMIN } from "../constants/rolesConstant";
 import { URL_ADMIN_DASHBOARD } from "../constants/urls/urlFrontEnd";
 import { selectHasRole } from "../redux-store/authenticationSlice";
 import { newProducts, popularProducts } from "../api/backend/home";
+import { selectToken } from "../redux-store/authenticationSlice";
+import axios from "axios";
+import { addToCart } from "./../actions/cartActions";
 
 const HomeView = () => {
   // Redirection si ROLE_ADMIN
@@ -26,7 +29,7 @@ const HomeView = () => {
       try {
         const response1 = await newProducts();
         setIsNewProducts(response1.data);
-
+        console.log(response1.data);
         const response2 = await popularProducts();
         setIsPopularProducts(response2.data);
       } catch (error) {
@@ -36,6 +39,56 @@ const HomeView = () => {
 
     fetchProducts();
   }, []);
+
+  // Récupération du panier dans la bdd
+  const dispatch = useDispatch();
+  const token = useSelector(selectToken);
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    // Logique de récupération du panier
+    const fetchUserCart = async () => {
+      try {
+        if (token) {
+          const response = await axios.get(
+            "https://localhost:8000/api/get-user-cart",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          // Mettez à jour l'état du panier avec les données récupérées
+          setCartItems(response.data.cartItems);
+          console.log(
+            "User Cart Fetched Successfully:",
+            response.data.cartItems
+          );
+          // Dispatch the action to add items to the Redux store
+          response.data.cartItems.forEach((cartItem) => {
+            dispatch(
+              addToCart(
+                cartItem.productId,
+                cartItem.productName,
+                cartItem.productType,
+                cartItem.productImage,
+                cartItem.productMesurement,
+                cartItem.productPrice,
+                cartItem.productTaxe,
+                cartItem.productQuantity,
+              )
+            );
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching user cart", error);
+      }
+    };
+
+    // Appel à la fonction fetchUserCart lorsque le composant est monté
+    fetchUserCart();
+  }, [token, dispatch]);
 
   return (
     <>

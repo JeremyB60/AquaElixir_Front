@@ -295,3 +295,61 @@
 .engagement4 {
   background: url(../images/ourEngagements/Engagement4.jpg) no-repeat;
 }
+
+/* PANIER */
+.border-black {
+  border: 0.5px solid #6e6e6e;
+}
+
+/* FILTER */
+input[type="range"] {
+  overflow: hidden;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #f1efe8;
+  border-radius: 50px;
+  height: 15px;
+  min-width: 50px;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 10px;
+  -webkit-appearance: none;
+  color: #00819e;
+  margin-top: -4px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  width: 15px;
+  -webkit-appearance: none;
+  height: 15px;
+  cursor: pointer;
+  background: #4e4e4e;
+  border-radius: 50px;
+  box-shadow: -80px 0 0 75px #00819e;
+}
+
+input[type="range"]::-moz-range-track {
+  height: 10px;
+  background-color: #f1efe8;
+  border: none;
+  border-radius: 5px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  background-color: #4e4e4e;
+  border: none;
+  border-radius: 50px;
+  box-shadow: -80px 0 0 75px #00819e;
+  cursor: pointer;
+}
+
+
+/* input[type="range"]::-ms-fill-lower {
+  background-color: #00819e;
+}
+input[type="range"]::-ms-fill-upper {
+  background-color: #f1efe8;
+} */

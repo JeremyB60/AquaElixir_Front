@@ -15,7 +15,7 @@ const MyOrdersView = () => {
     }, []);
 
     return (
-        <div className="mx-auto max-w-screen-xl w-full bg-white">
+        <div className="mx-auto max-w-screen-xl p-5 w-full bg-white">
             <MyOrders />
         </div>
     );

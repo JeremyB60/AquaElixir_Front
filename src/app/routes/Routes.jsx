@@ -16,12 +16,15 @@ import ReturnItemView from "../views/ReturnItemView";
 import MyOrdersView from "../views/MyOrdersView";
 import ContactView from "../views/ContactView";
 import ProductView from "../views/ProductView";
+import TypeView from "../views/TypeView";
+import SubtypeView from "../views/SubtypeView";
 
 // Components
 import { FormValidationProvider } from "../components/account/FormValidationContext";
 import { PrivateRoute } from "./PrivateRoute";
 import UsersList from "../components/account/Admin/UsersList/UsersList";
 import Profile from "../components/account/Admin/Profile/Profile";
+import Cart from "../views/Cart";
 
 /**
  * Routes of the application
@@ -44,8 +47,9 @@ const Routes = () => {
           path={URL.URL_FORGOT_PASSWORD_EMAIL_SENT}
           element={<ForgotPasswordEmailSentView />}
         />
-        <Route path={URL.URL_PRODUCTS} element={<ProductView />} />
-
+        <Route path={URL.URL_PRODUCT} element={<ProductView />} />
+        <Route path={URL.URL_TYPE} element={<TypeView />} />
+        <Route path={URL.URL_SUBTYPE} element={<SubtypeView />} />
         {/* Private Routes */}
         {/* ADMIN*/}
         <Route
@@ -74,6 +78,14 @@ const Routes = () => {
           />
         </Route>
         {/* UTILISATEURS*/}
+        <Route
+          path={URL.URL_CART}
+          element={
+            <PrivateRoute>
+              <Cart />
+            </PrivateRoute>
+          }
+        />
         <Route
           path={URL.URL_MY_ACCOUNT}
           element={

@@ -130,7 +130,7 @@ const SubMenu = ({
             <li key={subItem.id} className="justify-center max-w-full">
               <div className="sm:col-span-1 flex flex-col pb-5 md:pb-0">
                 <Link
-                  to={subItem.url}
+                  to={`http://localhost:5173/categorie/${subItem.url}`}
                   onClick={() => {
                     closeSubMenu(menuItems.id);
                   }}
@@ -143,7 +143,7 @@ const SubMenu = ({
                     {subItem.subItems.map((nestedItem) => (
                       <li key={nestedItem.id}>
                         <Link
-                          to={nestedItem.url}
+                          to={`http://localhost:5173/sous-categorie/${nestedItem.url}`}
                           onClick={() => {
                             closeSubMenu(menuItems.id);
                           }}

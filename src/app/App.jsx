@@ -23,7 +23,6 @@ const contextClass = {
  * Component RouteWithNavigation
  * To create the structure of the application (nav bar, routes, toast, etc...)
  *
- * @author Peter Mollet
  */
 const App = () => {
   const isAdmin = useSelector((state) => selectHasRole(state, ROLE_ADMIN));
