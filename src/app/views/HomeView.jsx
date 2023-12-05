@@ -18,7 +18,7 @@ const HomeView = () => {
     if (isAdmin) {
       navigate(URL_ADMIN_DASHBOARD);
     }
-  }, [isAdmin, navigate]);
+  }, [isAdmin]);
 
   // Récupération des produits
   const [isNewProducts, setIsNewProducts] = useState([]);
@@ -44,12 +44,17 @@ const HomeView = () => {
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
   const [cartItems, setCartItems] = useState([]);
+  const [isCartFetched, setIsCartFetched] = useState(false);
 
   useEffect(() => {
     // Logique de récupération du panier
     const fetchUserCart = async () => {
       try {
-        if (token) {
+        const isAuthenticated = token !== null;
+
+        // Vérifiez si le panier a déjà été récupéré dans cette session
+        const cartFetchedInThisSession = localStorage.getItem("cartFetched");
+        if (isAuthenticated && !isCartFetched && !cartFetchedInThisSession) {
           const response = await axios.get(
             "https://localhost:8000/api/get-user-cart",
             {
@@ -76,10 +81,13 @@ const HomeView = () => {
                 cartItem.productMesurement,
                 cartItem.productPrice,
                 cartItem.productTaxe,
-                cartItem.productQuantity,
+                cartItem.productQuantity
               )
             );
           });
+          // Marquez la récupération du panier comme terminée et enregistrez dans le stockage local
+          setIsCartFetched(true);
+          localStorage.setItem("cartFetched", "true");
         }
       } catch (error) {
         console.error("Error fetching user cart", error);
@@ -88,7 +96,7 @@ const HomeView = () => {
 
     // Appel à la fonction fetchUserCart lorsque le composant est monté
     fetchUserCart();
-  }, [token, dispatch]);
+  }, [isCartFetched]);
 
   return (
     <>

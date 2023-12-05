@@ -44,6 +44,7 @@ export const authenticationSlice = createSlice({
       state.token = null;
       state.user = null;
       localStorage.removeItem('token'); // Supprimez le token du localStorage
+      localStorage.removeItem('cartFetched'); // Supprimez l'indicateur du stockage local
     },
   },
 });
