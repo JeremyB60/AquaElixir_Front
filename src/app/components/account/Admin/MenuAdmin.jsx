@@ -12,7 +12,7 @@ const MenuAdmin = () => {
   };
 
   return (
-    <div className="md:col-span-1 p-8 bg-customLightGrey border space-y-3 relative">
+    <div className="md:col-span-1 p-8 bg-customLightGrey border space-y-3 relative h-screen">
       {/* Partie gauche */}
       <p className="font-bold mb-5 text-center">Bonjour Admin,</p>
       <Link

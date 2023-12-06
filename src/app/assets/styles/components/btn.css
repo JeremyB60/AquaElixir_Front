@@ -2,6 +2,10 @@
   @apply inline-flex items-center justify-center px-4 py-2 text-base font-medium transform border border-transparent rounded-md shadow whitespace-nowrap focus:outline-none active:scale-95 active:ring-2 active:ring-white;
 }
 
+.btn-disabled {
+  @apply text-customMediumGrey bg-[#d9d9d9] border-customLightGrey inline-flex items-center justify-center px-4 py-2 text-base font-medium transform border border-transparent rounded-md shadow whitespace-nowrap focus:outline-none;
+}
+
 .btn-link-primary {
   @apply font-medium text-primary hover:text-primary-dark;
 }

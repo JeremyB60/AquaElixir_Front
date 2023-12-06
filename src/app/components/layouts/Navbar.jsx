@@ -83,7 +83,7 @@ const Navbar = ({ itemCount }) => {
         subItems: [
           { label: "Anti-âge", url: "anti-age" },
           { label: "Peau sensible", url: "peau-sensible" },
-          { label: "Soins quotidiens", url: "soins-quotidiens" },
+          { label: "Soin quotidien", url: "soin-quotidien" },
         ],
       },
       {
@@ -393,7 +393,7 @@ const Navbar = ({ itemCount }) => {
               {/* SOUS-MENU LOGIN */}
               <div className="relative">
                 {!isLoggued ? (
-                  <Link to={URL.URL_AUTHFORM}>
+                  <Link to={URL.URL_AUTHFORM} title="Mon compte">
                     <svg
                       width="24"
                       height="24"
@@ -519,7 +519,7 @@ const Navbar = ({ itemCount }) => {
                   </div>
                 )}
               </div>
-              <Link to={URL.URL_CART} className="relative">
+              <Link to={URL.URL_CART} className="relative" title="Mon Panier">
                 <svg
                   width="24"
                   height="24"
@@ -550,7 +550,7 @@ const Navbar = ({ itemCount }) => {
                   </defs>
                 </svg>
                 {itemCount > 0 && (
-                  <span className="absolute border-black -right-2 top-3 text-xs bg-white font-bold rounded-full text-customBlue min-w-[20px] text-center">
+                  <span className="absolute -right-2 top-3 text-xs bg-customBlue font-bold rounded-full text-white min-w-[20px] text-center borderCountCart">
                     {itemCount}
                   </span>
                 )}

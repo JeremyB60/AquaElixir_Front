@@ -162,7 +162,7 @@ const Cart = () => {
                             {item.productMesurement}
                           </p>
                           <div className="flex justify-between mt-[65px]">
-                            <p className="font-bold">
+                            <p className="font-semibold">
                               {parseFloat(
                                 (item.productPrice * item.quantity).toFixed(2)
                               ).toFixed(2)}
@@ -266,7 +266,7 @@ const Cart = () => {
             </ul>
           </div>
           <div className="w-full lg:w-1/2 mb-10 pr-4 pl-0 lg:pl-8 ml-auto">
-            <div className="border-black w-min-[500px] p-8 rounded space-y-2 bg-customLightGrey">
+            <div className="border-black w-min-[500px] p-8 rounded-[15px] space-y-2 bg-customLightGrey">
               <h2 className="text-size16 font-bold mb-4">
                 Récapitulatif de la commande
               </h2>
@@ -281,7 +281,7 @@ const Cart = () => {
                 <p>Offerte</p>
               </div>
               <hr />
-              <div className="flex justify-between font-bold">
+              <div className="flex justify-between font-semibold">
                 <p className="mb-8 mt-1">TOTAL</p> <p>{calculateTotal()} €</p>
               </div>
               <div className="flex-col justify-center space-y-4">

@@ -5,7 +5,7 @@ import {
   URL_AUTHFORM,
   URL_FORGOT_PASSWORD,
 } from "../constants/urls/urlFrontEnd";
-import { useFormValidation } from "../components/account/FormValidationContext";
+import { useFormValidation } from "../contexts/FormValidationContext";
 
 const ForgotPasswordEmailSentView = () => {
   const { isFormValidated } = useFormValidation();

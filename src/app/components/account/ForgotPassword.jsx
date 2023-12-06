@@ -8,7 +8,7 @@ import {
   URL_FORGOT_PASSWORD,
   URL_FORGOT_PASSWORD_EMAIL_SENT,
 } from "../../constants/urls/urlFrontEnd";
-import { useFormValidation } from "./FormValidationContext";
+import { useFormValidation } from "../../contexts/FormValidationContext";
 import { forgotPassword } from "./../../api/backend/account";
 
 /**

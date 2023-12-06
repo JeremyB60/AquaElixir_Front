@@ -59,7 +59,7 @@ const ProductView = () => {
         productMesurement,
         productPrice,
         productTaxe,
-        quantity,
+        quantity
       )
     );
 
@@ -123,92 +123,106 @@ const ProductView = () => {
               {product.price} €
             </p>
             <div className="flex">
-              <p>Quantité</p>
-              <button
-                className="btn btn-transparent text-black border-customDark p-0 w-6 h-6 ml-3 rounded"
-                onClick={() => setQuantity(quantity - 1)}
-                disabled={quantity === 1}
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g clipPath="url(#clip0_2663_6125)">
-                    <path
-                      d="M3.3335 8H12.6668"
-                      stroke="#1F1F1F"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_2663_6125">
-                      <rect width="16" height="16" rx="5" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
-              </button>
-              <span className="min-w-[40px] text-center">{quantity}</span>
-              <button
-                className="btn btn-transparent text-black border-customDark p-0 w-6 h-6 rounded"
-                onClick={() => setQuantity(quantity + 1)}
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g clipPath="url(#clip0_2663_6131)">
-                    <path
-                      d="M8 3.33325V12.6666"
-                      stroke="#1F1F1F"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M3.3335 8H12.6668"
-                      stroke="#1F1F1F"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_2663_6131">
-                      <rect width="16" height="16" rx="5" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
-              </button>
+              {!token ? null : (
+                <>
+                  <p>Quantité</p>
+                  <button
+                    className="btn btn-transparent text-black border-customDark p-0 w-6 h-6 ml-3 rounded"
+                    onClick={() => setQuantity(quantity - 1)}
+                    disabled={quantity === 1}
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g clipPath="url(#clip0_2663_6125)">
+                        <path
+                          d="M3.3335 8H12.6668"
+                          stroke="#1F1F1F"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_2663_6125">
+                          <rect width="16" height="16" rx="5" fill="white" />
+                        </clipPath>
+                      </defs>
+                    </svg>
+                  </button>
+                  <span className="min-w-[40px] text-center">{quantity}</span>
+                  <button
+                    className="btn btn-transparent text-black border-customDark p-0 w-6 h-6 rounded"
+                    onClick={() => setQuantity(quantity + 1)}
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g clipPath="url(#clip0_2663_6131)">
+                        <path
+                          d="M8 3.33325V12.6666"
+                          stroke="#1F1F1F"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M3.3335 8H12.6668"
+                          stroke="#1F1F1F"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_2663_6131">
+                          <rect width="16" height="16" rx="5" fill="white" />
+                        </clipPath>
+                      </defs>
+                    </svg>
+                  </button>{" "}
+                </>
+              )}
             </div>
-            <button
-              className="btn btn-black mb-10 md:mb-0 mt-8"
-              onClick={() =>
-                addToCart(
-                  product.id,
-                  product.name,
-                  product.type.name,
-                  product.images[0].url,
-                  product.mesurement,
-                  product.price,
-                  product.taxe,
-                  quantity
-                )
-              }
-            >
-              Ajouter au panier
-            </button>
+            {!token ? (
+              <button
+                className="btn-disabled mb-10 md:mb-0 mt-8"
+                disabled
+                title="Connectez-vous pour ajouter au panier"
+              >
+                Ajouter au panier
+              </button>
+            ) : (
+              <button
+                className="btn btn-black mb-10 md:mb-0 mt-8"
+                onClick={() =>
+                  addToCart(
+                    product.id,
+                    product.name,
+                    product.type.name,
+                    product.images[0].url,
+                    product.mesurement,
+                    product.price,
+                    product.taxe,
+                    quantity
+                  )
+                }
+              >
+                Ajouter au panier
+              </button>
+            )}
           </div>
         </div>
-        <div className="flex gap-16">
-          <div className="w-full md:w-1/2 space-y-3 mb-10">
+        <div className="flex">
+          <div className="w-full xl:max-w-[750px] space-y-3 mb-10 pr-0 xl:pr-16">
             <h3 className="text-size24 font-bold mb-10">
               En savoir plus sur le produit
             </h3>
@@ -246,7 +260,7 @@ const ProductView = () => {
               Acide citrique.
             </p>
           </div>
-          <div className="w-1/2 pt-[100px] hidden md:block">
+          <div className="w-1/2 pt-[100px] hidden xl:block">
             <img src={Image} alt={product.images[0].alt} className="ml-auto" />
           </div>
         </div>
