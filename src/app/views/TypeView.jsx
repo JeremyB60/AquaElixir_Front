@@ -116,7 +116,13 @@ const TypeView = () => {
                     onChange={() => handleCheckboxChange(subtype.name)}
                     className="mr-2 checkbox"
                   />
-                  {subtype.name}
+                  <span
+                    className={
+                      selectedSubtypes.includes(subtype.name) ? "font-semibold" : ""
+                    }
+                  >
+                    {subtype.name}
+                  </span>
                 </li>
               ))}{" "}
             </ul>
