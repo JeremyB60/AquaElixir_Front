@@ -9,18 +9,19 @@ import cartReducer from "./cartReducer";
  * To configure the redux store.
  */
 
-const persistConfig = {
-  key: "root",
+// Configuration de la persistance pour le reducer de panier (cartReducer)
+const cartPersistConfig = {
+  key: "cart",
   storage,
-  blacklist: ['cart'],
 };
 
-const persistedReducer = persistReducer(persistConfig, cartReducer);
+// Application de la persistance au reducer de panier
+const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
 
 const store = configureStore({
   reducer: {
     auth: authenticationReducer,
-    cart: persistedReducer,
+    cart: persistedCartReducer, // Utilisez le reducer persisté pour le panier
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

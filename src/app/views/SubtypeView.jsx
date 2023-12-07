@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { URL_HOME } from "../constants/urls/urlFrontEnd";
+import Logo from "../assets/images/icons/aquaelixir.ico";
 
 const SubtypeView = () => {
   const { slug } = useParams();
@@ -33,7 +34,11 @@ const SubtypeView = () => {
   }, [slug]);
 
   if (!subtype) {
-    return <p>Chargement en cours...</p>;
+    return (
+      <div className="mx-auto p-5 max-w-screen-xl w-full h-full bg-white flex justify-center items-center">
+        <img src={Logo} alt="logo" className="loading" />
+      </div>
+    );
   }
 
   const handleMinPriceChange = (event) => {

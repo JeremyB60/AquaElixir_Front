@@ -9,7 +9,7 @@
 }
 
 .checkbox {
-    @apply h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded cursor-pointer
+    @apply h-4 w-4 text-customBlue focus:ring-customBlue border-customDarkGrey rounded cursor-pointer
 }
 
 .checkbox-error{

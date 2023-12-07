@@ -6,6 +6,7 @@ import Image from "../assets/images/productDescription.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart as addToCartAction } from "../actions/cartActions";
 import { selectToken } from "../redux-store/authenticationSlice";
+import Logo from "../assets/images/icons/aquaelixir.ico";
 
 const ProductView = () => {
   const { slug } = useParams();
@@ -37,7 +38,11 @@ const ProductView = () => {
   }, [cartItems]);
 
   if (!product) {
-    return <p>Chargement en cours...</p>;
+    return (
+      <div className="mx-auto p-5 max-w-screen-xl w-full h-full bg-white flex justify-center items-center">
+        <img src={Logo} alt="logo" className="loading" />
+      </div>
+    );
   }
 
   const addToCart = (
