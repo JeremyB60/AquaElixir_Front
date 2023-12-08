@@ -4,10 +4,7 @@ import storage from "redux-persist/lib/storage";
 
 import authenticationReducer from "./authenticationSlice";
 import cartReducer from "./cartReducer";
-
-/**
- * To configure the redux store.
- */
+import userReducer from "./userReducer";
 
 // Configuration de la persistance pour le reducer de panier (cartReducer)
 const cartPersistConfig = {
@@ -15,13 +12,21 @@ const cartPersistConfig = {
   storage,
 };
 
+// Configuration de la persistance pour le reducer d'utilisateur (userReducer)
+const userPersistConfig = {
+  key: "user",
+  storage,
+};
+
 // Application de la persistance au reducer de panier
 const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
+const persistedUserReducer = persistReducer(userPersistConfig, userReducer);
 
 const store = configureStore({
   reducer: {
     auth: authenticationReducer,
     cart: persistedCartReducer, // Utilisez le reducer persisté pour le panier
+    user: persistedUserReducer, // Utilisez le reducer persisté pour l'utilisateur
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

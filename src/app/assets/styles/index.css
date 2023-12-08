@@ -155,6 +155,25 @@
   animation: rotation 2s infinite linear; /* ajustez la durée selon vos besoins */
 }
 
+/* Bienvenue Prénom sur la page d'accueil */
+@keyframes fromLeft {
+  0% {
+    transform: translateX(200%);
+    opacity: 0;
+  }
+  55% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+.bienvenuePrenom {
+  animation: fromLeft 4s normal linear; /* ajustez la durée selon vos besoins */
+}
+
 /* Image pages connexion & insrciption */
 .backgroundCreateAccount {
   background: url("../images/createAccount.jpg");
@@ -368,10 +387,3 @@ input[type="range"]::-moz-range-thumb {
 .borderCountCart {
   padding: 2px 5px;
 }
-
-/* input[type="range"]::-ms-fill-lower {
-  background-color: #00819e;
-}
-input[type="range"]::-ms-fill-upper {
-  background-color: #f1efe8;
-} */

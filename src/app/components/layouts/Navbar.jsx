@@ -7,6 +7,7 @@ import Logo from "./../../assets/images/logo.svg";
 import SubMenu from "./SubMenu";
 import { connect } from "react-redux";
 import { clearCart } from "../../actions/cartActions";
+import { clearUserInfo } from "../../actions/userActions";
 
 const Navbar = ({ itemCount }) => {
   const menuButtonRef = useRef(null);
@@ -44,6 +45,7 @@ const Navbar = ({ itemCount }) => {
 
   const handleSignOut = () => {
     handleLoginMenuItemClick();
+    dispatch(clearUserInfo());
     dispatch(clearCart()); // Action qui réinitialise le panier
     dispatch(signOut());
     navigate(URL.URL_AUTHFORM);

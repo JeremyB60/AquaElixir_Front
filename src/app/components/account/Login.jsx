@@ -6,11 +6,12 @@ import * as Yup from "yup";
 import PasswordInput from "./PasswordInput";
 import {
   URL_FORGOT_PASSWORD,
-  URL_MY_ACCOUNT,
+  URL_HOME,
 } from "../../constants/urls/urlFrontEnd";
 import { signIn } from "../../redux-store/authenticationSlice";
 import { authenticate } from "./../../api/backend/account";
 import PropTypes from "prop-types";
+import { fetchUserInfo } from "../../actions/userActions";
 
 /**
  * Component Login
@@ -44,8 +45,10 @@ const Login = ({ toggle }) => {
       });
 
       if (res.status === 200 && res.data.token) {
-        dispatch(signIn(res.data.token));
-        navigate(URL_MY_ACCOUNT);
+        const authToken = res.data.token;
+        dispatch(signIn(authToken));
+        dispatch(fetchUserInfo(authToken));
+        navigate(URL_HOME);
       } else {
         setErrorLog("Échec de la connexion.");
       }
@@ -99,10 +102,7 @@ const Login = ({ toggle }) => {
                       <div className="text-red-500">{errors.email}</div>
                     )}
                   </div>
-                  <PasswordInput
-                    name="password"
-                    label="Mot de passe"
-                    />
+                  <PasswordInput name="password" label="Mot de passe" />
                   {errors.password && touched.password && (
                     <div className="text-red-500">{errors.password}</div>
                   )}

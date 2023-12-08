@@ -5,12 +5,12 @@ import PasswordInput from "./PasswordInput";
 import { Link } from "react-router-dom";
 import {
   URL_HOME,
-  URL_AUTHFORM,
   URL_MY_ACCOUNT,
 } from "../../constants/urls/urlFrontEnd";
 import { modifyAccount } from "../../api/backend/account";
 import { selectToken } from "../../redux-store/authenticationSlice";
 import { useSelector } from "react-redux";
+
 
 /**
  * Component MyAccount
@@ -20,6 +20,7 @@ const MyAccount = () => {
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const token = useSelector(selectToken);
+  const userInfo = useSelector(state => state.user.userInfo); // Assurez-vous que 'user' correspond au nom de votre reducer
 
   // Le schéma de validation Yup
   const validationSchema = Yup.object().shape({
@@ -73,7 +74,6 @@ const MyAccount = () => {
     <div className="flex items-center justify-center relative py-20">
       <div className="absolute top-5 left-0 pl-4 text-sm font-medium">
         <Link to={URL_HOME}>Accueil</Link> |{" "}
-        <Link to={URL_AUTHFORM}>S'identifier</Link> |{" "}
         <Link to={URL_MY_ACCOUNT}>Mon compte</Link>
       </div>
       <div className="w-full max-w-[650px] bg-white px-4">
@@ -85,8 +85,8 @@ const MyAccount = () => {
 
         <Formik
           initialValues={{
-            firstName: "",
-            lastName: "",
+            firstName: userInfo?.firstName|| '',
+            lastName: userInfo?.lastName || "",
             password: "",
             confirmPassword: "",
           }}
@@ -102,7 +102,6 @@ const MyAccount = () => {
                     type="text"
                     id="lastName"
                     name="lastName"
-                    placeholder="Nom"
                     className="input mt-2"
                   />
                   {errors.lastName && touched.lastName && (
@@ -115,7 +114,6 @@ const MyAccount = () => {
                     type="text"
                     id="firstName"
                     name="firstName"
-                    placeholder="Prénom"
                     className="input mt-2"
                   />
                   {errors.firstName && touched.firstName && (

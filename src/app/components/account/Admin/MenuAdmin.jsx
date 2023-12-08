@@ -1,6 +1,6 @@
 import React from "react";
 import { signOut } from "../../../redux-store/authenticationSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import * as URL from "../../../constants/urls/urlFrontEnd";
 
@@ -10,11 +10,12 @@ const MenuAdmin = () => {
   const handleSignOut = () => {
     dispatch(signOut());
   };
+  const userInfo = useSelector((state) => state.user.userInfo);
 
   return (
     <div className="md:col-span-1 p-8 bg-customLightGrey border space-y-3 relative h-screen">
       {/* Partie gauche */}
-      <p className="font-bold mb-5 text-center">Bonjour Admin,</p>
+      <p className="font-bold mb-5 text-center">Bonjour {userInfo?.firstName},</p>
       <Link
         to={URL.URL_ADMIN_DASHBOARD}
         className="text-size16 pb-1 flex items-center gap-3"
