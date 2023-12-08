@@ -99,15 +99,15 @@ const HomeView = () => {
   }, [isCartFetched]);
 
   // Affichage Bienvenue prénom
-  // const userInfo = useSelector((state) => state.user.userInfo);
+  const userInfo = useSelector((state) => state.user.userInfo);
 
   return (
     <>
-      {/* <div className="max-w-screen-xl relative mx-auto">
+      <div className="max-w-screen-xl relative mx-auto">
         <span className="absolute top-0 right-0 pr-4 z-10 font-semibold bienvenuePrenom">
           Bienvenue {userInfo?.firstName}
         </span>
-      </div> */}
+      </div>
       <div className="p-5 w-full backgroundAccueil relative">
         <div className="textAccueil absolute space-y-3 xxl:right-[20%]">
           <h1 className="text-md">Coffret soin cheveux</h1>

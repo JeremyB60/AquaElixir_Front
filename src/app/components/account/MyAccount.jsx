@@ -3,14 +3,11 @@ import React, { useState } from "react";
 import * as Yup from "yup";
 import PasswordInput from "./PasswordInput";
 import { Link } from "react-router-dom";
-import {
-  URL_HOME,
-  URL_MY_ACCOUNT,
-} from "../../constants/urls/urlFrontEnd";
-import { modifyAccount } from "../../api/backend/account";
+import { URL_HOME, URL_MY_ACCOUNT } from "../../constants/urls/urlFrontEnd";
 import { selectToken } from "../../redux-store/authenticationSlice";
-import { useSelector } from "react-redux";
-
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import { fetchUserInfo } from "../../actions/userActions";
 
 /**
  * Component MyAccount
@@ -20,53 +17,52 @@ const MyAccount = () => {
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const token = useSelector(selectToken);
-  const userInfo = useSelector(state => state.user.userInfo); // Assurez-vous que 'user' correspond au nom de votre reducer
+  const userInfo = useSelector((state) => state.user.userInfo); // Assurez-vous que 'user' correspond au nom de votre reducer
+  const dispatch = useDispatch();
 
   // Le schéma de validation Yup
   const validationSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .matches(
-        /^[a-zA-ZÀ-ÿ\s'-]+$/,
-        "Le prénom doit contenir uniquement des lettres, des espaces, des tirets et des apostrophes"
-      ),
+    firstName: Yup.string().matches(
+      /^[a-zA-ZÀ-ÿ\s'-]+$/,
+      "Le prénom doit contenir uniquement des lettres, des espaces, des tirets et des apostrophes"
+    ),
     lastName: Yup.string().matches(
       /^[a-zA-ZÀ-ÿ\s'-]+$/,
       "Le nom doit contenir uniquement des lettres, des espaces, des tirets et des apostrophes"
     ),
   });
 
-  // Fonction pour mettre à jour les informations
   const handleUpdate = async (values) => {
-    // Efface le message s'il y a
     setSuccessMessage(null);
     setErrorMessage(null);
 
     try {
-      const response = await modifyAccount(values, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.put(
+        "https://localhost:8000/api/modify-user",
+        values,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-      // Récupère la réponse du serveur
-      const result = await response.json();
-      console.log(result);
+      // Utiliser les données maintenant sous forme d'objet JavaScript
+      const responseData = response.data;
+      console.log(responseData);
 
-      // Vérifie la réponse du serveur
-      if (response.ok) {
-        // Définissez le message de succès dans l'état local
-        setSuccessMessage(result.message); // Utilisez la propriété 'message' du résultat
-      } else {
-        // Afficher un message d'erreur à l'utilisateur
-        console.error(result.message);
-        // Définissez le message d'erreur dans l'état local
-        setErrorMessage(result.message);
-      }
+      // Mise à jour de l'état ou autre traitement si nécessaire
+      setSuccessMessage("Mise à jour réussie !");
+      // Mettre à jour le Redux store avec les nouveaux prénom et nom
+      dispatch(fetchUserInfo(token));
     } catch (error) {
-      // Gère les erreurs liées à la requête
       console.error("Erreur de requête:", error.message);
-      // Définissez le message d'erreur dans l'état local
-      setErrorMessage("Erreur de requête: " + error.message);
+      console.log(
+        "Contenu de la réponse:",
+        error.response ? error.response.data : "Aucune réponse"
+      );
+      setErrorMessage(error.message);
     }
   };
 
@@ -85,10 +81,10 @@ const MyAccount = () => {
 
         <Formik
           initialValues={{
-            firstName: userInfo?.firstName|| '',
+            firstName: userInfo?.firstName || "",
             lastName: userInfo?.lastName || "",
-            password: "",
-            confirmPassword: "",
+            // password: "",
+            // confirmPassword: "",
           }}
           onSubmit={handleUpdate}
           validationSchema={validationSchema}
@@ -120,7 +116,7 @@ const MyAccount = () => {
                     <div className="text-red-500">{errors.firstName}</div>
                   )}
                 </div>
-                <PasswordInput
+                {/* <PasswordInput
                   name="confirmPassword"
                   label="Mot de passe actuel"
                 />
@@ -130,7 +126,7 @@ const MyAccount = () => {
                 <PasswordInput name="password" label="Nouveau mot de passe" />
                 {errors.password && touched.password && (
                   <div className="text-red-500">{errors.password}</div>
-                )}
+                )} */}
               </div>
               <div>
                 <button type="submit" className="btn btn-black mt-5">
