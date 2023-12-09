@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart as addToCartAction } from "../actions/cartActions";
 import { selectToken } from "../redux-store/authenticationSlice";
 import Logo from "../assets/images/icons/aquaelixir.ico";
+import Reviews from "../components/account/Review";
 
 const ProductView = () => {
   const { slug } = useParams();
@@ -23,7 +24,6 @@ const ProductView = () => {
           `https://localhost:8000/api/product/${slug}`
         );
         setProduct(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error("Erreur lors de la récupération du produit:", error);
       }
@@ -226,8 +226,8 @@ const ProductView = () => {
             )}
           </div>
         </div>
-        <div className="flex">
-          <div className="w-full xl:max-w-[750px] space-y-3 mb-10 pr-0 xl:pr-16">
+        <div className="flex mb-16">
+          <div className="w-full xl:max-w-[750px] space-y-3 pr-0 xl:pr-16">
             <h3 className="text-size24 font-bold mb-10">
               En savoir plus sur le produit
             </h3>
@@ -269,6 +269,8 @@ const ProductView = () => {
             <img src={Image} alt={product.images[0].alt} className="ml-auto" />
           </div>
         </div>
+        <hr />
+        <Reviews productId={product.id} />
       </div>
     </>
   );
