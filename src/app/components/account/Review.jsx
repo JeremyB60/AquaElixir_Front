@@ -10,6 +10,8 @@ const Reviews = ({ productId }) => {
     comment: "",
   });
   const token = useSelector(selectToken);
+  const [itemsPerPage] = useState(4);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Chargement des avis lors du montage du composant
   useEffect(() => {
@@ -27,6 +29,10 @@ const Reviews = ({ productId }) => {
 
     fetchReviews();
   }, [productId]);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentReviews = reviews.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleInputChange = (e) => {
     setNewReview({
@@ -61,12 +67,16 @@ const Reviews = ({ productId }) => {
     }
   };
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   function generateStars(rating) {
     const stars = [];
     for (let i = 0; i < rating; i++) {
-      // Utilisez l'icône d'étoile de votre ensemble d'icônes
       stars.push(
         <svg
+          className="mr-1"
           key={i}
           width="16"
           height="16"
@@ -103,15 +113,34 @@ const Reviews = ({ productId }) => {
   ).length;
 
   const pourcentageNote1 =
-    (reviews.filter((review) => review.rating === 1).length / totalAvis) * 100;
+    totalAvis > 0
+      ? (reviews.filter((review) => review.rating === 1).length / totalAvis) *
+        100
+      : 0;
+
   const pourcentageNote2 =
-    (reviews.filter((review) => review.rating === 2).length / totalAvis) * 100;
+    totalAvis > 0
+      ? (reviews.filter((review) => review.rating === 2).length / totalAvis) *
+        100
+      : 0;
+
   const pourcentageNote3 =
-    (reviews.filter((review) => review.rating === 3).length / totalAvis) * 100;
+    totalAvis > 0
+      ? (reviews.filter((review) => review.rating === 3).length / totalAvis) *
+        100
+      : 0;
+
   const pourcentageNote4 =
-    (reviews.filter((review) => review.rating === 4).length / totalAvis) * 100;
+    totalAvis > 0
+      ? (reviews.filter((review) => review.rating === 4).length / totalAvis) *
+        100
+      : 0;
+
   const pourcentageNote5 =
-    (reviews.filter((review) => review.rating === 5).length / totalAvis) * 100;
+    totalAvis > 0
+      ? (reviews.filter((review) => review.rating === 5).length / totalAvis) *
+        100
+      : 0;
 
   const avisParNote = [
     { pourcentage: pourcentageNote1, nombreAvis: nombreAvisNote1 },
@@ -121,20 +150,34 @@ const Reviews = ({ productId }) => {
     { pourcentage: pourcentageNote5, nombreAvis: nombreAvisNote5 },
   ];
 
+  // Calcul de la moyenne des avis totaux
+  const moyenneAvisTotaux = Math.round(
+    (1 * nombreAvisNote1 +
+      2 * nombreAvisNote2 +
+      3 * nombreAvisNote3 +
+      4 * nombreAvisNote4 +
+      5 * nombreAvisNote5) /
+      totalAvis
+  );
+
   return (
     <div className="md:flex mt-20 gap-20 mb-16">
       <div className="w-full md:w-1/2 max-w-[370px] mx-auto md:mx-0 mb-16 md:mb-0">
-        <h3 className="text-size24 font-bold mb-10">Avis des clients</h3>
-        <div className="flex items-center">
-          {generateStars(5)}
-          <span className="ml-4 text-customDarkGrey">
-            Basé sur {reviews.length} avis
-          </span>
-        </div>
-        <div className="py-8">
+        <h3 className="text-size24 font-bold mb-4">Avis des clients</h3>
+        {reviews.length > 0 && (
+          <div className="flex items-center">
+            {generateStars(moyenneAvisTotaux)}
+            <span className="ml-4 text-customDarkGrey">
+              Basé sur {reviews.length} avis
+            </span>
+          </div>
+        )}
+        <div className="py-7">
           {avisParNote.reverse().map((avis, index) => (
             <div key={index} className="flex items-center">
-              <div className="pourcentage-label w-3">{index + 1}</div>
+              <div className="pourcentage-label w-3">
+                {avisParNote.length - index}
+              </div>
               <svg
                 className="mx-3 w-5"
                 width="16"
@@ -148,21 +191,23 @@ const Reviews = ({ productId }) => {
                   fill="#00819E"
                 />
               </svg>
-              <div className="barre-container my-2">
+              <div className="barre-container my-3">
                 <div
                   className="barre"
                   style={{ width: `${avis.pourcentage}%` }}
                 ></div>
               </div>
-              <div className="w-0 mx-2">{avis.nombreAvis}</div>
+              {reviews.length > 0 && (
+                <div className="w-0 mx-2">{avis.nombreAvis}</div>
+              )}
             </div>
           ))}
         </div>
         <div>
-          <h4 className="text-size24 font-semibold mb-2">
+          <h4 className="text-size24 font-semibold mb-1">
             Partagez votre avis
           </h4>
-          <p className="mb-8">
+          <p className="mb-7">
             Si vous avez utilisé ce produit, partagez vos impressions avec
             d'autres clients.
           </p>
@@ -170,28 +215,58 @@ const Reviews = ({ productId }) => {
         </div>
       </div>
       <div className="w-full pt-2">
-        <ul>
-          {reviews.map((review, index) => (
-            <div key={review.id}>
-              <li className="flex gap-10">
-                <div className="space-y-1 pr-5">
-                  <div className="text-customDarkGrey font-semibold">
-                    {review.firstname} {review.lastname}
-                  </div>
-                  <div className="text-customMediumGrey">{review.date}</div>
+        {reviews.length === 0 ? (
+          <p className="text-customMediumGrey">Aucun avis pour le moment.</p>
+        ) : (
+          <div>
+            <ul>
+              {currentReviews.map((review, index) => (
+                <div key={review.id}>
+                  <li className="flex gap-5 md:gap-10">
+                    <div className="space-y-1 min-w-[120px]">
+                      <div className="text-customDarkGrey font-semibold">
+                        {review.firstname} {review.lastname}
+                      </div>
+                      <div className="text-customMediumGrey">{review.date}</div>
+                    </div>
+                    <div className="space-y-1 pt-1">
+                      <div className="flex">{generateStars(review.rating)}</div>
+                      <div>
+                        <b className="text-customDark">{review.title}</b>
+                      </div>
+                      <div>{review.comment}</div>
+                    </div>
+                  </li>
+                  {index !== currentReviews.length - 1 && (
+                    <hr className="my-6" />
+                  )}
                 </div>
-                <div className="space-y-1 pt-1">
-                  <div className="flex">{generateStars(review.rating)}</div>
-                  <div>
-                    <b className="text-customDark">{review.title}</b>
-                  </div>
-                  <div>{review.comment}</div>
-                </div>
-              </li>
-              {index !== reviews.length - 1 && <hr className="my-6" />}
-            </div>
-          ))}
-        </ul>
+              ))}
+            </ul>
+            {reviews.length > itemsPerPage && (
+              <div className="pagination mt-4">
+                <ul className="flex gap-3">
+                  {Array.from(
+                    { length: Math.ceil(reviews.length / itemsPerPage) },
+                    (_, index) => (
+                      <li
+                        key={index + 1}
+                        onClick={() => handlePageChange(index + 1)}
+                        className={
+                          index + 1 === currentPage
+                            ? "font-bold text-customBlue underline underline-offset-4 cursor-pointer"
+                            : "cursor-pointer"
+                        }
+                      >
+                        {index + 1}
+                      </li>
+                    )
+                  )}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* <div>
