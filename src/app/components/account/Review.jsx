@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectToken } from "../../redux-store/authenticationSlice";
+import ReviewForm from "./ReviewForm";
 
 const Reviews = ({ productId }) => {
   const [reviews, setReviews] = useState([]);
-  const [newReview, setNewReview] = useState({
-    rating: 0,
-    comment: "",
-  });
+  // const [newReview, setNewReview] = useState({
+  //   rating: 0,
+  //   comment: "",
+  // });
   const token = useSelector(selectToken);
   const [itemsPerPage] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,38 +35,43 @@ const Reviews = ({ productId }) => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentReviews = reviews.slice(indexOfFirstItem, indexOfLastItem);
 
-  const handleInputChange = (e) => {
-    setNewReview({
-      ...newReview,
-      [e.target.name]: e.target.value,
-    });
-  };
+  // const handleInputChange = (e) => {
+  //   setNewReview({
+  //     ...newReview,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
 
-  const handleAddReview = async () => {
-    try {
-      await axios.post(
-        `https://localhost:8000/api/product/${productId}/reviews`,
-        newReview,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log("POST request successful");
+  // const handleAddReview = async () => {
+  //   try {
+  //     await axios.post(
+  //       `https://localhost:8000/api/product/${productId}/reviews`,
+  //       newReview,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+  //     console.log("POST request successful");
 
-      // Refreshing the list of reviews after adding a new review
-      const response = await axios.get(
-        `https://localhost:8000/api/product/${productId}/reviews`
-      );
-      console.log("Response:", response);
-
-      setReviews(response.data);
-    } catch (error) {
-      console.error("Error adding review:", error);
-    }
-  };
+  //     // Refreshing the list of reviews after adding a new review
+  //     const response = await axios.get(
+  //       `https://localhost:8000/api/product/${productId}/reviews`
+  //     );
+  //     console.log("Response:", response);
+  //     // Vérifier si la réponse contient un message de succès ou d'erreur
+  //     if (response.data.success) {
+  //       console.log("Success:", response.data.success);
+  //     } else if (response.data.error) {
+  //       console.error("Error:", response.data.error);
+  //     }
+  //     setReviews(response.data);
+  //   } catch (error) {
+  //     console.error("Error adding review:", error);
+  //   }
+  // };
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -268,7 +274,7 @@ const Reviews = ({ productId }) => {
           </div>
         )}
       </div>
-
+      <ReviewForm productId={productId} token={token} setReviews={setReviews} />
       {/* <div>
         <h3>Add a Review</h3>
         <label>
