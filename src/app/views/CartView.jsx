@@ -111,10 +111,17 @@ const Cart = () => {
                     <li>
                       <div className="flex h-[auto]">
                         <div className="min-w-[150px] w-[150px] flex items-center">
-                          <img
+                          <Link to={`/produit/${item.productSlug}`}>
+                            <img
+                              src={`https://localhost:8000${item.productImage}`}
+                              alt={item.productName}
+                              className="mb-3 mx-auto"
+                            />
+                          </Link>
+                          {/* <img
                             src={`https://localhost:8000${item.productImage}`}
                             alt={item.productName}
-                          />
+                          /> */}
                         </div>
                         <div className="flex-col pl-6 flex-1">
                           <div className="flex justify-between">

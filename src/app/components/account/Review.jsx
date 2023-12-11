@@ -6,13 +6,18 @@ import ReviewForm from "./ReviewForm";
 
 const Reviews = ({ productId }) => {
   const [reviews, setReviews] = useState([]);
-  // const [newReview, setNewReview] = useState({
-  //   rating: 0,
-  //   comment: "",
-  // });
   const token = useSelector(selectToken);
   const [itemsPerPage] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   // Chargement des avis lors du montage du composant
   useEffect(() => {
@@ -218,12 +223,16 @@ const Reviews = ({ productId }) => {
               Si vous avez utilisé ce produit, partagez vos impressions avec
               d'autres clients.
             </p>
-            <div className="btn btn-black">Donner un avis</div>
+            <button className="btn btn-black" onClick={openModal}>
+              Donner un avis
+            </button>
           </div>
         </div>
         <div className="w-full pt-2">
           {reviews.length === 0 ? (
-            <p className="text-customMediumGrey">Soyez le premier à donner votre avis.</p>
+            <p className="text-customMediumGrey">
+              Soyez le premier à donner votre avis.
+            </p>
           ) : (
             <div>
               <ul>
@@ -280,7 +289,14 @@ const Reviews = ({ productId }) => {
           )}
         </div>
       </div>
-      <ReviewForm productId={productId} token={token} setReviews={setReviews} />
+      {isModalOpen && (
+        <ReviewForm
+          productId={productId}
+          token={token}
+          setReviews={setReviews}
+          closeModal={closeModal}
+        />
+      )}
     </>
   );
 };

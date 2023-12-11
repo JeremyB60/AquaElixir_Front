@@ -56,7 +56,8 @@ const ProductView = () => {
     productMesurement,
     productPrice,
     productTaxe,
-    quantity
+    quantity,
+    productSlug
   ) => {
     dispatch(
       addToCartAction(
@@ -67,7 +68,8 @@ const ProductView = () => {
         productMesurement,
         productPrice,
         productTaxe,
-        quantity
+        quantity,
+        productSlug
       )
     );
 
@@ -236,7 +238,8 @@ const ProductView = () => {
                     product.mesurement,
                     product.price,
                     product.taxe,
-                    quantity
+                    quantity,
+                    product.slug
                   )
                 }
               >

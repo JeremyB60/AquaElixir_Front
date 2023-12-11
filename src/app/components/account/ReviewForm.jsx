@@ -1,18 +1,22 @@
 import React, { useState } from "react";
-import { Field, Formik, Form } from "formik";
+import { Field, Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import StarRating from "./StarRating";
 import { useSelector } from "react-redux";
 
-const ReviewForm = ({ productId, token, setReviews }) => {
+const ReviewForm = ({ productId, token, setReviews, closeModal }) => {
   const userInfo = useSelector((state) => state.user.userInfo);
 
   const validationSchema = Yup.object({
-    rating: Yup.number()
-      .min(1, "La note doit être au moins égale à 1")
-      .max(5, "La note doit être au plus égale à 5"),
-    // .required("La note est requise"),
+    rating: Yup.number().test(
+      "non-zero",
+      "La note ne peut pas être égale à 0",
+      function (value) {
+        const { isFormSubmitted } = this.options.context;
+        return !isFormSubmitted || value !== 0;
+      }
+    ),
     title: Yup.string().required("Le titre est requis"),
     comment: Yup.string().required("Le commentaire est requis"),
   });
@@ -22,11 +26,20 @@ const ReviewForm = ({ productId, token, setReviews }) => {
   const handleRatingChange = (newRating) => {
     // Faites quelque chose avec la nouvelle note remontée du composant StarRating
     setRatingFromStar(newRating);
-    console.log("Nouvelle note sélectionnée dans ReviewForm :", newRating);
   };
+
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const onSubmit = async (values) => {
     values.rating = ratingFromStar;
+    // Vérifier si la note est égale à 0 et afficher un message d'erreur
+    if (values.rating === 0) {
+      setErrorMessage("La note est requise.");
+      return;
+    }
+    // Réinitialiser le message d'erreur en cas de soumission réussie
+    setErrorMessage(null);
+
     console.log(values);
 
     try {
@@ -47,8 +60,8 @@ const ReviewForm = ({ productId, token, setReviews }) => {
         `https://localhost:8000/api/product/${productId}/reviews`
       );
       console.log("Réponse:", response);
-
       setReviews(response.data);
+      closeModal();
     } catch (error) {
       console.error("Erreur lors de l'ajout de l'avis:", error);
     }
@@ -64,34 +77,72 @@ const ReviewForm = ({ productId, token, setReviews }) => {
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-      <div className="max-w-md mx-auto p-6 bg-white border rounded-md shadow-md">
-        {userInfo?.firstName}{" "}
-        {userInfo?.lastName ? userInfo.lastName.charAt(0) : ""}
-        <h3 className="text-2xl font-semibold mb-4">Ajouter un avis</h3>
-        <Form className="flex flex-col space-y-4">
-          <StarRating onRatingChange={handleRatingChange} />
-          <div className="flex flex-col space-y-2">
-            <label className="text-sm font-medium text-gray-700">Titre :</label>
-            <Field
-              type="text"
-              name="title"
-              className="px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
-            />
+      <div className="fixed inset-0 flex items-center justify-center">
+        <div className="modal-overlay fixed inset-0 bg-black opacity-25"></div>
+        <div className="modal-container bg-white w-11/12 mx-auto rounded-xl shadow-lg z-50 overflow-y-auto max-w-[680px]">
+          <div className="modal-content p-10 text-left">
+            <h4 className="text-2xl font-bold mb-8">Ajouter un avis</h4>
+            <p className="font-semibold mb-2">
+              {userInfo?.firstName} {userInfo?.lastName.charAt(0)}.
+            </p>
+            <Form className="flex flex-col">
+              <div className="flex flex-col">
+                <StarRating onRatingChange={handleRatingChange} />{" "}
+                {errorMessage && (
+                  <div className="text-red-500 mb-2">{errorMessage}</div>
+                )}
+              </div>
+              <hr className="my-6 separateReview" />
+              <div className="flex flex-col mb-5">
+                <label htmlFor="title" className="mb-1 font-semibold">
+                  Titre
+                </label>
+                <Field
+                  type="text"
+                  name="title"
+                  id="title"
+                  className="p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                />
+                <ErrorMessage
+                  name="title"
+                  component="div"
+                  className="text-red-500"
+                />
+              </div>
+              <div className="flex flex-col mb-10">
+                <label htmlFor="comment" className="mb-1 font-semibold">
+                  Votre avis
+                </label>
+                <Field
+                  as="textarea"
+                  name="comment"
+                  id="comment"
+                  rows="5"
+                  className="p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                />{" "}
+                <ErrorMessage
+                  name="comment"
+                  component="div"
+                  className="text-red-500"
+                />
+              </div>
+              <div className="flex gap-6">
+                <button
+                  onClick={closeModal}
+                  className="btn btn-transparentDark md:min-w-[130px]"
+                >
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-black md:min-w-[215px]"
+                >
+                  Partager mon avis
+                </button>
+              </div>
+            </Form>
           </div>
-          <div className="flex flex-col space-y-2">
-            <label className="text-sm font-medium text-gray-700">
-              Commentaire :
-            </label>
-            <Field
-              type="text"
-              name="comment"
-              className="px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
-            />
-          </div>
-          <button type="submit" className="btn btn-black">
-            Ajouter un avis
-          </button>{" "}
-        </Form>
+        </div>
       </div>
     </Formik>
   );

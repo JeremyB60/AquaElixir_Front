@@ -81,7 +81,8 @@ const HomeView = () => {
                 cartItem.productMesurement,
                 cartItem.productPrice,
                 cartItem.productTaxe,
-                cartItem.productQuantity
+                cartItem.productQuantity,
+                cartItem.productSlug
               )
             );
           });

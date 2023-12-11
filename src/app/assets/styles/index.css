@@ -407,3 +407,8 @@ input[type="range"]::-moz-range-thumb {
   overflow: hidden;
   transition: max-height .5s ease-out;
 }
+
+/* Séparateur hr du formulaire pour laisser un avis */
+.separateReview {
+  border-color: #bbbbbb;
+}
