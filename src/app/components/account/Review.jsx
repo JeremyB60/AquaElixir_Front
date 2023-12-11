@@ -167,150 +167,121 @@ const Reviews = ({ productId }) => {
   );
 
   return (
-    <div className="md:flex mt-20 gap-20 mb-16">
-      <div className="w-full md:w-1/2 max-w-[370px] mx-auto md:mx-0 mb-16 md:mb-0">
-        <h3 className="text-size24 font-bold mb-4">Avis des clients</h3>
-        {reviews.length > 0 && (
-          <div className="flex items-center">
-            {generateStars(moyenneAvisTotaux)}
-            <span className="ml-4 text-customDarkGrey">
-              Basé sur {reviews.length} avis
-            </span>
+    <>
+      <div className="md:flex mt-20 gap-20 mb-16">
+        <div className="w-full md:w-1/2 max-w-[370px] mx-auto md:mx-0 mb-16 md:mb-0">
+          <h3 className="text-size24 font-bold mb-4">Avis des clients</h3>
+          {reviews.length > 0 && (
+            <div className="flex items-center">
+              {generateStars(moyenneAvisTotaux)}
+              <span className="ml-4 text-customDarkGrey">
+                Basé sur {reviews.length} avis
+              </span>
+            </div>
+          )}
+          <div className="py-7">
+            {avisParNote.reverse().map((avis, index) => (
+              <div key={index} className="flex items-center">
+                <div className="pourcentage-label w-3">
+                  {avisParNote.length - index}
+                </div>
+                <svg
+                  className="w-12"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M8 0L10.3511 4.76393L15.6085 5.52786L11.8042 9.23607L12.7023 14.4721L8 12L3.29772 14.4721L4.19577 9.23607L0.391548 5.52786L5.64886 4.76393L8 0Z"
+                    fill="#00819E"
+                  />
+                </svg>
+                <div className="barre-container my-3">
+                  <div
+                    className="barre"
+                    style={{ width: `${avis.pourcentage}%` }}
+                  ></div>
+                </div>
+                {reviews.length > 0 && (
+                  <div className="w-0 mx-2">{avis.nombreAvis}</div>
+                )}
+              </div>
+            ))}
           </div>
-        )}
-        <div className="py-7">
-          {avisParNote.reverse().map((avis, index) => (
-            <div key={index} className="flex items-center">
-              <div className="pourcentage-label w-3">
-                {avisParNote.length - index}
-              </div>
-              <svg
-                className="mx-3 w-5"
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M8 0L10.3511 4.76393L15.6085 5.52786L11.8042 9.23607L12.7023 14.4721L8 12L3.29772 14.4721L4.19577 9.23607L0.391548 5.52786L5.64886 4.76393L8 0Z"
-                  fill="#00819E"
-                />
-              </svg>
-              <div className="barre-container my-3">
-                <div
-                  className="barre"
-                  style={{ width: `${avis.pourcentage}%` }}
-                ></div>
-              </div>
-              {reviews.length > 0 && (
-                <div className="w-0 mx-2">{avis.nombreAvis}</div>
+          <div>
+            <h4 className="text-size24 font-semibold mb-1">
+              Partagez votre avis
+            </h4>
+            <p className="mb-7">
+              Si vous avez utilisé ce produit, partagez vos impressions avec
+              d'autres clients.
+            </p>
+            <div className="btn btn-black">Donner un avis</div>
+          </div>
+        </div>
+        <div className="w-full pt-2">
+          {reviews.length === 0 ? (
+            <p className="text-customMediumGrey">Soyez le premier à donner votre avis.</p>
+          ) : (
+            <div>
+              <ul>
+                {currentReviews.map((review, index) => (
+                  <div key={review.id}>
+                    <li className="flex gap-5 md:gap-10">
+                      <div className="space-y-1 min-w-[120px]">
+                        <div className="text-customDarkGrey font-semibold">
+                          {review.firstname} {review.lastname}
+                        </div>
+                        <div className="text-customMediumGrey">
+                          {review.date}
+                        </div>
+                      </div>
+                      <div className="space-y-1 pt-1">
+                        <div className="flex">
+                          {generateStars(review.rating)}
+                        </div>
+                        <div>
+                          <b className="text-customDark">{review.title}</b>
+                        </div>
+                        <div>{review.comment}</div>
+                      </div>
+                    </li>
+                    {index !== currentReviews.length - 1 && (
+                      <hr className="my-6" />
+                    )}
+                  </div>
+                ))}
+              </ul>
+              {reviews.length > itemsPerPage && (
+                <div className="pagination mt-10">
+                  <ul className="flex justify-center md:justify-end gap-3">
+                    {Array.from(
+                      { length: Math.ceil(reviews.length / itemsPerPage) },
+                      (_, index) => (
+                        <li
+                          key={index + 1}
+                          onClick={() => handlePageChange(index + 1)}
+                          className={
+                            index + 1 === currentPage
+                              ? "font-bold text-customBlue underline underline-offset-4 cursor-pointer"
+                              : "cursor-pointer"
+                          }
+                        >
+                          {index + 1}
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </div>
               )}
             </div>
-          ))}
+          )}
         </div>
-        <div>
-          <h4 className="text-size24 font-semibold mb-1">
-            Partagez votre avis
-          </h4>
-          <p className="mb-7">
-            Si vous avez utilisé ce produit, partagez vos impressions avec
-            d'autres clients.
-          </p>
-          <div className="btn btn-black">Donner un avis</div>
-        </div>
-      </div>
-      <div className="w-full pt-2">
-        {reviews.length === 0 ? (
-          <p className="text-customMediumGrey">Aucun avis pour le moment.</p>
-        ) : (
-          <div>
-            <ul>
-              {currentReviews.map((review, index) => (
-                <div key={review.id}>
-                  <li className="flex gap-5 md:gap-10">
-                    <div className="space-y-1 min-w-[120px]">
-                      <div className="text-customDarkGrey font-semibold">
-                        {review.firstname} {review.lastname}
-                      </div>
-                      <div className="text-customMediumGrey">{review.date}</div>
-                    </div>
-                    <div className="space-y-1 pt-1">
-                      <div className="flex">{generateStars(review.rating)}</div>
-                      <div>
-                        <b className="text-customDark">{review.title}</b>
-                      </div>
-                      <div>{review.comment}</div>
-                    </div>
-                  </li>
-                  {index !== currentReviews.length - 1 && (
-                    <hr className="my-6" />
-                  )}
-                </div>
-              ))}
-            </ul>
-            {reviews.length > itemsPerPage && (
-              <div className="pagination mt-4">
-                <ul className="flex gap-3">
-                  {Array.from(
-                    { length: Math.ceil(reviews.length / itemsPerPage) },
-                    (_, index) => (
-                      <li
-                        key={index + 1}
-                        onClick={() => handlePageChange(index + 1)}
-                        className={
-                          index + 1 === currentPage
-                            ? "font-bold text-customBlue underline underline-offset-4 cursor-pointer"
-                            : "cursor-pointer"
-                        }
-                      >
-                        {index + 1}
-                      </li>
-                    )
-                  )}
-                </ul>
-              </div>
-            )}
-          </div>
-        )}
       </div>
       <ReviewForm productId={productId} token={token} setReviews={setReviews} />
-      {/* <div>
-        <h3>Add a Review</h3>
-        <label>
-          Rating:
-          <input
-            type="number"
-            min="1"
-            max="5"
-            name="rating"
-            value={newReview.rating}
-            onChange={handleInputChange}
-          />
-        </label>
-        <br />
-        <label>
-          Title:
-          <input
-            type="text"
-            name="title"
-            value={newReview.title}
-            onChange={handleInputChange}
-          />
-        </label>
-        <br />
-        <label>
-          Comment:
-          <input
-            type="text"
-            name="comment"
-            value={newReview.comment}
-            onChange={handleInputChange}
-          />
-        </label>
-        <button onClick={handleAddReview}>Add Review</button>
-      </div> */}
-    </div>
+    </>
   );
 };
 

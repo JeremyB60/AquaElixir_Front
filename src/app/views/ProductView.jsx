@@ -305,7 +305,9 @@ const ProductView = () => {
             </h4>
             <hr />
             <div
-              className={`content ${beneficeVisible ? "visibleDescription" : "hiddenDescription"}`}
+              className={`content ${
+                beneficeVisible ? "visibleDescription" : "hiddenDescription"
+              }`}
             >
               <p className="pb-4">
                 Hydratation en profondeur: Le concombre de mer pénètre
@@ -374,7 +376,9 @@ const ProductView = () => {
             <hr />
             <div
               className={`content ${
-                modeApplicationVisible ? "visibleDescription" : "hiddenDescription"
+                modeApplicationVisible
+                  ? "visibleDescription"
+                  : "hiddenDescription"
               }`}
             >
               <p className="pb-4">
@@ -441,7 +445,9 @@ const ProductView = () => {
             </h4>
             <hr />
             <div
-              className={`content ${ingredientsVisible ? "visibleDescription" : "hiddenDescription"}`}
+              className={`content ${
+                ingredientsVisible ? "visibleDescription" : "hiddenDescription"
+              }`}
             >
               <p className="pb-4">
                 Eau (Aqua), Kératine hydrolysée (Hydrolyzed Keratin), Extrait de
