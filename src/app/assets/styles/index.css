@@ -397,7 +397,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .visibleDescription {
-  max-height: 500px; /* Ajustez la hauteur maximale selon vos besoins */
+  max-height: 500px; 
   overflow: hidden;
   transition: max-height .5s ease-in;
 }

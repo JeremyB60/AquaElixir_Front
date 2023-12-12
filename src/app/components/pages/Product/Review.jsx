@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { selectToken } from "../../redux-store/authenticationSlice";
+import { selectToken } from "../../../redux-store/authenticationSlice";
 import ReviewForm from "./ReviewForm";
 
 const Reviews = ({ productId }) => {
