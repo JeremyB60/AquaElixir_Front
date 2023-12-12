@@ -5,7 +5,13 @@ import axios from "axios";
 import StarRating from "./StarRating";
 import { useSelector } from "react-redux";
 
-const ReviewForm = ({ productId, token, setReviews, closeModal }) => {
+const ReviewForm = ({
+  productId,
+  token,
+  setReviews,
+  closeModal,
+  handleModal,
+}) => {
   const userInfo = useSelector((state) => state.user.userInfo);
 
   const validationSchema = Yup.object({
@@ -101,7 +107,7 @@ const ReviewForm = ({ productId, token, setReviews, closeModal }) => {
                   type="text"
                   name="title"
                   id="title"
-                  className="p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                  className="p-2 border rounded-md"
                 />
                 <ErrorMessage
                   name="title"
@@ -118,7 +124,7 @@ const ReviewForm = ({ productId, token, setReviews, closeModal }) => {
                   name="comment"
                   id="comment"
                   rows="5"
-                  className="p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                  className="p-2 border rounded-md resize-none"
                 />{" "}
                 <ErrorMessage
                   name="comment"
@@ -128,7 +134,7 @@ const ReviewForm = ({ productId, token, setReviews, closeModal }) => {
               </div>
               <div className="flex gap-6">
                 <button
-                  onClick={closeModal}
+                  onClick={handleModal}
                   className="btn btn-transparentDark md:min-w-[130px]"
                 >
                   Annuler

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectToken } from "../../../redux-store/authenticationSlice";
 import ReviewForm from "./ReviewForm";
+import ReviewItem from "./ReviewItem";
 
 const Reviews = ({ productId }) => {
   const [reviews, setReviews] = useState([]);
@@ -15,7 +16,12 @@ const Reviews = ({ productId }) => {
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
+  const closeModal = (event) => {
+    setIsModalOpen(false);
+  };
+
+  const handleModal = (event) => {
+    event.preventDefault();
     setIsModalOpen(false);
   };
 
@@ -237,30 +243,13 @@ const Reviews = ({ productId }) => {
             <div>
               <ul>
                 {currentReviews.map((review, index) => (
-                  <div key={review.id}>
-                    <li className="flex gap-5 md:gap-10">
-                      <div className="space-y-1 min-w-[120px]">
-                        <div className="text-customDarkGrey font-semibold">
-                          {review.firstname} {review.lastname}
-                        </div>
-                        <div className="text-customMediumGrey">
-                          {review.date}
-                        </div>
-                      </div>
-                      <div className="space-y-1 pt-1">
-                        <div className="flex">
-                          {generateStars(review.rating)}
-                        </div>
-                        <div>
-                          <b className="text-customDark">{review.title}</b>
-                        </div>
-                        <div>{review.comment}</div>
-                      </div>
-                    </li>
-                    {index !== currentReviews.length - 1 && (
-                      <hr className="my-6" />
-                    )}
-                  </div>
+                  <ReviewItem
+                    key={review.id}
+                    review={review}
+                    index={index}
+                    generateStars={generateStars}
+                    currentReviews={currentReviews}
+                  />
                 ))}
               </ul>
               {reviews.length > itemsPerPage && (
@@ -295,6 +284,7 @@ const Reviews = ({ productId }) => {
           token={token}
           setReviews={setReviews}
           closeModal={closeModal}
+          handleModal={handleModal}
         />
       )}
     </>
