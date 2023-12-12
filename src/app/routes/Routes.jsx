@@ -22,6 +22,7 @@ import SubtypeView from "../views/SubtypeView";
 // Components
 import { PrivateRoute } from "./PrivateRoute";
 import UsersList from "../components/account/Admin/UsersList/UsersList";
+import ReportsList from "../components/account/Admin/ReportsList/ReportsList";
 import Profile from "../components/account/Admin/Profile/Profile";
 import Cart from "../views/CartView";
 
@@ -67,6 +68,14 @@ const Routes = () => {
             element={
               <PrivateRoute roles={[ROLE_ADMIN]}>
                 <UsersList />
+              </PrivateRoute>
+            }
+          />{" "}
+          <Route
+            path={URL.URL_REPORTSLIST}
+            element={
+              <PrivateRoute roles={[ROLE_ADMIN]}>
+                <ReportsList />
               </PrivateRoute>
             }
           />

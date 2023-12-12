@@ -1,8 +1,9 @@
 // ReviewItem.js
 import React from "react";
-import DeleteReviewButton from "./DeleteReviewButton";
 import { selectUser } from "../../../redux-store/authenticationSlice";
 import { useSelector } from "react-redux";
+import ReportReviewButton from "./ReportReviewButton";
+import DeleteReviewButton from "./DeleteReviewButton";
 
 const ReviewItem = ({
   review,
@@ -14,7 +15,7 @@ const ReviewItem = ({
   const user = useSelector(selectUser);
   const { firstname, lastname, date, rating, title, comment, id, email } =
     review;
-  const isCurrentUserReview = user.username === email;
+  const isCurrentUserReview = user?.username === email;
 
   return (
     <div>
@@ -34,6 +35,7 @@ const ReviewItem = ({
           {isCurrentUserReview && (
             <DeleteReviewButton reviewId={id} onDeleteReview={onDeleteReview} />
           )}
+          <ReportReviewButton reviewId={id} />
         </div>
       </li>
       {index !== currentReviews.length - 1 && <hr className="my-6" />}

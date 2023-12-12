@@ -15,6 +15,7 @@ export const URL_RETURN_ITEM = "/retour-article";
 export const URL_ADMIN = "/admin";
 export const URL_ADMIN_DASHBOARD = "/admin/tableau-de-bord";
 export const URL_USERSLIST = "/admin/liste-utilisateurs";
+export const URL_REPORTSLIST = "/admin/liste-avis-reportes";
 
 /* PRODUITS */
 export const URL_PRODUCT = "/produit/:slug";

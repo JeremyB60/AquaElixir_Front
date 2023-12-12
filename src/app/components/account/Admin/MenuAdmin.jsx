@@ -15,10 +15,12 @@ const MenuAdmin = () => {
   return (
     <div className="md:col-span-1 p-8 bg-customLightGrey border space-y-3 relative h-screen">
       {/* Partie gauche */}
-      <p className="font-bold mb-5 text-center">Bonjour {userInfo?.firstName},</p>
+      <p className="font-bold mb-5 text-center">
+        Bonjour {userInfo?.firstName},
+      </p>
       <Link
         to={URL.URL_ADMIN_DASHBOARD}
-        className="text-size16 pb-1 flex items-center gap-3"
+        className="text-size16 pb-1 flex items-center gap-3 font-semibold"
       >
         <svg
           width="24"
@@ -59,7 +61,7 @@ const MenuAdmin = () => {
         Tableau de bord
       </Link>
       <hr />
-      <h3 className="text-size16 flex items-center gap-3">
+      <div className="text-size16 flex items-center gap-3 font-semibold">
         <svg
           width="24"
           height="24"
@@ -109,12 +111,12 @@ const MenuAdmin = () => {
           </defs>
         </svg>
         Gestion de produits
-      </h3>
+      </div>
       <ul>
-        <Link to={URL.URL_PRODUCTSLIST}>Liste des produits</Link>
+        <li>Liste des produits</li>
         <li>Type de produit</li>
       </ul>
-      <h3 className="text-size16 flex items-center gap-3">
+      <div className="text-size16 flex items-center gap-3 font-semibold">
         <svg
           width="23"
           height="24"
@@ -164,9 +166,9 @@ const MenuAdmin = () => {
           </defs>
         </svg>
         Gestion des achats
-      </h3>
+      </div>
       <p>Liste des commandes</p>
-      <h3 className="text-size16 flex items-center gap-3">
+      <div className="text-size16 flex items-center gap-3 font-semibold">
         <svg
           width="23"
           height="24"
@@ -202,9 +204,9 @@ const MenuAdmin = () => {
           </defs>
         </svg>
         Gestion des retours
-      </h3>
+      </div>
       <p>Liste des retours</p>
-      <h3 className="text-size16 flex items-center gap-3">
+      <div className="text-size16 flex items-center gap-3 font-semibold">
         <svg
           width="23"
           height="24"
@@ -254,9 +256,9 @@ const MenuAdmin = () => {
           </defs>
         </svg>
         Gestion des comptes
-      </h3>
+      </div>
       <Link to={URL.URL_USERSLIST}>Liste des comptes utilisateurs</Link>
-      <h3 className="text-size16 flex items-center gap-3">
+      <div className="text-size16 flex items-center gap-3 font-semibold">
         <svg
           width="24"
           height="24"
@@ -279,8 +281,8 @@ const MenuAdmin = () => {
             </clipPath>
           </defs>
         </svg>
-        Gestion des avis signalés
-      </h3>
+        <Link to={URL.URL_REPORTSLIST}>Gestion des avis signalés</Link>
+      </div>
       {/* DECONNEXION */}
       <div className="absolute bottom-10">
         <button onClick={handleSignOut} className="btn btn-black relative">
