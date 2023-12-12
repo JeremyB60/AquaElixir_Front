@@ -30,6 +30,7 @@ const UsersList = () => {
 
   const currentUser = useSelector(selectUser);
   const token = useSelector(selectToken);
+  console.log(token);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {

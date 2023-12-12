@@ -43,6 +43,7 @@ const HomeView = () => {
   // Récupération du panier dans la bdd
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
+  console.log(token);
   const [cartItems, setCartItems] = useState([]);
   const [isCartFetched, setIsCartFetched] = useState(false);
 

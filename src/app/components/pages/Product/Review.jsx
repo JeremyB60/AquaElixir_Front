@@ -25,6 +25,12 @@ const Reviews = ({ productId }) => {
     setIsModalOpen(false);
   };
 
+  const handleReviewDeleted = ({ reviewId }) => {
+    setReviews((currentReviews) =>
+      currentReviews.filter((review) => review.id !== reviewId)
+    );
+  };
+
   // Chargement des avis lors du montage du composant
   useEffect(() => {
     const fetchReviews = async () => {
@@ -45,44 +51,6 @@ const Reviews = ({ productId }) => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentReviews = reviews.slice(indexOfFirstItem, indexOfLastItem);
-
-  // const handleInputChange = (e) => {
-  //   setNewReview({
-  //     ...newReview,
-  //     [e.target.name]: e.target.value,
-  //   });
-  // };
-
-  // const handleAddReview = async () => {
-  //   try {
-  //     await axios.post(
-  //       `https://localhost:8000/api/product/${productId}/reviews`,
-  //       newReview,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-  //     console.log("POST request successful");
-
-  //     // Refreshing the list of reviews after adding a new review
-  //     const response = await axios.get(
-  //       `https://localhost:8000/api/product/${productId}/reviews`
-  //     );
-  //     console.log("Response:", response);
-  //     // Vérifier si la réponse contient un message de succès ou d'erreur
-  //     if (response.data.success) {
-  //       console.log("Success:", response.data.success);
-  //     } else if (response.data.error) {
-  //       console.error("Error:", response.data.error);
-  //     }
-  //     setReviews(response.data);
-  //   } catch (error) {
-  //     console.error("Error adding review:", error);
-  //   }
-  // };
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -249,6 +217,8 @@ const Reviews = ({ productId }) => {
                     index={index}
                     generateStars={generateStars}
                     currentReviews={currentReviews}
+                    onDeleteReview={handleReviewDeleted}
+                    email={review.email}
                   />
                 ))}
               </ul>
