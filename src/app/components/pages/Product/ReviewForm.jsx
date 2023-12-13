@@ -13,6 +13,7 @@ const ReviewForm = ({
   handleModal,
 }) => {
   const userInfo = useSelector((state) => state.user.userInfo);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   const validationSchema = Yup.object({
     rating: Yup.number().test(
@@ -49,6 +50,7 @@ const ReviewForm = ({
     console.log(values);
 
     try {
+      setIsFormSubmitted(true);
       await axios.post(
         `https://localhost:8000/api/product/${productId}/reviews`,
         values,
@@ -59,16 +61,18 @@ const ReviewForm = ({
           },
         }
       );
-      console.log("Requête POST réussie");
+      console.log("Avis transmis");
 
       // Actualisation de la liste des avis après l'ajout d'un nouvel avis
       const response = await axios.get(
         `https://localhost:8000/api/product/${productId}/reviews`
       );
+      closeModal();
+
       console.log("Réponse:", response);
       setReviews(response.data);
-      closeModal();
     } catch (error) {
+      setIsFormSubmitted(false);
       console.error("Erreur lors de l'ajout de l'avis:", error);
     }
   };
@@ -94,9 +98,7 @@ const ReviewForm = ({
             <Form className="flex flex-col">
               <div className="flex flex-col">
                 <StarRating onRatingChange={handleRatingChange} />{" "}
-                {errorMessage && (
-                  <div className="text-red-500 mb-2">{errorMessage}</div>
-                )}
+                {errorMessage && <div className="my-2">{errorMessage}</div>}
               </div>
               <hr className="my-6 separateReview" />
               <div className="flex flex-col mb-5">
@@ -112,7 +114,7 @@ const ReviewForm = ({
                 <ErrorMessage
                   name="title"
                   component="div"
-                  className="text-red-500"
+                  className="text-black"
                 />
               </div>
               <div className="flex flex-col mb-10">
@@ -129,19 +131,21 @@ const ReviewForm = ({
                 <ErrorMessage
                   name="comment"
                   component="div"
-                  className="text-red-500"
+                  className="text-black"
                 />
               </div>
               <div className="flex gap-6">
                 <button
                   onClick={handleModal}
                   className="btn btn-transparentDark md:min-w-[130px]"
+                  disabled={isFormSubmitted}
                 >
                   Annuler
                 </button>
                 <button
                   type="submit"
                   className="btn btn-black md:min-w-[215px]"
+                  disabled={isFormSubmitted}
                 >
                   Partager mon avis
                 </button>

@@ -3,22 +3,12 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 
 const ReportReviewButton = ({ reviewId }) => {
-  const token = useSelector((state) => state.auth.token);
   const [isReported, setReported] = useState(false);
 
   const handleReport = async () => {
     try {
-      // Effectuer la requête API pour signaler l'avis avec Axios
-      const response = await axios.post(
-        `https://localhost:8000/api/report/${reviewId}`,
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Assurez-vous de définir votre token ici
-          },
-        }
-      );
-    console.log('Avis signalé')
+      await axios.post(`https://localhost:8000/report/${reviewId}`, null);
+      console.log("Avis signalé");
       // Mettre à jour l'état pour indiquer que l'avis a été signalé avec succès
       setReported(true);
     } catch (error) {
@@ -28,8 +18,29 @@ const ReportReviewButton = ({ reviewId }) => {
 
   return (
     <>
-      {!isReported && <button onClick={handleReport}>Signaler</button>}
-      {isReported && <span>Signalé</span>}
+      {!isReported && (
+        <div className="flex items-end gap-1">
+          <svg
+            className="cursor-pointer -ml-1 arriveeSpectaculaire"
+            onClick={handleReport}
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            strokeWidth="1"
+            stroke="#4e4e4e"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z" />
+            <path d="M5 21v-7" />
+          </svg>{" "}
+          Signaler l'avis
+        </div>
+      )}
+      {isReported && <div className="text-red-500">Avis signalé</div>}
     </>
   );
 };

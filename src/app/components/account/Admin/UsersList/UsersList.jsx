@@ -83,15 +83,15 @@ const UsersList = () => {
       <h1 className="text-2xl mb-10 font-bold">
         Administration - Liste des comptes utilisateurs
       </h1>
-      <table className="w-full border-collapse">
+      <table className="w-full border-collapse text-customDarkGrey">
         <thead>
-          <tr className="border-b border-t-2 border-customDark">
-            <th className="min-w-1/12 p-2 text-left">ID</th>
+          <tr className="border-b border-t border-customDark">
+            <th className="min-w-1/12 py-3 text-left">ID</th>
             <th className="min-w-1/3 p-2 text-left">Nom</th>
             <th className="min-w-1/3 p-2 text-left">Prénom</th>
             <th className="min-w-1/2 p-2 text-left">Roles</th>
             <th className="min-w-1/2 p-2 text-left">Email</th>
-            <th className="min-w-1/2 p-2 text-left">Créé le</th>
+            <th className="min-w-1/2 p-2 text-left">Créé&nbsp;le</th>
             <th className="min-w-1/2 p-2 text-left">Statut</th>
             <th className="min-w-1/2 p-2 text-left">Action</th>
           </tr>
@@ -124,7 +124,7 @@ const UsersList = () => {
               <td className="p-2">{user.email}</td>
               <td className="p-2">{user.createdAt}</td>
               <td className="p-2">{user.accountStatus}</td>
-              <td className="p-2 md:flex gap-1">
+              <td className="p-2 md:flex justify-center gap-1">
                 {user.email == currentUser.username ||
                 user.email == "admin@admin.fr" ? null : (
                   <>

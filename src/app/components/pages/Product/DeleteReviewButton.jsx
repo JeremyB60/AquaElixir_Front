@@ -23,7 +23,7 @@ const DeleteReviewButton = ({ reviewId, onDeleteReview }) => {
   return (
     <button
       onClick={handleDelete}
-      className="text-red-500 underline cursor-pointer"
+      className="text-customMediumGrey underline cursor-pointer"
     >
       Supprimer mon avis
     </button>

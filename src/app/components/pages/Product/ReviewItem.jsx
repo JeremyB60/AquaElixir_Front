@@ -25,6 +25,7 @@ const ReviewItem = ({
             {firstname} {lastname}
           </div>
           <div className="text-customMediumGrey">{date}</div>
+          <ReportReviewButton reviewId={id} />
         </div>
         <div className="space-y-1 pt-1">
           <div className="flex">{generateStars(rating)}</div>
@@ -35,7 +36,6 @@ const ReviewItem = ({
           {isCurrentUserReview && (
             <DeleteReviewButton reviewId={id} onDeleteReview={onDeleteReview} />
           )}
-          <ReportReviewButton reviewId={id} />
         </div>
       </li>
       {index !== currentReviews.length - 1 && <hr className="my-6" />}

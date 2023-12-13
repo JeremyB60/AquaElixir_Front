@@ -197,9 +197,19 @@ const Reviews = ({ productId }) => {
               Si vous avez utilisé ce produit, partagez vos impressions avec
               d'autres clients.
             </p>
-            <button className="btn btn-black" onClick={openModal}>
-              Donner un avis
-            </button>
+            {!token ? (
+              <button
+                className="btn-disabled mb-10 md:mb-0 mt-8"
+                disabled
+                title="Connectez-vous pour donner votre avis"
+              >
+                Donner un avis
+              </button>
+            ) : (
+              <button className="btn btn-black" onClick={openModal}>
+                Donner un avis
+              </button>
+            )}
           </div>
         </div>
         <div className="w-full pt-2">

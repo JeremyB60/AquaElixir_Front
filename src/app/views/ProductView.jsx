@@ -39,7 +39,7 @@ const ProductView = () => {
 
   if (!product) {
     return (
-      <div className="mx-auto p-5 max-w-screen-xl w-full h-full bg-white flex justify-center items-center">
+      <div className="mx-auto p-5 max-w-screen-xl w-full min-h-[70vh] h-full bg-white flex justify-center items-center">
         <img src={Logo} alt="logo" className="loading" />
       </div>
     );

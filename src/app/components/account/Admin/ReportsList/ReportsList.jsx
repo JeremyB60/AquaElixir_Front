@@ -34,26 +34,26 @@ const ReportsList = () => {
       <h1 className="text-2xl mb-10 font-bold">
         Administration - Gestion des avis signalés
       </h1>
-      <table className="w-full border-collapse">
+      <table className="w-full border-collapse text-customDarkGrey">
         <thead>
-          <tr className="border-b border-t-2 border-customDark">
-            <th className="min-w-1/12 p-2 text-left">ID</th>
+          <tr className="border-b border-t border-customDark">
+            <th className="min-w-1/12 py-3 text-left">ID</th>
             <th className="min-w-1/3 p-2 text-left">Identité client</th>
             <th className="min-w-1/3 p-2 text-left">Titre</th>
             <th className="min-w-1/3 p-2 text-left">Avis</th>
-            <th className="min-w-1/2 p-2 text-left">Publié le</th>
+            <th className="min-w-1/2 p-2 text-left">Publié&nbsp;le</th>
             <th className="min-w-1/2 p-2 text-left">Action</th>
           </tr>
         </thead>
         <tbody>
           {reports.map((report) => (
-            <tr key={report.id} className="">
+            <tr key={report.id}>
               <td className="p-2">{report.id}</td>
               <td className="p-2">{report.email}</td>
               <td className="p-2">{report.title}</td>
               <td className="p-2">{report.comment}</td>
               <td className="p-2">{report.createdAt}</td>
-              <td className="p-2">
+              <td className="p-2 flex justify-center">
                 <ReportDeleteButton
                   key={report.id}
                   reportId={report.id}
