@@ -53,7 +53,7 @@ const ReportsList = () => {
               <td className="p-2">{report.title}</td>
               <td className="p-2">{report.comment}</td>
               <td className="p-2">{report.createdAt}</td>
-              <td className="p-2 flex justify-center">
+              <td className="p-2">
                 <ReportDeleteButton
                   key={report.id}
                   reportId={report.id}

@@ -124,10 +124,10 @@ const UsersList = () => {
               <td className="p-2">{user.email}</td>
               <td className="p-2">{user.createdAt}</td>
               <td className="p-2">{user.accountStatus}</td>
-              <td className="p-2 md:flex justify-center gap-1">
+              <td className="p-2">
                 {user.email == currentUser.username ||
                 user.email == "admin@admin.fr" ? null : (
-                  <>
+                  <div className="flex justify-center gap-1">
                     <UserBanButton
                       userId={user.id}
                       onUserBanned={handleUserBanned}
@@ -138,7 +138,7 @@ const UsersList = () => {
                       userId={user.id}
                       onUserDeleted={handleUserDeleted}
                     />
-                  </>
+                  </div>
                 )}
               </td>
             </tr>

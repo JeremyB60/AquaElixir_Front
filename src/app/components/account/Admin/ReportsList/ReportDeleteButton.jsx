@@ -44,7 +44,7 @@ const ReportDeleteButton = ({ reportId, onReportDeleted }) => {
   
 
   return (
-    <div>
+    <div className="flex justify-center">
       <svg
         style={{ cursor: "pointer" }}
         onClick={deleteReport}
