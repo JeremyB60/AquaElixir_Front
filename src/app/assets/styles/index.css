@@ -142,7 +142,7 @@
 }
 
 /* Chargement de la page, icone AquaElixir qui tourne */
-.loading {
+.loadingLogo {
   animation: rotation 2s infinite linear;
 }
 
@@ -411,4 +411,49 @@ input[type="range"]::-moz-range-thumb {
 /* Séparateur hr du formulaire pour laisser un avis */
 .separateReview {
   border-color: #bbbbbb;
+}
+
+/* Bouton Ajouter au panier */
+.btn2 {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  color: #fff;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;  width: 173px;
+}
+
+.loading {
+  position: relative;
+}
+
+.loading-bar {
+  height: 48px; /* Hauteur de la barre de chargement */
+  background-color: #2E2E2E; /* Couleur de fond de la barre de chargement */
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: 173px;
+  border-radius: 5px;
+}
+
+.progress {
+  border-radius: 5px;
+  height: 100%;
+  width: 0;
+  background-color: #328634; /* Couleur de la barre de progression */
+  animation: fill-progress 1s ease-in-out; /* Animation pour remplir la barre de progression */
+}
+
+@keyframes fill-progress {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
 }

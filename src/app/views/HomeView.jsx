@@ -7,12 +7,16 @@ import { selectHasRole } from "../redux-store/authenticationSlice";
 import { newProducts, popularProducts } from "../api/backend/home";
 import { selectToken } from "../redux-store/authenticationSlice";
 import axios from "axios";
-import { addToCart } from "./../actions/cartActions";
+import { addToCart } from "./../redux-store/actions/cartActions";
 
 const HomeView = () => {
   // Redirection si ROLE_ADMIN
   const isAdmin = useSelector((state) => selectHasRole(state, ROLE_ADMIN));
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     if (isAdmin) {

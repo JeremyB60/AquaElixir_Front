@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   removeFromCart,
   updateCartItem,
   clearCart,
-} from "../actions/cartActions";
+} from "../redux-store/actions/cartActions";
 import { Link } from "react-router-dom";
 import { URL_HOME } from "../constants/urls/urlFrontEnd";
 import axios from "axios";
@@ -14,6 +14,10 @@ const Cart = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const token = useSelector(selectToken);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleRemoveFromCart = (productId) => {
     dispatch(removeFromCart(productId));
@@ -118,10 +122,6 @@ const Cart = () => {
                               className="mb-3 mx-auto"
                             />
                           </Link>
-                          {/* <img
-                            src={`https://localhost:8000${item.productImage}`}
-                            alt={item.productName}
-                          /> */}
                         </div>
                         <div className="flex-col pl-6 flex-1">
                           <div className="flex justify-between">

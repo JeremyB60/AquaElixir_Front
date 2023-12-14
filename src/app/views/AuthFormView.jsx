@@ -15,7 +15,11 @@ const AuthFormView = () => {
   const navigate = useNavigate();
   const isAuthenticated = useSelector(selectIsLogged);
   const [isToggle, setIsToggle] = React.useState(false);
-
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   // Effect
   useEffect(() => {
     if (isAuthenticated) {

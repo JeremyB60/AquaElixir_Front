@@ -40,8 +40,8 @@ const TypeView = () => {
 
   if (!type) {
     return (
-      <div className="mx-auto p-5 max-w-screen-xl w-full h-full bg-white flex justify-center items-center">
-        <img src={Logo} alt="logo" className="loading" />
+      <div className="mx-auto p-5 max-w-screen-xl w-full h-full min-h-[70vh] bg-white flex justify-center items-center">
+        <img src={Logo} alt="logo" className="loadingLogo" />
       </div>
     );
   }
@@ -118,7 +118,9 @@ const TypeView = () => {
                   />
                   <span
                     className={
-                      selectedSubtypes.includes(subtype.name) ? "font-semibold" : ""
+                      selectedSubtypes.includes(subtype.name)
+                        ? "font-semibold"
+                        : ""
                     }
                   >
                     {subtype.name}

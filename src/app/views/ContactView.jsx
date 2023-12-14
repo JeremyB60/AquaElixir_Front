@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ContactForm from "../components/pages/ContactForm";
 import { URL_CONTACT, URL_HOME } from "../constants/urls/urlFrontEnd";
 import { Link } from "react-router-dom";
 
-
 const ContactView = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [questions] = useState([
     {
       id: 1,

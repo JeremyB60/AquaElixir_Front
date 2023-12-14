@@ -6,8 +6,8 @@ import * as URL from "../../constants/urls/urlFrontEnd";
 import Logo from "./../../assets/images/logo.svg";
 import SubMenu from "./SubMenu";
 import { connect } from "react-redux";
-import { clearCart } from "../../actions/cartActions";
-import { clearUserInfo } from "../../actions/userActions";
+import { clearCart } from "../../redux-store/actions/cartActions";
+import { clearUserInfo } from "../../redux-store/actions/userActions";
 
 const Navbar = ({ itemCount }) => {
   const menuButtonRef = useRef(null);

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchUserInfo } from "../actions/userActions";
+import { fetchUserInfo } from "../redux-store/actions/userActions";
 import { selectToken } from "../redux-store/authenticationSlice";
 import { URL_AUTHFORM } from "../constants/urls/urlFrontEnd";
 import { selectIsLogged } from "../redux-store/authenticationSlice";
@@ -12,7 +12,11 @@ const ReturnItemView = () => {
   const isAuthenticated = useSelector(selectIsLogged);
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
-  const userInfo = useSelector(state => state.user.userInfo); // Assurez-vous que 'user' correspond au nom de votre reducer
+  const userInfo = useSelector((state) => state.user.userInfo); // Assurez-vous que 'user' correspond au nom de votre reducer
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     dispatch(fetchUserInfo(token));

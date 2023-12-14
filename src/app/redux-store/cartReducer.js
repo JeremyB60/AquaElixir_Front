@@ -1,10 +1,9 @@
-// cartReducer.js
 import {
   ADD_TO_CART,
   REMOVE_FROM_CART,
   UPDATE_CART_ITEM,
   CLEAR_CART,
-} from "../actions/cartActions";
+} from "./actions/cartActions";
 
 const initialState = {
   items: [],

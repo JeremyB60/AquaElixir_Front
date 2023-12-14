@@ -11,6 +11,10 @@ const SubtypeView = () => {
   const [maxPrice, setMaxPrice] = useState("");
   const location = useLocation();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Réinitialiser les filtres lorsque l'emplacement (page) change
   useEffect(() => {
     setMinPrice("");
@@ -35,8 +39,8 @@ const SubtypeView = () => {
 
   if (!subtype) {
     return (
-      <div className="mx-auto p-5 max-w-screen-xl w-full h-full bg-white flex justify-center items-center">
-        <img src={Logo} alt="logo" className="loading" />
+      <div className="mx-auto p-5 max-w-screen-xl w-full h-full min-h-[70vh] bg-white flex justify-center items-center">
+        <img src={Logo} alt="logo" className="loadingLogo" />
       </div>
     );
   }
@@ -80,9 +84,7 @@ const SubtypeView = () => {
         <div className="flex mt-24">
           <div className="w-1/4 pr-14">
             {/* Ajouter des jauges (sliders) pour le prix */}
-            <h2 className="border-b mb-6 pb-4 text-size16 font-bold">
-              Prix
-            </h2>
+            <h2 className="border-b mb-6 pb-4 text-size16 font-bold">Prix</h2>
             <div className="flex gap-2 mb-1 items-center">
               <label className="mb-1">Mini&nbsp;:</label>
               <input

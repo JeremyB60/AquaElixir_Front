@@ -11,7 +11,7 @@ import {
 import { signIn } from "../../redux-store/authenticationSlice";
 import { authenticate } from "./../../api/backend/account";
 import PropTypes from "prop-types";
-import { fetchUserInfo } from "../../actions/userActions";
+import { fetchUserInfo } from "../../redux-store/actions/userActions";
 
 /**
  * Component Login

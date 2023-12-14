@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, Navigate } from "react-router-dom";
 import {
   URL_HOME,
@@ -30,14 +30,13 @@ const ForgotPasswordEmailSentView = () => {
               </h1>
               <p>
                 Vous allez recevoir un message à l’adresse indiquée contenant un
-                lien qui vous permettra de réinitialiser votre mot de passe. Si le message
-                n’apparaît pas dans votre boîte de réception, veuillez vérifier
-                que celui-ci n’est pas dans vos messages indésirables.
+                lien qui vous permettra de réinitialiser votre mot de passe. Si
+                le message n’apparaît pas dans votre boîte de réception,
+                veuillez vérifier que celui-ci n’est pas dans vos messages
+                indésirables.
               </p>
               <Link to={URL_AUTHFORM}>
-                <button className="btn btn-black mt-10">
-                  Retour →
-                </button>
+                <button className="btn btn-black mt-10">Retour →</button>
               </Link>
             </div>
           </div>

@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { URL_HOME } from "../constants/urls/urlFrontEnd";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart as addToCartAction } from "../actions/cartActions";
+import { addToCart as addToCartAction } from "../redux-store/actions/cartActions";
 import { selectToken } from "../redux-store/authenticationSlice";
 import Logo from "../assets/images/icons/aquaelixir.ico";
 import Reviews from "../components/pages/Product/Review";
@@ -16,35 +16,8 @@ const ProductView = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const token = useSelector(selectToken);
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const response = await axios.get(
-          `https://localhost:8000/api/product/${slug}`
-        );
-        setProduct(response.data);
-      } catch (error) {
-        console.error("Erreur lors de la récupération du produit:", error);
-      }
-    };
-
-    fetchProduct();
-  }, [slug]);
-
-  useEffect(() => {
-    // Utilisez cartItems ici, l'effet sera déclenché chaque fois que cartItems change
-    console.log("Cart items updated:", cartItems);
-  }, [cartItems]);
-
-  if (!product) {
-    return (
-      <div className="mx-auto p-5 max-w-screen-xl w-full min-h-[70vh] h-full bg-white flex justify-center items-center">
-        <img src={Logo} alt="logo" className="loading" />
-      </div>
-    );
-  }
-
+  const [loading, setLoading] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
   const addToCart = (
     productId,
     productName,
@@ -69,7 +42,7 @@ const ProductView = () => {
         productSlug
       )
     );
-
+    setLoading(true);
     // Construction de l'objet à envoyer au backend
     const productData = {
       productId,
@@ -88,11 +61,52 @@ const ProductView = () => {
       )
       .then((response) => {
         console.log("Product added to the cart successfully", response.data);
+        setAddedToCart(true);
+
+        setTimeout(() => {
+          setLoading(false);
+        }, 100);
+        setTimeout(() => {
+          setAddedToCart(false);
+        }, 2000); // durée d'affichage de la quantité ajoutée
       })
       .catch((error) => {
         console.error("Error adding product to the cart", error);
+        setLoading(false);
       });
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(
+          `https://localhost:8000/api/product/${slug}`
+        );
+        setProduct(response.data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération du produit:", error);
+      }
+    };
+
+    fetchProduct();
+  }, [slug]);
+
+  useEffect(() => {
+    // Utilisez cartItems ici, l'effet sera déclenché chaque fois que cartItems change
+    console.log("Cart items updated:", cartItems);
+  }, [cartItems]);
+
+  if (!product) {
+    return (
+      <div className="mx-auto p-5 max-w-screen-xl w-full min-h-[70vh] h-full bg-white flex justify-center items-center">
+        <img src={Logo} alt="logo" className="loadingLogo" />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -209,7 +223,10 @@ const ProductView = () => {
               </button>
             ) : (
               <button
-                className="btn btn-black mb-10 md:mb-0 mt-8"
+                className={`btn2 mb-10 md:mb-0 mt-8 ${
+                  loading || addedToCart ? "loading bg-[#328634] border-2 border-solid border-[#328634]" : "bg-customDark border-2 border-solid border-gray-800"
+                }`}
+                disabled={loading || addedToCart}
                 onClick={() =>
                   addToCart(
                     product.id,
@@ -224,7 +241,26 @@ const ProductView = () => {
                   )
                 }
               >
-                Ajouter au panier
+                {loading ? (
+                  <div className="loading-bar">
+                    <div className="progress" />
+                  </div>
+                ) : addedToCart ? (
+                  <div className="flex justify-center gap-2 items-center">
+                      Ajouté
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="24"
+                        viewBox="0 -960 960 960"
+                        width="24"
+                        fill="#fff"
+                      >
+                        <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
+                      </svg>
+                  </div>
+                ) : (
+                  "Ajouter au panier"
+                )}
               </button>
             )}
           </div>

@@ -7,7 +7,7 @@ import { URL_HOME, URL_MY_ACCOUNT } from "../../constants/urls/urlFrontEnd";
 import { selectToken } from "../../redux-store/authenticationSlice";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import { fetchUserInfo } from "../../actions/userActions";
+import { fetchUserInfo } from "../../redux-store/actions/userActions";
 
 /**
  * Component MyAccount

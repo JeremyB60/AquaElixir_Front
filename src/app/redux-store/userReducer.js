@@ -1,5 +1,3 @@
-// userReducer.js
-
 const initialState = {
     // ... autres états
     userInfo: null,

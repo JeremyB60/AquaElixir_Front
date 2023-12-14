@@ -39,7 +39,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <div className="relative flex h-full cursor-default flex-col font-satoshiVariable">
+      <div className="relative flex cursor-default flex-col font-satoshiVariable">
         {!isAdmin && <Navbar />}
         <main className="grow">
           <Routes />

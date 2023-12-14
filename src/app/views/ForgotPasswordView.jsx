@@ -11,6 +11,10 @@ const ForgotPasswordView = () => {
   const isAuthenticated = useSelector(selectIsLogged);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (isAuthenticated) navigate(URL_HOME);
   }, []);
 
