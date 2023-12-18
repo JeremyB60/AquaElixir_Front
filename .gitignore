@@ -34,3 +34,4 @@ yarn-error.log*
 package-lock.json
 yarn.lock
 /src/app/api/backend/api.Backend.js
+/certificates
