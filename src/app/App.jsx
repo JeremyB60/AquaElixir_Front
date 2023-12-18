@@ -9,6 +9,7 @@ import { signIn, selectHasRole } from "./redux-store/authenticationSlice";
 import Routes from "./routes/Routes";
 import { getToken } from "./services/tokenServices";
 import { ROLE_ADMIN } from "./constants/rolesConstant";
+import { loadStripe } from '@stripe/stripe-js';
 
 const contextClass = {
   success: "bg-green-600",
@@ -18,6 +19,10 @@ const contextClass = {
   default: "bg-indigo-600",
   dark: "bg-white-600 font-gray-300",
 };
+
+const stripePromise = loadStripe(
+  "pk_test_51ONM1hBLaSzPsyD6g1yO56WoZFF0BiM0y7o14uf0wrJYfF5KEchgnbIzEh62L637TOX7Vcvi0U1zsa4r38KkexTI00TRuj6Oq2"
+);
 
 /**
  * Component RouteWithNavigation
@@ -42,7 +47,7 @@ const App = () => {
       <div className="relative flex cursor-default flex-col font-satoshiVariable">
         {!isAdmin && <Navbar />}
         <main className="grow">
-          <Routes />
+          <Routes stripePromise={stripePromise} />
         </main>
         <ToastContainer
           toastClassName={({ type }) =>

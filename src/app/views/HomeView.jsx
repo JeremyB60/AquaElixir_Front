@@ -122,7 +122,7 @@ const HomeView = () => {
             sublimes et revitalisés.
           </p>
           <Link
-            to="http://localhost:5173/produit/coffret"
+            to="https://localhost:5173/produit/coffret"
             className="mt-4 block"
           >
             <button className="btn btn-black">Découvrir le coffret</button>

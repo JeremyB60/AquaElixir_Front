@@ -97,6 +97,45 @@ const Cart = () => {
     return totalHT % 1 !== 0 ? totalHT.toFixed(2) : totalHT.toFixed(0);
   };
 
+  // Appel à l'API Symfony depuis React
+
+  const handleCheckout = async () => {
+    try {
+      const response = await fetch(
+        "http://votre-api.com/create-checkout-session",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // Ajoutez les données du panier ici
+          body: JSON.stringify({
+            items: [
+              {
+                id: 1,
+                name: "Produit 1",
+                price: 19.99,
+                quantity: 2,
+              },
+              // ... autres articles du panier ...
+            ],
+            total: 69.97,
+          }),
+        }
+      );
+
+      const session = await response.json();
+
+      // Redirigez l'utilisateur vers la page de paiement Stripe
+      window.location.href = `https://checkout.stripe.com/pay/${session.id}`;
+    } catch (error) {
+      console.error(
+        "Erreur lors de la création de la session de paiement",
+        error
+      );
+    }
+  };
+
   return (
     <>
       <div className="max-w-screen-xl mx-auto pl-4 pt-5 text-sm font-medium">
@@ -119,7 +158,7 @@ const Cart = () => {
                             <img
                               src={`https://localhost:8000${item.productImage}`}
                               alt={item.productName}
-                              className="mb-3 mx-auto"
+                              className="mx-auto"
                             />
                           </Link>
                         </div>
@@ -175,7 +214,7 @@ const Cart = () => {
                               ).toFixed(2)}
                               €
                             </p>
-                            <div className="flex">
+                            <div className="flex mr-1">
                               <button
                                 className="btn btn-transparent text-black border-customDark p-0 w-6 h-6 rounded"
                                 onClick={() =>
@@ -292,9 +331,21 @@ const Cart = () => {
                 <p className="mb-8 mt-1">TOTAL</p> <p>{calculateTotal()} €</p>
               </div>
               <div className="flex-col justify-center space-y-4">
-                <button className="btn btn-black mx-auto block">
-                  Passer la commande
-                </button>
+                {cartItems.length > 0 ? (
+                  <Link to="/checkout">
+                    <button className="btn btn-black mx-auto block">
+                      Payer la commande
+                    </button>
+                  </Link>
+                ) : (
+                  <button
+                    className="btn-disabled mx-auto block"
+                    disabled
+                    title="Ajouter des produits au panier pour payer la commande"
+                  >
+                    Payer la commande
+                  </button>
+                )}
                 <Link
                   to={URL_HOME}
                   className="text-center text-customBlue font-semi-bold block"

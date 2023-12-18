@@ -14,6 +14,7 @@ export const addToCart = (
   productImage,
   productMesurement,
   productPrice,
+  productStripePriceId,
   productTaxe,
   quantity,
   productSlug
@@ -26,6 +27,7 @@ export const addToCart = (
     productImage,
     productMesurement,
     productPrice,
+    productStripePriceId,
     productTaxe,
     quantity,
     productSlug

@@ -25,6 +25,7 @@ const ProductView = () => {
     productImage,
     productMesurement,
     productPrice,
+    productStripePriceId,
     productTaxe,
     quantity,
     productSlug
@@ -37,6 +38,7 @@ const ProductView = () => {
         productImage,
         productMesurement,
         productPrice,
+        productStripePriceId,
         productTaxe,
         quantity,
         productSlug
@@ -235,6 +237,7 @@ const ProductView = () => {
                     product.images[0].url,
                     product.mesurement,
                     product.price,
+                    product.stripePriceId,
                     product.taxe,
                     quantity,
                     product.slug
@@ -266,7 +269,6 @@ const ProductView = () => {
           </div>
         </div>
         <Description productName={product.name} />
-        <hr />
         <Reviews productId={product.id} />
       </div>
     </>
