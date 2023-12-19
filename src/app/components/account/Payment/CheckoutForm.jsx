@@ -5,8 +5,9 @@ import {
   EmbeddedCheckoutProvider,
   EmbeddedCheckout,
 } from "@stripe/react-stripe-js";
-import { selectToken } from "../../redux-store/authenticationSlice";
+import { selectToken } from "../../../redux-store/authenticationSlice";
 import { useSelector } from "react-redux";
+import Logo from "../../../assets/images/icons/aquaelixir.ico";
 
 const CheckoutForm = ({ stripePromise }) => {
   const [clientSecret, setClientSecret] = useState("");
@@ -14,19 +15,18 @@ const CheckoutForm = ({ stripePromise }) => {
   const cartItems = useSelector((state) => state.cart.items);
 
   useEffect(() => {
-    // Construisez un tableau d'objets représentant les articles du panier
+    // Tableau d'objets représentant les articles du panier
     const cartItemsData = cartItems.map((item) => ({
       price: item.productStripePriceId,
       quantity: item.quantity,
     }));
     console.log(cartItemsData);
+
     axios
       .post(
         "https://localhost:8000/api/create-checkout-session",
         {
           cartItems: cartItemsData,
-          // price: "price_1OO3ePBLaSzPsyD6ft8C7eGe",
-          // quantity: 10,
         },
         {
           headers: {
@@ -43,6 +43,14 @@ const CheckoutForm = ({ stripePromise }) => {
       });
   }, [token]);
 
+  if (!clientSecret) {
+    return (
+      <div className="mx-auto p-5 max-w-screen-xl w-full min-h-[70vh] h-full bg-white flex justify-center items-center">
+        <img src={Logo} alt="logo" className="loadingLogo" />
+      </div>
+    );
+  }
+  
   return (
     <div id="checkout">
       {clientSecret && (

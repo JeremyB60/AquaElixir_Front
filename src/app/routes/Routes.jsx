@@ -25,8 +25,8 @@ import UsersList from "../components/account/Admin/UsersList/UsersList";
 import ReportsList from "../components/account/Admin/ReportsList/ReportsList";
 import Profile from "../components/account/Admin/Profile/Profile";
 import Cart from "../views/CartView";
-import CheckoutForm from "../components/account/CheckoutForm";
-import Return from "../components/account/Return";
+import CheckoutForm from "../components/account/Payment/CheckoutForm";
+import Return from "../components/account/Payment/Return";
 
 // Contexts
 import { FormValidationProvider } from "../contexts/FormValidationContext";
@@ -91,8 +91,22 @@ const Routes = ({ stripePromise }) => {
           />
         </Route>
         {/* UTILISATEURS*/}
-        <Route path="/checkout" element={<CheckoutForm stripePromise={stripePromise} />} />
-        <Route path="/return" element={<Return />} />
+        <Route
+          path={URL.URL_PAYMENT_CHECKOUT}
+          element={
+            <PrivateRoute>
+              <CheckoutForm stripePromise={stripePromise} />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={URL.URL_PAYMENT_RETURN}
+          element={
+            <PrivateRoute>
+              <Return />
+            </PrivateRoute>
+          }
+        />
         <Route
           path={URL.URL_CART}
           element={

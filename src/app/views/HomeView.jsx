@@ -47,7 +47,6 @@ const HomeView = () => {
   // Récupération du panier dans la bdd
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
-  console.log(token);
   const [cartItems, setCartItems] = useState([]);
   const [isCartFetched, setIsCartFetched] = useState(false);
 
@@ -85,6 +84,7 @@ const HomeView = () => {
                 cartItem.productImage,
                 cartItem.productMesurement,
                 cartItem.productPrice,
+                cartItem.productStripePriceId,
                 cartItem.productTaxe,
                 cartItem.productQuantity,
                 cartItem.productSlug
@@ -109,11 +109,13 @@ const HomeView = () => {
 
   return (
     <>
-      <div className="max-w-screen-xl relative mx-auto">
-        <span className="absolute top-0 right-0 pr-4 z-10 font-semibold bienvenuePrenom">
-          Bienvenue {userInfo?.firstName}
-        </span>
-      </div>
+      {token && (
+        <div className="max-w-screen-xl relative mx-auto">
+          <span className="absolute top-0 right-0 pr-4 z-10 font-semibold bienvenuePrenom">
+            Bienvenue {userInfo?.firstName}
+          </span>
+        </div>
+      )}
       <div className="p-5 w-full backgroundAccueil relative">
         <div className="textAccueil absolute space-y-3 xxl:right-[20%]">
           <h1 className="text-md">Coffret soin cheveux</h1>

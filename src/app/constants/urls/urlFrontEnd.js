@@ -11,6 +11,10 @@ export const URL_MY_ACCOUNT = "/mon-compte";
 export const URL_MY_ORDERS = "/mes-commandes";
 export const URL_RETURN_ITEM = "/retour-article";
 
+/* PAIEMENT */
+export const URL_PAYMENT_CHECKOUT = "/checkout";
+export const URL_PAYMENT_RETURN = "/return";
+
 /* ADMIN */
 export const URL_ADMIN = "/admin";
 export const URL_ADMIN_DASHBOARD = "/admin/tableau-de-bord";
