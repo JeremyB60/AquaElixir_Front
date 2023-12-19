@@ -5,17 +5,21 @@ import { selectToken } from "../../../redux-store/authenticationSlice";
 import { useSelector } from "react-redux";
 import { URL_HOME } from "../../../constants/urls/urlFrontEnd";
 import Logo from "../../../assets/images/icons/aquaelixir.ico";
+import { clearCart } from "../../../redux-store/actions/cartActions";
+import { useDispatch } from "react-redux";
 
 const Return = () => {
   const [status, setStatus] = useState(null);
   const [customerEmail, setCustomerEmail] = useState("");
   const token = useSelector(selectToken);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const sessionId = urlParams.get("session_id");
+
     axios
       .post(
         "https://localhost:8000/api/status",
@@ -33,6 +37,23 @@ const Return = () => {
         console.log(response.data);
         setStatus(data.status);
         setCustomerEmail(data.customer_email);
+
+        // Chain another Axios request to clear the cart
+        return axios.delete("https://localhost:8000/api/clear-cart", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+      })
+      .then((clearCartResponse) => {
+        // Handle the response from clearing the cart
+        console.log(clearCartResponse.data);
+        // Perform additional actions as needed
+
+        // Dispatch the clearCart action after clearing the cart
+        dispatch(clearCart());
       })
       .catch((error) => {
         console.error("Error fetching status:", error);
