@@ -8,11 +8,18 @@ import {
 import { selectToken } from "../../../redux-store/authenticationSlice";
 import { useSelector } from "react-redux";
 import Logo from "../../../assets/images/icons/aquaelixir.ico";
+import { useNavigate } from "react-router-dom";
+import { URL_HOME } from "../../../constants/urls/urlFrontEnd";
 
 const CheckoutForm = ({ stripePromise }) => {
   const [clientSecret, setClientSecret] = useState("");
   const token = useSelector(selectToken);
   const cartItems = useSelector((state) => state.cart.items);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     // Tableau d'objets représentant les articles du panier
@@ -40,6 +47,7 @@ const CheckoutForm = ({ stripePromise }) => {
       })
       .catch((error) => {
         console.error("Erreur lors de la récupération du clientSecret:", error);
+        navigate(URL_HOME);
       });
   }, [token]);
 
@@ -50,9 +58,9 @@ const CheckoutForm = ({ stripePromise }) => {
       </div>
     );
   }
-  
+
   return (
-    <div id="checkout">
+    <div id="checkout" className="min-h-[70vh]">
       {clientSecret && (
         <EmbeddedCheckoutProvider
           stripe={stripePromise}

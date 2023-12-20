@@ -14,6 +14,10 @@ const Return = () => {
   const token = useSelector(selectToken);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const queryString = window.location.search;
@@ -38,7 +42,7 @@ const Return = () => {
         setStatus(data.status);
         setCustomerEmail(data.customer_email);
 
-        // Chain another Axios request to clear the cart
+        // Request to clear the cart
         return axios.delete("https://localhost:8000/api/clear-cart", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -50,7 +54,6 @@ const Return = () => {
       .then((clearCartResponse) => {
         // Handle the response from clearing the cart
         console.log(clearCartResponse.data);
-        // Perform additional actions as needed
 
         // Dispatch the clearCart action after clearing the cart
         dispatch(clearCart());
@@ -80,7 +83,7 @@ const Return = () => {
         className="min-h-[70vh] flex items-center justify-center bg-white"
       >
         <div className="max-w-2xl p-8 bg-customLightGrey rounded shadow-lg">
-          <p className="text-lg mb-4">
+          <p className="mb-4">
             Nous vous remercions pour votre achat ! Un e-mail de confirmation
             sera envoyé à {customerEmail}. Si vous avez des questions, veuillez
             envoyer un e-mail à{" "}
