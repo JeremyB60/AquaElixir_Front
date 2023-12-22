@@ -17,7 +17,8 @@ export const addToCart = (
   productStripePriceId,
   productTaxe,
   quantity,
-  productSlug
+  productSlug,
+  productAverageReview
 ) => ({
   type: ADD_TO_CART,
   payload: {
@@ -30,7 +31,8 @@ export const addToCart = (
     productStripePriceId,
     productTaxe,
     quantity,
-    productSlug
+    productSlug,
+    productAverageReview
   },
 });
 

@@ -28,7 +28,8 @@ const ProductView = () => {
     productStripePriceId,
     productTaxe,
     quantity,
-    productSlug
+    productSlug,
+    productAverageReview
   ) => {
     dispatch(
       addToCartAction(
@@ -41,7 +42,8 @@ const ProductView = () => {
         productStripePriceId,
         productTaxe,
         quantity,
-        productSlug
+        productSlug,
+        productAverageReview
       )
     );
     setLoading(true);
@@ -76,6 +78,13 @@ const ProductView = () => {
         console.error("Error adding product to the cart", error);
         setLoading(false);
       });
+  };
+
+  const [reviewContent, setReviewContent] = useState(null);
+
+  // Function to update content in the parent
+  const updateReviewContent = (newContent) => {
+    setReviewContent(newContent);
   };
 
   useEffect(() => {
@@ -137,7 +146,11 @@ const ProductView = () => {
               {product.type.parent.name}
             </h2>
             <h1 className="text-size24 font-bold my-1">{product.name}</h1>
-            <p className="font-semibold mb-3 md:mb-8">{product.mesurement}</p>
+            <p className="font-semibold mb-2">{product.mesurement}</p>
+            <div className="flex font-semibold items-center mb-2 md:mb-8">
+              {reviewContent}
+            </div>
+
             <p className="mb-3 md:mb-8 max-w-none md:max-w-[500px]">
               {product.description} {product.detailedDescription}{" "}
               {product.description} {product.detailedDescription}
@@ -226,7 +239,9 @@ const ProductView = () => {
             ) : (
               <button
                 className={`btn2 mb-10 md:mb-0 mt-8 ${
-                  loading || addedToCart ? "loading bg-[#328634] border-2 border-solid border-[#328634]" : "bg-customDark border-2 border-solid border-gray-800"
+                  loading || addedToCart
+                    ? "loading bg-[#328634] border-2 border-solid border-[#328634]"
+                    : "bg-customDark border-2 border-solid border-gray-800"
                 }`}
                 disabled={loading || addedToCart}
                 onClick={() =>
@@ -250,16 +265,16 @@ const ProductView = () => {
                   </div>
                 ) : addedToCart ? (
                   <div className="flex justify-center gap-2 items-center">
-                      Ajouté
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="24"
-                        viewBox="0 -960 960 960"
-                        width="24"
-                        fill="#fff"
-                      >
-                        <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
-                      </svg>
+                    Ajouté
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="24"
+                      viewBox="0 -960 960 960"
+                      width="24"
+                      fill="#fff"
+                    >
+                      <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
+                    </svg>
                   </div>
                 ) : (
                   "Ajouter au panier"
@@ -269,7 +284,10 @@ const ProductView = () => {
           </div>
         </div>
         <Description productName={product.name} />
-        <Reviews productId={product.id} />
+        <Reviews
+          productId={product.id}
+          onUpdateReviewContent={updateReviewContent}
+        />
       </div>
     </>
   );

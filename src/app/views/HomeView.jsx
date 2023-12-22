@@ -8,6 +8,7 @@ import { newProducts, popularProducts } from "../api/backend/home";
 import { selectToken } from "../redux-store/authenticationSlice";
 import axios from "axios";
 import { addToCart } from "./../redux-store/actions/cartActions";
+import AverageReview from "../components/layouts/AverageReview";
 
 const HomeView = () => {
   // Redirection si ROLE_ADMIN
@@ -87,7 +88,8 @@ const HomeView = () => {
                 cartItem.productStripePriceId,
                 cartItem.productTaxe,
                 cartItem.productQuantity,
-                cartItem.productSlug
+                cartItem.productSlug,
+                cartItem.productAverageReview
               )
             );
           });
@@ -103,7 +105,6 @@ const HomeView = () => {
     // Appel à la fonction fetchUserCart lorsque le composant est monté
     fetchUserCart();
   }, [isCartFetched]);
-
   // Affichage Bienvenue prénom
   const userInfo = useSelector((state) => state.user.userInfo);
 
@@ -152,6 +153,9 @@ const HomeView = () => {
                 <h3 className="text-size16 font-semibold mb-1">
                   {product.name}
                 </h3>
+                <div className="flex mb-3">
+                  <AverageReview averageReview={product.averageReview} />
+                </div>
                 <p className="mb-2">{product.price} €</p>
               </div>
             ))}
@@ -179,6 +183,9 @@ const HomeView = () => {
                 <h3 className="text-size16 font-semibold mb-1">
                   {product.name}
                 </h3>
+                <div className="flex mb-3">
+                  <AverageReview averageReview={product.averageReview} />
+                </div>
                 <p className="mb-2">{product.price} €</p>
               </div>
             ))}

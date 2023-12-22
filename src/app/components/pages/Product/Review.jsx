@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectToken } from "../../../redux-store/authenticationSlice";
 import ReviewForm from "./ReviewForm";
 import ReviewItem from "./ReviewItem";
 
-const Reviews = ({ productId }) => {
+const Reviews = ({ productId, onUpdateReviewContent }) => {
   const [reviews, setReviews] = useState([]);
   const token = useSelector(selectToken);
   const [itemsPerPage] = useState(4);
@@ -57,8 +57,37 @@ const Reviews = ({ productId }) => {
   };
 
   function generateStars(rating) {
+    if (rating === null || rating === 0) {
+      // Si la moyenne des avis est 0, afficher des étoiles vides avec un contour gris
+      const emptyStars = Array.from({ length: 5 }, (_, index) => (
+        <svg
+          className="mr-1"
+          key={`empty-${index}`}
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* SVG path for the empty star with gray border and white fill */}
+          <path
+            d="M8 0L10.3511 4.76393L15.6085 5.52786L11.8042 9.23607L12.7023 14.4721L8 12L3.29772 14.4721L4.19577 9.23607L0.391548 5.52786L5.64886 4.76393L8 0Z"
+            fill="#d9d9d9"
+            stroke="#d9d9d9"
+            strokeWidth="1"
+          />
+        </svg>
+      ));
+
+      return emptyStars;
+    }
+
+    const filledStars = Math.round(rating);
+
     const stars = [];
-    for (let i = 0; i < rating; i++) {
+
+    // Add filled stars
+    for (let i = 0; i < filledStars; i++) {
       stars.push(
         <svg
           className="mr-1"
@@ -66,16 +95,42 @@ const Reviews = ({ productId }) => {
           width="16"
           height="16"
           viewBox="0 0 16 16"
-          fill="none"
+          fill="#00819E"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
             d="M8 0L10.3511 4.76393L15.6085 5.52786L11.8042 9.23607L12.7023 14.4721L8 12L3.29772 14.4721L4.19577 9.23607L0.391548 5.52786L5.64886 4.76393L8 0Z"
-            fill="#00819E"
+            stroke="#00819E"
+            strokeWidth="1"
           />
         </svg>
       );
     }
+
+    // Add empty stars to reach a total of 5 stars
+    const emptyStars = 5 - filledStars;
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(
+        <svg
+          className="mr-1"
+          key={`empty-${i}`}
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* SVG path for the empty star with blue border and white fill */}
+          <path
+            d="M8 0L10.3511 4.76393L15.6085 5.52786L11.8042 9.23607L12.7023 14.4721L8 12L3.29772 14.4721L4.19577 9.23607L0.391548 5.52786L5.64886 4.76393L8 0Z"
+            fill="#FFFFFF" // White fill for the empty star
+            stroke="#00819E" // Blue border color for the empty star
+            strokeWidth="1" // Adjust the border width as needed
+          />
+        </svg>
+      );
+    }
+
     return stars;
   }
 
@@ -136,28 +191,53 @@ const Reviews = ({ productId }) => {
   ];
 
   // Calcul de la moyenne des avis totaux
-  const moyenneAvisTotaux = Math.round(
-    (1 * nombreAvisNote1 +
-      2 * nombreAvisNote2 +
-      3 * nombreAvisNote3 +
-      4 * nombreAvisNote4 +
-      5 * nombreAvisNote5) /
-      totalAvis
+  const moyenneAvisTotaux =
+    totalAvis > 0
+      ? Math.round(
+          (1 * nombreAvisNote1 +
+            2 * nombreAvisNote2 +
+            3 * nombreAvisNote3 +
+            4 * nombreAvisNote4 +
+            5 * nombreAvisNote5) /
+            totalAvis
+        )
+      : 0;
+
+  // Utilisez useMemo pour mémoriser le contenu JSX
+  const reviewContent = useMemo(
+    () => (
+      <>
+        {generateStars(moyenneAvisTotaux)}
+        <span className="ml-4">
+          {moyenneAvisTotaux === null || moyenneAvisTotaux === 0
+            ? '-'
+            : moyenneAvisTotaux % 1 === 0
+            ? moyenneAvisTotaux.toFixed(0)
+            : moyenneAvisTotaux.toFixed(1)}
+        </span>
+        <span className="mx-2">|</span>
+        <span>{reviews.length} avis</span>
+      </>
+    ),
+    [moyenneAvisTotaux, reviews.length]
   );
+
+  useEffect(() => {
+    // Appelez la fonction de mise à jour du parent avec le contenu mémorisé
+    onUpdateReviewContent(reviewContent);
+  }, [reviewContent, onUpdateReviewContent]);
 
   return (
     <>
       <div className="md:flex mt-20 gap-20 mb-16">
         <div className="w-full md:w-1/2 max-w-[370px] mx-auto md:mx-0 mb-16 md:mb-0">
           <h3 className="text-size24 font-bold mb-4">Avis des clients</h3>
-          {reviews.length > 0 && (
-            <div className="flex items-center">
-              {generateStars(moyenneAvisTotaux)}
-              <span className="ml-4 text-customDarkGrey">
-                Basé sur {reviews.length} avis
-              </span>
-            </div>
-          )}
+          <div className="flex items-center">
+            {generateStars(moyenneAvisTotaux)}
+            <span className="ml-4 font-semibold text-customDarkGrey">
+              Basé sur {reviews.length} avis
+            </span>
+          </div>
           <div className="py-7">
             {avisParNote.reverse().map((avis, index) => (
               <div key={index} className="flex items-center">

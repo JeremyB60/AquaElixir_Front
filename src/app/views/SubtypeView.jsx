@@ -3,6 +3,7 @@ import { useParams, Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { URL_HOME } from "../constants/urls/urlFrontEnd";
 import Logo from "../assets/images/icons/aquaelixir.ico";
+import AverageReview from "../components/layouts/AverageReview";
 
 const SubtypeView = () => {
   const { slug } = useParams();
@@ -133,6 +134,9 @@ const SubtypeView = () => {
                   <h3 className="text-size16 font-semibold mb-1">
                     {product.name}
                   </h3>
+                  <div className="flex mb-3">
+                    <AverageReview averageReview={product.averageReview} />
+                  </div>
                   <p className="mb-2">{product.price} €</p>
                 </div>
               ))}
