@@ -134,7 +134,7 @@ const HomeView = () => {
       </div>
       <div className="mx-auto max-w-screen-xl w-full bg-white p-8">
         <div className="relative">
-          <h2 className="text-2xl font-bold my-10 uppercase">Nouveautés</h2>
+          <h2 className="text-2xl font-bold mt-10 mb-20 sm:mb-10 uppercase">Nouveautés</h2>
           <Link className="absolute font-semibold top-9 sm:top-0 right-100 sm:-right-0">
             Voir toutes les nouveautés →
           </Link>
@@ -162,7 +162,7 @@ const HomeView = () => {
           </div>
         </div>
         <div className="relative">
-          <h2 className="text-2xl font-bold mb-10 uppercase">
+          <h2 className="text-2xl font-bold mb-20 sm:mb-10 uppercase">
             Produits Populaires
           </h2>
           <Link className="absolute font-semibold top-9 sm:top-0 right-100 sm:-right-0">
@@ -192,14 +192,14 @@ const HomeView = () => {
           </div>
         </div>
         <div className="relative">
-          <h2 className="text-2xl font-bold mb-10 uppercase">
+          <h2 className="text-2xl font-bold mb-20 sm:mb-10 uppercase">
             Nos engagements
           </h2>
           <Link className="absolute font-semibold top-9 sm:top-0 right-100 sm:-right-0">
             En savoir plus sur les marques →
           </Link>
           {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-10 lg:mb-20 gap-y-3"> */}
-          <div className="flex flex-wrap justify-between mb-10 gap-y-3">
+          <div className="flex flex-wrap justify-between mb-10 gap-y-10">
             <div className="engagement engagement1">
               durabilité de la récolte
             </div>
