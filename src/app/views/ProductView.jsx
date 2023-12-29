@@ -8,6 +8,7 @@ import { selectToken } from "../redux-store/authenticationSlice";
 import Logo from "../assets/images/icons/aquaelixir.ico";
 import Reviews from "../components/pages/Product/Review";
 import Description from "../components/pages/Product/Description";
+import { toast, Slide } from "react-toastify";
 
 const ProductView = () => {
   const { slug } = useParams();
@@ -16,8 +17,9 @@ const ProductView = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const token = useSelector(selectToken);
-  const [loading, setLoading] = useState(false);
-  const [addedToCart, setAddedToCart] = useState(false);
+  const [isAddingToCart, setAddingToCart] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  // const [addedToCart, setAddedToCart] = useState(false);
   const addToCart = (
     productId,
     productName,
@@ -31,6 +33,11 @@ const ProductView = () => {
     productSlug,
     productAverageReview
   ) => {
+    if (isAddingToCart) {
+      console.log("PATIENCE");
+      return; // Si déjà en cours de traitement, ne rien faire
+    }
+    setAddingToCart(true);
     dispatch(
       addToCartAction(
         productId,
@@ -46,7 +53,45 @@ const ProductView = () => {
         productAverageReview
       )
     );
-    setLoading(true);
+
+    toast.success(
+      <div>
+        <p style={{ margin: "5px" }}>
+          <strong>{quantity}</strong>{" "}
+          {quantity === 1 ? (
+            productName
+          ) : (
+            <span>&ldquo;{productName}&rdquo;</span>
+          )}{" "}
+          ajouté(s) au panier !
+        </p>
+        <p style={{ fontSize: "12px", color: "#888" }}>
+          Consultez votre panier pour finaliser votre commande.
+        </p>
+      </div>,
+      {
+        position: toast.POSITION.TOP_CENTER, // Position au centre en haut
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: false,
+        transition: Slide,
+        style: {
+          background: "#FFF",
+          color: "#2E2E2E",
+          borderRadius: "5px", // Coins arrondis
+          border: "none", // Bordure
+          boxShadow: "0px 1px 4px 0px #00000040",
+        },
+        progressStyle: {
+          background: "#07bc0c", // Couleur de la barre de progression
+          height: "3px", // Hauteur de la barre de progression
+        },
+      }
+    );
+
+    // setLoading(true);
     // Construction de l'objet à envoyer au backend
     const productData = {
       productId,
@@ -65,18 +110,20 @@ const ProductView = () => {
       )
       .then((response) => {
         console.log("Product added to the cart successfully", response.data);
-        setAddedToCart(true);
-
-        setTimeout(() => {
-          setLoading(false);
-        }, 100);
-        setTimeout(() => {
-          setAddedToCart(false);
-        }, 2000); // durée d'affichage de la quantité ajoutée
+        // setAddedToCart(true);
+        // setTimeout(() => {
+        //   setLoading(false);
+        // }, 100);
+        // setTimeout(() => {
+        //   setAddedToCart(false);
+        // }, 2000); // durée d'affichage de la quantité ajoutée
       })
       .catch((error) => {
         console.error("Error adding product to the cart", error);
-        setLoading(false);
+        // setLoading(false);
+      })
+      .finally(() => {
+        setAddingToCart(false);
       });
   };
 
@@ -238,12 +285,8 @@ const ProductView = () => {
               </button>
             ) : (
               <button
-                className={`btn2 mb-10 md:mb-0 mt-8 ${
-                  loading || addedToCart
-                    ? "loading bg-[#328634] border-2 border-solid border-[#328634]"
-                    : "bg-customDark border-2 border-solid border-gray-800"
-                }`}
-                disabled={loading || addedToCart}
+                disabled={isAddingToCart}
+                className="btn btn-black mb-10 md:mb-0 mt-8"
                 onClick={() =>
                   addToCart(
                     product.id,
@@ -259,27 +302,51 @@ const ProductView = () => {
                   )
                 }
               >
-                {loading ? (
-                  <div className="loading-bar">
-                    <div className="progress" />
-                  </div>
-                ) : addedToCart ? (
-                  <div className="flex justify-center gap-2 items-center">
-                    Ajouté
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      height="24"
-                      viewBox="0 -960 960 960"
-                      width="24"
-                      fill="#fff"
-                    >
-                      <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
-                    </svg>
-                  </div>
-                ) : (
-                  "Ajouter au panier"
-                )}
+                Ajouter au panier
               </button>
+              // <button
+              //   className={`btn btn-black mb-10 md:mb-0 mt-8 ${
+              //     loading || addedToCart
+              //       ? "loading bg-[#328634] border-2 border-solid border-[#328634]"
+              //       : "bg-customDark border-2 border-solid border-gray-800"
+              //   }`}
+              //   disabled={loading || addedToCart}
+              //   onClick={() =>
+              //     addToCart(
+              //       product.id,
+              //       product.name,
+              //       product.type.name,
+              //       product.images[0].url,
+              //       product.mesurement,
+              //       product.price,
+              //       product.stripePriceId,
+              //       product.taxe,
+              //       quantity,
+              //       product.slug
+              //     )
+              //   }
+              // >
+              //   {loading ? (
+              //     <div className="loading-bar">
+              //       <div className="progress" />
+              //     </div>
+              //   ) : addedToCart ? (
+              //     <div className="flex justify-center gap-2 items-center">
+              //       Ajouté
+              //       <svg
+              //         xmlns="http://www.w3.org/2000/svg"
+              //         height="24"
+              //         viewBox="0 -960 960 960"
+              //         width="24"
+              //         fill="#fff"
+              //       >
+              //         <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
+              //       </svg>
+              //     </div>
+              //   ) : (
+              //     "Ajouter au panier"
+              //   )}
+              // </button>
             )}
           </div>
         </div>

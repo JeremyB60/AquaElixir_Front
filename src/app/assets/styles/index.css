@@ -414,7 +414,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 /* Bouton Ajouter au panier */
-.btn2 {
+/* .btn2 {
   display: inline-block;
   padding: 10px 20px;
   font-size: 16px;
@@ -424,16 +424,17 @@ input[type="range"]::-moz-range-thumb {
   cursor: pointer;
   color: #fff;
   border-radius: 5px;
+  background-color: #000;
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;  width: 173px;
-}
+} */
 
-.loading {
+/* .loading {
   position: relative;
 }
 
 .loading-bar {
-  height: 48px; /* Hauteur de la barre de chargement */
-  background-color: #2E2E2E; /* Couleur de fond de la barre de chargement */
+  height: 48px; 
+  background-color: #000; 
   position: absolute;
   top: -2px;
   left: -2px;
@@ -445,8 +446,9 @@ input[type="range"]::-moz-range-thumb {
   border-radius: 5px;
   height: 100%;
   width: 0;
-  background-color: #328634; /* Couleur de la barre de progression */
-  animation: fill-progress 1s ease-in-out; /* Animation pour remplir la barre de progression */
+  background-color: #2E2E2E; 
+  background-color: #328634;  
+  animation: fill-progress 1s ease-in-out; 
 }
 
 @keyframes fill-progress {
@@ -456,4 +458,4 @@ input[type="range"]::-moz-range-thumb {
   100% {
     width: 100%;
   }
-}
+} */
